@@ -3122,5 +3122,75 @@ const QUESTIONS = [
     "correct": 1,
     "justification": "[1º] T4 READ A1 (M=4 > ME=2) -> Lee y NO sube ML (max 5, 4 = 5). \n[2º] T9 WRITE A2 (M=9 > ML=9 y ME=7) -> Escribe, ME pasa a 9. \n[3º] T13 WRITE A1 (M=13 > ML=5 y ME=2) -> Escribe, ME pasa a 13. \n[4º] T4 WRITE A2 (M=4 < ML=9 de A2). Intenta escribir algo ya leído por alguien del futuro (T9 o anterior). T4 causa un fallo fatal y sufre ROLLBACK absoluto. La Regla de Thomas solo te salva de $M(T) < ME$, no de $M(T) < ML$.",
     "trap": true
+  },
+  {
+    category: 'examen',
+    type: 'multi',
+    question: '**EJERCICIO DE SIMULACIÓN MVCC (Control de Concurrencia Multiversión)**\n\nConsidere que el SGBD utiliza un mecanismo MVCC puro (sin bloqueos para las lecturas) tal y como se explica en teoría. Inicialmente tenemos las siguientes tuplas y versiones:\n\n*   Tupla **X** con valor `100` (Creada por T0, ML=5, ME=2)\n*   Tupla **Y** con valor `200` (Creada por T0, ML=8, ME=4)\n\nA continuación, llegan las siguientes operaciones al planificador en este orden temporal estricto:\n\n1.  `r7(X)` (La transacción T7 lee X)\n2.  `w9(Y, 250)` (La transacción T9 escribe Y)\n3.  `r6(Y)` (La transacción T6 lee Y)\n4.  `w4(X, 150)` (La transacción T4 intenta escribir X)\n\nIndique cuál es el estado final de las marcas temporales (ML, ME) de las versiones originales, y si alguna transacción sufre Rollback.',
+    options: [
+      'X(ML=7, ME=2). Y(ML=8, ME=4). Se crea nueva versión de Y(ME=9). T6 lee la versión original de Y y actualiza su ML a 8. T4 sufre Rollback porque su M(T) < ML(X).',
+      'X(ML=7, ME=2). Y(ML=8, ME=4). Se crea nueva versión de Y(ME=9). T6 lee la nueva versión de Y y actualiza su ML a 9. T4 sobreescribe la versión original de X.',
+      'X(ML=7, ME=2). Y(ML=8, ME=4). Se crea nueva versión de Y(ME=9). T6 lee la versión de T0 de Y y no actualiza ML porque 6 < 8. T4 sufre Rollback porque 4 < 7.',
+      'T9 sufre Rollback porque 9 > 8. T4 sobreescribe X.'
+    ],
+    correct: 2,
+    justification: 'Paso 1: r7(X). M(T7)=7. 7 > ML=5, luego ML de X pasa a 7. X queda (ML=7, ME=2).\nPaso 2: w9(Y). M(T9)=9. 9 > ML(Y)=8 y 9 > ME(Y)=4. Se crea nueva versión de Y con ME=9, valor=250.\nPaso 3: r6(Y). M(T6)=6. T6 busca la versión con mayor ME que sea <= 6. La versión nueva tiene ME=9 (muy futura). Lee la antigua (ME=4). El ML original es 8. Como 6 < 8, no actualiza el ML.\nPaso 4: w4(X). M(T4)=4. El ML de X es 7 (puesto por T7). Al intentar escribir, como 4 < ML(X)=7, significa que T7 ya leyó un valor que T4 debería haber escrito "en el pasado". Por tanto, T4 sufre ROLLBACK.',
+    trap: true
+  },
+  {
+    category: 'examen',
+    type: 'multi',
+    question: '**EJERCICIO DE SIMULACIÓN DE SEGURIDAD (Cadenas de Concesión)**\n\nEn Oracle, se ejecuta la siguiente secuencia de comandos por distintos usuarios:\n\n1. `SYS`: `GRANT SELECT ON TablaA TO U1 WITH GRANT OPTION;`\n2. `SYS`: `GRANT DBA TO U1 WITH ADMIN OPTION;`\n3. `U1`: `GRANT SELECT ON SYS.TablaA TO U2 WITH GRANT OPTION;`\n4. `U1`: `GRANT DBA TO U2;`\n5. `U2`: `GRANT SELECT ON SYS.TablaA TO U3;`\n6. `SYS`: `REVOKE SELECT ON TablaA FROM U1;`\n7. `SYS`: `REVOKE DBA FROM U1;`\n\n¿Cuál es el estado final de los privilegios de U2 y U3 tras esta secuencia?',
+    options: [
+      'U2 y U3 pierden tanto SELECT sobre TablaA como el rol DBA, ya que todo se revoca en cascada.',
+      'U2 y U3 pierden SELECT sobre TablaA por cascada. Sin embargo, U2 mantiene el rol DBA porque la revocación de roles no es en cascada.',
+      'U2 pierde SELECT, pero U3 lo mantiene porque U2 no tenía WITH GRANT OPTION hacia U3.',
+      'La sentencia 6 da error porque no se puede revocar un privilegio que ha sido propagado sin usar la cláusula CASCADE CONSTRAINTS.'
+    ],
+    correct: 1,
+    justification: 'En el estándar SQL y en Oracle, la revocación de **Privilegios de Objeto** (como SELECT ON Tabla) siempre se propaga en cascada. Al revocar a U1, caen U2 y U3. Sin embargo, la revocación de **Roles** o **Privilegios de Sistema** (concedidos con ADMIN OPTION) **NUNCA es en cascada**. Por tanto, al revocar DBA a U1, a U2 no se le quita el rol DBA.',
+    trap: false
+  },
+  {
+    category: 'examen',
+    type: 'multi',
+    question: '**EJERCICIO DE VISTAS ACTUALIZABLES**\n\nSuponga las siguientes definiciones de vistas:\n\n```sql\nCREATE VIEW Vista1 AS\nSELECT id, nombre, sueldo, departamento\nFROM Empleados\nWHERE sueldo > 2000;\n\nCREATE VIEW Vista2 AS\nSELECT id, nombre, sueldo, departamento\nFROM Vista1\nWHERE departamento = \'Ventas\'\nWITH LOCAL CHECK OPTION;\n```\n\nSe intenta ejecutar la siguiente instrucción:\n`INSERT INTO Vista2 (id, nombre, sueldo, departamento) VALUES (10, \'Ana\', 1500, \'Ventas\');`\n\n¿Qué ocurre y por qué?',
+    options: [
+      'Se inserta correctamente. Aunque el sueldo (1500) incumple la Vista1 (>2000), Vista2 solo tiene LOCAL CHECK OPTION y el departamento es "Ventas".',
+      'Falla con error de violación de CHECK OPTION. Al heredar de Vista1, LOCAL siempre chequea todas las condiciones base.',
+      'Falla con error de violación de CHECK OPTION. La vista base (Vista1) no permite sueldos menores a 2000, por lo que la inserción es bloqueada a nivel físico.',
+      'Se inserta en la base de datos subyacente, pero la fila resultante será una "tupla migratoria" porque no será visible desde Vista1.'
+    ],
+    correct: 0,
+    justification: 'Al tener WITH LOCAL CHECK OPTION, el SGBD **solo** comprueba la condición de la vista actual (`departamento = "Ventas"`), la cual se cumple. No comprueba las condiciones de las vistas subyacentes (Vista1: `sueldo > 2000`) a menos que estas tuviesen su propio CHECK OPTION. Por tanto, la inserción **tiene éxito**, y se convierte en una tupla migratoria respecto a Vista1.',
+    trap: true
+  },
+  {
+    category: 'examen',
+    type: 'multi',
+    question: '**EJERCICIO DE DISEÑO FÍSICO: OPTIMIZADOR CBO**\n\nSuponga una tabla `Clientes` con `bR = 10.000` bloques de datos y `nR = 100.000` tuplas.\nExiste un Índice B-Tree clustering (agrupado) sobre la columna `Provincia` con `hidx = 2`.\nHay 50 provincias distintas, y asumimos distribución uniforme.\nSe ejecuta: `SELECT * FROM Clientes WHERE Provincia = \'Madrid\';`\n\nCalcule el coste estimado usando el **Índice Agrupado**. Recuerde la fórmula de estimación de coste para acceso indexado.',
+    options: [
+      'Coste = 2 (solo recorrer la altura del índice).',
+      'Coste = 10.000 (equivale a un Full Table Scan).',
+      'Coste = 3 (hidx + 1 bloque de datos).',
+      'Coste = 202 (hidx + bloques asociados al valor).'
+    ],
+    correct: 3,
+    justification: 'Al tener distribución uniforme y 50 valores, la selectividad de "Madrid" es 1/50 = 2%. El número de registros con "Madrid" es el 2% de 100.000 = 2.000 tuplas. Al ser un **Índice Agrupado**, esos 2.000 registros están físicamente contiguos en disco. El número de bloques de datos que ocupan es el 2% de bR (10.000) = 200 bloques. El coste total es el de recorrer el índice más leer esos bloques secuenciales: hidx (2) + 200 = 202 accesos a bloque.',
+    trap: false
+  },
+  {
+    category: 'examen',
+    type: 'multi',
+    question: '**EJERCICIO DE INTEGRIDAD REFERENCIAL Y DISPARADORES (Triggers)**\n\nSe tiene la tabla MAESTRA (ID PK) y ESCLAVA (ID_M FK REFERENCES MAESTRA ON DELETE CASCADE).\nSe crea el siguiente Trigger en la tabla ESCLAVA en Oracle:\n\n```sql\nCREATE TRIGGER Trg_Esclava\nBEFORE DELETE ON ESCLAVA\nFOR EACH ROW\nBEGIN\n   -- Acción de registro (log)\nEND;\n```\n\n¿Qué sucede cuando se ejecuta `DELETE FROM MAESTRA WHERE ID=1;` (asumiendo que tiene registros dependientes en ESCLAVA)?',
+    options: [
+      'Se borra en MAESTRA, luego el motor borra en ESCLAVA por el CASCADE, y el trigger Trg_Esclava se dispara por cada fila esclava borrada.',
+      'Da error de tabla mutante (ORA-04091) porque el borrado en cascada bloquea la tabla ESCLAVA.',
+      'El trigger NO se dispara. Los triggers definidos por el usuario no se ejecutan cuando el evento DML ha sido desencadenado por una restricción de integridad (ON DELETE CASCADE).',
+      'Se borran las filas, pero el trigger se dispara DESPUÉS del borrado en cascada, independientemente de que sea BEFORE.'
+    ],
+    correct: 0,
+    justification: 'En Oracle, las acciones referenciales declarativas (como ON DELETE CASCADE) provocan comandos DML subyacentes que **SÍ** disparan los triggers definidos sobre la tabla hija. Como es BEFORE DELETE FOR EACH ROW, el trigger se ejecutará para cada fila de la esclava justo antes de que el motor la elimine debido a la cascada.',
+    trap: true
   }
 ];
