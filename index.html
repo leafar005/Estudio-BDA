@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz BDA — Portal de Estudio</title>
+  <meta name="description" content="Portal de estudio interactivo para Bases de Datos Avanzadas. Quizzes, estadísticas y banco de preguntas para preparar el examen.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared/shared.css">
+  <script src="shared/shared.js"></script>
+  <style>
+    :root {
+      --bg-primary: #0a0e1a;
+      --bg-secondary: #111827;
+      --bg-card: #1a1f35;
+      --text-primary: #f3f4f6;
+      --text-secondary: #9ca3af;
+      --accent: #3b82f6;
+      --accent-glow: rgba(59, 130, 246, 0.3);
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+    }
+    html {
+      background: #0c1220;
+      overscroll-behavior: none;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, system-ui, sans-serif;
+      background: linear-gradient(125deg, #0c1220, #1a2744, #0d3b66, #1b2838);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+    .bg-glow {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.4;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .bg-glow-1 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(59,130,246,0.25), transparent 70%);
+      top: -10%; right: -5%;
+    }
+    .bg-glow-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(14,165,233,0.2), transparent 70%);
+      bottom: -5%; left: -5%;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+      position: relative;
+      z-index: 1;
+    }
+    .hero {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 90px;
+      height: 90px;
+      border-radius: var(--radius-xl);
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8, #60a5fa);
+      box-shadow: 0 0 40px var(--accent-glow);
+      margin-bottom: 24px;
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px var(--accent-glow); }
+      50% { box-shadow: 0 0 50px var(--accent-glow); }
+    }
+    .hero-icon { font-size: 42px; }
+    .hero-title {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, #f1f5f9, #93c5fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+    .hero-subtitle {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      font-weight: 400;
+      margin-bottom: 24px;
+    }
+    /* Stats Widget Container */
+    .stats-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 50px;
+    }
+    /* Bento Grid */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+    .bento-card {
+      background: rgba(20, 20, 20, 0.35);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      text-decoration: none;
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .bento-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(59,130,246,0.15), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .bento-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px var(--accent-glow);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+    .bento-card:hover::before { opacity: 1; }
+    .bento-card > * { position: relative; z-index: 1; }
+    .bento-card-icon { font-size: 2.4rem; margin-bottom: 4px; }
+    .bento-card-title { font-size: 1.3rem; font-weight: 700; }
+    .bento-card-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
+    .bento-card.featured {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(20,20,20,0.35));
+      border-color: rgba(59, 130, 246, 0.15);
+    }
+    .bento-card.featured .bento-card-title {
+      font-size: 1.5rem;
+    }
+    .bento-card-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background: rgba(59,130,246,0.15);
+      color: #93c5fd;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    @media (max-width: 640px) {
+      .bento-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-badge {
+        width: 70px; height: 70px;
+      }
+      .hero-icon { font-size: 32px; }
+      .bento-card { padding: 24px 20px; }
+      .container { padding: 40px 16px 60px; }
+    }
+    /* Light Theme */
+    body.light-theme {
+      background: #f0f4f8;
+    }
+    body.light-theme .bento-card {
+      background: #ffffff;
+      border-color: rgba(0,0,0,0.08);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    body.light-theme .bento-card:hover {
+      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    }
+    body.light-theme .bento-card::before {
+      background: linear-gradient(135deg, rgba(59,130,246,0.05), transparent);
+    }
+    body.light-theme .hero-title {
+      background: none;
+      -webkit-text-fill-color: #111827;
+    }
+    body.light-theme .bento-card-title { color: #111827; }
+    body.light-theme .bento-card-desc { color: #6b7280; }
+  </style>
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <div class="container">
+    <div class="hero">
+      <div class="hero-badge"><span class="hero-icon">🗃️</span></div>
+      <h1 class="hero-title">Quiz BDA</h1>
+      <p class="hero-subtitle">Bases de Datos Avanzadas — Curso 2025/2026</p>
+    </div>
+
+    <div class="stats-container">
+      <div id="stats-widget"></div>
+    </div>
+
+    <div class="bento-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+      <!-- GLOBAL Y HERRAMIENTAS FRONTALES -->
+      <a href="quiz-bda/index.html?mode=all" class="bento-card featured" style="grid-column: 1 / -1; margin-bottom: 10px;">
+        <span class="bento-card-icon">🌍</span>
+        <span class="bento-card-title">Quiz BDA Completo</span>
+        <span class="bento-card-desc">Simulacro definitivo: las 231 preguntas de todos los temas mezcladas al azar.</span>
+      </a>
+      <a href="quiz-bda/index.html?mode=category&category=catalogo" class="bento-card">
+        <span class="bento-card-icon">🗂️</span>
+        <span class="bento-card-title">Catálogo</span>
+        <span class="bento-card-desc">Diccionario de datos, INFORMATION_SCHEMA y metadatos.</span>
+      </a>
+      <a href="quiz-bda/index.html?mode=category&category=vistas" class="bento-card">
+        <span class="bento-card-icon">🔍</span>
+        <span class="bento-card-title">Vistas</span>
+        <span class="bento-card-desc">Vistas virtuales, actualizables y materializadas.</span>
+      </a>
+      <a href="quiz-bda/index.html?mode=category&category=integridade" class="bento-card">
+        <span class="bento-card-icon">🛡️</span>
+        <span class="bento-card-title">Integridad</span>
+        <span class="bento-card-desc">Restricciones, FK matches y ejecución diferida.</span>
+      </a>
+      <a href="quiz-bda/index.html?mode=category&category=seguridade" class="bento-card">
+        <span class="bento-card-icon">🔒</span>
+        <span class="bento-card-title">Seguridad</span>
+        <span class="bento-card-desc">MAC/DAC, Privilegios, Roles y auditoría.</span>
+      </a>
+      <a href="quiz-bda/index.html?mode=category&category=activas" class="bento-card">
+        <span class="bento-card-icon">⚡</span>
+        <span class="bento-card-title">Triggers</span>
+        <span class="bento-card-desc">Reglas ECA, Mutaciones y bases de datos activas.</span>
+      </a>
+      <a href="quiz-bda/index.html?mode=category&category=desenofisico" class="bento-card">
+        <span class="bento-card-icon">💾</span>
+        <span class="bento-card-title">Diseño Físico</span>
+        <span class="bento-card-desc">Almacenamiento, clusters, IOT y B-Trees.</span>
+      </a>
+      <a href="quiz-bda/index.html?mode=category&category=optimizacion" class="bento-card">
+        <span class="bento-card-icon">🚀</span>
+        <span class="bento-card-title">Optimización</span>
+        <span class="bento-card-desc">Álgebra, planes de ejecución y coste (CBO).</span>
+      </a>
+      <a href="quiz-bda/index.html?mode=category&category=recuperacion" class="bento-card">
+        <span class="bento-card-icon">🔄</span>
+        <span class="bento-card-title">Recuperación</span>
+        <span class="bento-card-desc">Logs, WAL, Checkpoints y fallos.</span>
+      </a>
+      <a href="quiz-bda/index.html?mode=category&category=concorrencia" class="bento-card">
+        <span class="bento-card-icon">🔀</span>
+        <span class="bento-card-title">Concurrencia</span>
+        <span class="bento-card-desc">Transacciones, aislamiento, 2PL y MVCC.</span>
+      </a>
+      <a href="quiz-bda/index.html?mode=category&category=examen" class="bento-card">
+        <span class="bento-card-icon">📝</span>
+        <span class="bento-card-title">Exámenes</span>
+        <span class="bento-card-desc">Problemas completos extraídos de exámenes reales.</span>
+      </a>
+
+      <!-- HERRAMIENTAS -->
+      <a href="shared/flashcards.html" class="bento-card" style="border-color: rgba(245, 158, 11, 0.4);">
+        <span class="bento-card-icon">📇</span>
+        <span class="bento-card-title">Todas las Flashcards</span>
+        <span class="bento-card-desc">Repasa todos los temas de forma continua.</span>
+      </a>
+      <a href="banco-preguntas/index.html" class="bento-card" style="border-color: rgba(16, 185, 129, 0.4);">
+        <span class="bento-card-icon">📖</span>
+        <span class="bento-card-title">Banco de Preguntas</span>
+        <span class="bento-card-desc">Consulta el listado completo con las soluciones.</span>
+      </a>
+      <a href="estadisticas/index.html" class="bento-card" style="border-color: rgba(168, 85, 247, 0.4);">
+        <span class="bento-card-icon">📊</span>
+        <span class="bento-card-title">Estadísticas</span>
+        <span class="bento-card-desc">Revisa tu progreso y puntos débiles.</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Modal Chooser -->
+  <div id="choice-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close">✕</button>
+      <div class="modal-badge"><span id="modal-icon">🗂️</span></div>
+      <h2 class="modal-title" id="modal-title">Catálogo</h2>
+      <p class="modal-subtitle">¿Cómo quieres estudiar este tema?</p>
+      
+      <div class="modal-options">
+        <button class="modal-option-btn primary" id="btn-start-quiz">
+          <span class="btn-emoji">📝</span>
+          <div class="btn-text">
+            <strong>Cuestionario</strong>
+            <span>Preguntas con opciones y justificación</span>
+          </div>
+        </button>
+        <button class="modal-option-btn secondary" id="btn-start-flashcards">
+          <span class="btn-emoji">📇</span>
+          <div class="btn-text">
+            <strong>Flashcards</strong>
+            <span>Tarjetas de memoria rápida por delante y por detrás</span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center; z-index: 1000;
+      opacity: 1; transition: opacity 0.3s;
+    }
+    .modal-overlay.hidden { opacity: 0; pointer-events: none; }
+    .modal-content {
+      background: var(--bg-card); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl); padding: 40px; text-align: center;
+      max-width: 440px; width: 90%; position: relative;
+      transform: translateY(0) scale(1); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+    .modal-overlay.hidden .modal-content { transform: translateY(30px) scale(0.95); }
+    .modal-close {
+      position: absolute; top: 16px; right: 16px; background: none; border: none;
+      color: var(--text-secondary); font-size: 1.2rem; cursor: pointer;
+    }
+    .modal-close:hover { color: var(--text-primary); }
+    .modal-badge {
+      width: 70px; height: 70px; border-radius: 50%; background: var(--accent-glow);
+      display: inline-flex; align-items: center; justify-content: center; font-size: 2rem;
+      margin-bottom: 16px; border: 1px solid rgba(59,130,246,0.3);
+    }
+    .modal-title { font-size: 1.8rem; margin-bottom: 8px; color: var(--text-primary); font-weight: 800; }
+    .modal-subtitle { color: var(--text-secondary); margin-bottom: 30px; font-size: 0.95rem; }
+    .modal-options { display: flex; flex-direction: column; gap: 12px; }
+    .modal-option-btn {
+      display: flex; align-items: center; gap: 16px; padding: 16px;
+      border-radius: var(--radius-lg); border: 1px solid var(--border-subtle);
+      background: rgba(255,255,255,0.03); cursor: pointer; transition: all 0.2s; text-align: left; color: var(--text-primary); font-family: inherit;
+    }
+    .modal-option-btn:hover { background: rgba(255,255,255,0.08); border-color: var(--accent); transform: translateY(-2px); }
+    .modal-option-btn.primary:hover { border-color: #10b981; background: rgba(16,185,129,0.1); }
+    .modal-option-btn.secondary:hover { border-color: #3b82f6; background: rgba(59,130,246,0.1); }
+    .btn-emoji { font-size: 1.8rem; }
+    .btn-text { display: flex; flex-direction: column; }
+    .btn-text strong { font-size: 1.05rem; margin-bottom: 4px; }
+    .btn-text span { font-size: 0.8rem; color: var(--text-secondary); }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      window.QuizStats.load();
+      window.QuizStats.renderIndexWidget('stats-widget');
+
+      const modal = document.getElementById('choice-modal');
+      const closeBtn = document.getElementById('modal-close');
+      const titleEl = document.getElementById('modal-title');
+      const iconEl = document.getElementById('modal-icon');
+      const btnQuiz = document.getElementById('btn-start-quiz');
+      const btnFlash = document.getElementById('btn-start-flashcards');
+
+      let currentCategory = null;
+
+      document.querySelectorAll('.bento-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+          const href = card.getAttribute('href');
+          if (href && href.includes('?mode=category&category=')) {
+            e.preventDefault();
+            const urlParams = new URLSearchParams(href.split('?')[1]);
+            currentCategory = urlParams.get('category');
+            titleEl.textContent = card.querySelector('.bento-card-title').textContent;
+            iconEl.textContent = card.querySelector('.bento-card-icon').textContent;
+            modal.classList.remove('hidden');
+          }
+        });
+      });
+
+      closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.classList.add('hidden');
+      });
+
+      btnQuiz.addEventListener('click', () => {
+        window.location.href = `quiz-bda/index.html?mode=category&category=${currentCategory}`;
+      });
+
+      btnFlash.addEventListener('click', () => {
+        window.location.href = `shared/flashcards.html?topic=${currentCategory}`;
+      });
+    });
+  </script>
+</body>
+</html>

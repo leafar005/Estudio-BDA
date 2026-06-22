@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Banco de Preguntas | Quiz BDA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/shared.css">
+  <script src="../shared/shared.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    :root {
+      --bg-primary: #0a0e1a;
+      --bg-secondary: #111827;
+      --bg-card: #1a1f35;
+      --text-primary: #f3f4f6;
+      --text-secondary: #9ca3af;
+      --text-tertiary: #64748b;
+      --accent: #3b82f6;
+      --accent-soft: rgba(59,130,246,0.15);
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --correct: #10b981;
+      --wrong: #ef4444;
+    }
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+    }
+    .top-bar {
+      position: sticky; top: 0;
+      background: rgba(17, 24, 39, 0.8);
+      backdrop-filter: blur(10px);
+      padding: 15px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+      z-index: 100;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .back-btn {
+      color: var(--text-secondary); text-decoration: none;
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 500; transition: color 0.2s;
+    }
+    .back-btn:hover { color: var(--text-primary); }
+    .container {
+      max-width: 900px; margin: 0 auto; padding: 30px 20px;
+    }
+    /* Filters */
+    .filters {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      margin-bottom: 24px;
+      align-items: center;
+    }
+    .filter-select {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .filter-select option {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+    .search-input {
+      flex: 1;
+      min-width: 200px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+    .search-input::placeholder {
+      color: var(--text-tertiary);
+    }
+    .count-badge {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    /* Question cards */
+    .question-card-banco {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .question-card-banco:hover {
+      border-color: rgba(59,130,246,0.3);
+      transform: translateX(4px);
+    }
+    .qcb-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 8px; flex-wrap: wrap;
+    }
+    .qcb-num {
+      font-size: 0.75rem; color: var(--text-tertiary);
+      font-weight: 600; font-family: monospace;
+    }
+    .qcb-category {
+      font-size: 0.72rem; padding: 3px 10px;
+      border-radius: 50px;
+      background: var(--accent-soft);
+      color: #93c5fd;
+      font-weight: 600;
+    }
+    .qcb-type {
+      font-size: 0.72rem; padding: 3px 10px;
+      border-radius: 50px;
+      background: rgba(245,158,11,0.12);
+      color: #f59e0b;
+      font-weight: 600;
+    }
+    .qcb-trap {
+      font-size: 0.72rem; padding: 3px 10px;
+      border-radius: 50px;
+      background: rgba(239,68,68,0.12);
+      color: #ef4444;
+      font-weight: 600;
+    }
+    .qcb-text {
+      font-size: 0.95rem; line-height: 1.5;
+      color: var(--text-primary);
+    }
+    .qcb-detail {
+      display: none;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-subtle);
+    }
+    .question-card-banco.expanded .qcb-detail {
+      display: block;
+    }
+    .qcb-options {
+      display: flex; flex-direction: column; gap: 6px;
+      margin-bottom: 12px;
+    }
+    .qcb-option {
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      font-size: 0.88rem;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .qcb-option.correct {
+      background: rgba(16,185,129,0.08);
+      border-color: rgba(16,185,129,0.3);
+      color: var(--correct);
+    }
+    .qcb-option-letter {
+      font-weight: 700;
+      font-size: 0.8rem;
+      min-width: 24px;
+    }
+    .qcb-justification {
+      padding: 14px 16px;
+      background: rgba(59,130,246,0.06);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+    .qcb-text table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.85rem; }
+    .qcb-text th { background: rgba(255,255,255,0.05); padding: 8px; text-align: left; border: 1px solid var(--border-subtle); font-weight: 600; }
+    .qcb-text td { padding: 8px; border: 1px solid var(--border-subtle); }
+    .qcb-text pre { background: rgba(0,0,0,0.3); padding: 12px; border-radius: 6px; border: 1px solid var(--border-subtle); overflow-x: auto; margin: 12px 0; }
+    .qcb-text code { font-family: monospace; background: rgba(0,0,0,0.2); padding: 2px 4px; border-radius: 4px; color: #93c5fd; }
+    .qcb-text p { margin-bottom: 8px; }
+    .qcb-text p:last-child { margin-bottom: 0; }
+
+    @media (max-width: 600px) {
+      .top-bar { padding: 15px 20px; }
+      .filters { flex-direction: column; }
+      .search-input { min-width: unset; width: 100%; }
+      .question-card-banco { padding: 16px 18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <a href="../index.html" class="back-btn">← Volver al portal</a>
+    <h2 style="margin:0; font-size: 1.2rem;">Banco de Preguntas</h2>
+    <div style="width: 100px;"></div>
+  </div>
+
+  <div class="container">
+    <div class="filters">
+      <select class="filter-select" id="filter-category">
+        <option value="all">Todos los temas</option>
+      </select>
+      <select class="filter-select" id="filter-type">
+        <option value="all">Todos los tipos</option>
+        <option value="multi">Opción múltiple</option>
+        <option value="vf">Verdadero / Falso</option>
+      </select>
+      <select class="filter-select" id="filter-trap">
+        <option value="all">Todas</option>
+        <option value="trap">Solo trampas</option>
+        <option value="normal">Sin trampas</option>
+      </select>
+      <input type="text" class="search-input" id="search-input" placeholder="🔍 Buscar pregunta...">
+    </div>
+    <div class="count-badge" id="count-badge"></div>
+    <div id="questions-list"></div>
+  </div>
+
+  <script src="../quiz-bda/questions.js"></script>
+  <script>
+    (function() {
+      const catSelect = document.getElementById('filter-category');
+      CATEGORIES.forEach(cat => {
+        const opt = document.createElement('option');
+        opt.value = cat.id;
+        opt.textContent = `${cat.icon} ${cat.name}`;
+        catSelect.appendChild(opt);
+      });
+
+      function render() {
+        const category = document.getElementById('filter-category').value;
+        const type = document.getElementById('filter-type').value;
+        const trap = document.getElementById('filter-trap').value;
+        const search = document.getElementById('search-input').value.toLowerCase().trim();
+
+        let filtered = QUESTIONS.filter(q => {
+          if (category !== 'all' && q.category !== category) return false;
+          if (type !== 'all' && q.type !== type) return false;
+          if (trap === 'trap' && !q.trap) return false;
+          if (trap === 'normal' && q.trap) return false;
+          if (search && !q.question.toLowerCase().includes(search) && !q.justification.toLowerCase().includes(search)) return false;
+          return true;
+        });
+
+        document.getElementById('count-badge').textContent = `${filtered.length} pregunta${filtered.length !== 1 ? 's' : ''} encontrada${filtered.length !== 1 ? 's' : ''}`;
+
+        const list = document.getElementById('questions-list');
+        list.innerHTML = '';
+        const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+
+        filtered.forEach((q, idx) => {
+          const cat = CATEGORIES.find(c => c.id === q.category);
+          const card = document.createElement('div');
+          card.className = 'question-card-banco';
+          card.innerHTML = `
+            <div class="qcb-header">
+              <span class="qcb-num">#${idx + 1}</span>
+              <span class="qcb-category">${cat ? cat.name : q.category}</span>
+              <span class="qcb-type">${q.type === 'vf' ? 'V/F' : 'Multi'}</span>
+              ${q.trap ? '<span class="qcb-trap">⚠️ Trampa</span>' : ''}
+            </div>
+            <div class="qcb-text">${window.marked ? marked.parse(q.question) : q.question}</div>
+            <div class="qcb-detail">
+              <div class="qcb-options">
+                ${q.options.map((opt, i) => `
+                  <div class="qcb-option ${i === q.correct ? 'correct' : ''}">
+                    <span class="qcb-option-letter">${letters[i]}</span>
+                    <span>${opt}</span>
+                    ${i === q.correct ? ' ✅' : ''}
+                  </div>
+                `).join('')}
+              </div>
+              <div class="qcb-justification">${q.justification}</div>
+            </div>
+          `;
+          card.addEventListener('click', () => card.classList.toggle('expanded'));
+          list.appendChild(card);
+        });
+      }
+
+      document.getElementById('filter-category').addEventListener('change', render);
+      document.getElementById('filter-type').addEventListener('change', render);
+      document.getElementById('filter-trap').addEventListener('change', render);
+
+      let debounce;
+      document.getElementById('search-input').addEventListener('input', () => {
+        clearTimeout(debounce);
+        debounce = setTimeout(render, 200);
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>
