@@ -19,7 +19,7 @@
       --accent: #3b82f6;
       --accent-hover: #2563eb;
       --border-subtle: rgba(255, 255, 255, 0.08);
-      /* Custom theme colors */
+      /* Custom theme colors BDA */
       --c-1: #3b82f6; /* Catálogo */
       --c-2: #8b5cf6; /* Vistas */
       --c-3: #10b981; /* Integridad */
@@ -29,6 +29,7 @@
       --c-7: #ec4899; /* Optimización */
       --c-8: #14b8a6; /* Recuperación */
       --c-9: #f97316; /* Concurrencia */
+      --c-exam: #facc15; /* Examen */
     }
     
     body { margin: 0; padding: 0; display: flex; height: 100vh; overflow: hidden; font-family: 'Inter', sans-serif; background-color: var(--bg-primary); color: var(--text-primary); }
@@ -40,11 +41,12 @@
     .sidebar-content { flex: 1; overflow-y: auto; padding: 20px 0; }
     .nav-h2 { display: block; padding: 12px 24px 4px 24px; font-size: 0.85rem; font-weight: 800; color: #93c5fd; text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em; }
     .nav-h3 { display: block; padding: 8px 24px 8px 36px; font-size: 0.8rem; color: var(--text-secondary); text-decoration: none; transition: all 0.2s; border-left: 3px solid transparent; }
+    .nav-h3.exam-link { color: #fef08a; font-weight: 600; }
     .nav-h3:hover { color: var(--text-primary); background: rgba(255,255,255,0.03); }
     .nav-h3.active { color: #fff; background: rgba(59, 130, 246, 0.15); border-left-color: var(--accent); font-weight: 600; }
     #main-content { flex: 1; overflow-y: auto; padding: 20px 60px 60px 60px; scroll-behavior: smooth; position: relative; }
     .toggle-btn {
-      position: sticky; top: 0px; z-index: 99; margin-bottom: 20px;
+      position: sticky; top: 0px; z-index: 99; margin-bottom: 20px; margin-left: -40px;
       background: var(--bg-card); border: 1px solid var(--border-subtle); color: var(--text-primary);
       padding: 10px 15px; border-radius: 8px; cursor: pointer;
       display: inline-flex; align-items: center; gap: 10px; transition: all 0.2s; font-weight: 600; font-size: 0.9rem;
@@ -53,15 +55,9 @@
     .content-container { max-width: 900px; margin: 0 auto; }
     .page-title { font-size: 3.2rem; font-weight: 900; margin-bottom: 15px; background: linear-gradient(135deg, #fff 0%, #60a5fa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1; }
     .page-subtitle { font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 60px; line-height: 1.6; }
-    h2.theme-title { 
-      font-size: 2.4rem; font-weight: 800; margin: 80px 0 40px 0; padding: 20px; 
-      border-bottom: 3px solid; background: rgba(255,255,255,0.02); border-radius: 12px 12px 0 0;
-      color: #fff; display: flex; align-items: center; gap: 15px; text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-    }
-    h3.subtheme-title { 
-      font-size: 1.5rem; font-weight: 700; margin: 55px 0 20px 0; color: #bfdbfe; 
-      display: inline-block; padding: 6px 16px; background: rgba(59, 130, 246, 0.1); border-radius: 8px; border-left: 4px solid #3b82f6;
-    }
+    h2.theme-title { font-size: 2.2rem; font-weight: 800; margin: 80px 0 30px 0; padding-bottom: 15px; border-bottom: 2px solid rgba(255,255,255,0.1); color: #fff; }
+    h3.subtheme-title { font-size: 1.4rem; font-weight: 700; margin: 45px 0 15px 0; color: #bfdbfe; }
+    h3.exam-title { color: var(--c-exam); border-bottom: 1px dashed var(--c-exam); padding-bottom: 5px; display: inline-block; }
     h4 { font-size: 1.15rem; font-weight: 600; margin: 25px 0 10px 0; color: #93c5fd; }
     p { line-height: 1.8; color: #d1d5db; margin-bottom: 20px; font-size: 1.05rem; }
     ul, ol { color: #d1d5db; line-height: 1.8; margin-bottom: 24px; padding-left: 24px; font-size: 1.05rem; }
@@ -69,25 +65,11 @@
     strong { color: #fff; font-weight: 600; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 30px 0; }
     .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin: 30px 0; }
-    .box { 
-      background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(20,20,20,0.4) 100%);
-      padding: 24px; border-radius: 14px; border: 1px solid var(--border-subtle); 
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative; overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-    .box:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 15px 30px rgba(0,0,0,0.3), 0 0 15px rgba(255,255,255,0.05);
-      border-color: rgba(255,255,255,0.15);
-    }
-    .box::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%); pointer-events: none; }
-    .box h4 { margin-top: 0; color: #fff; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; font-size: 1.2rem; }
-    .alert { 
-      background: linear-gradient(90deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05)); 
-      border-left: 5px solid var(--accent); padding: 20px 24px; margin: 30px 0; border-radius: 0 16px 16px 0;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1); font-weight: 500;
-    }
+    .box { background: rgba(255,255,255,0.03); padding: 24px; border-radius: 12px; border: 1px solid var(--border-subtle); }
+    .box h4 { margin-top: 0; color: #fff; margin-bottom: 15px; }
+    .alert { background: rgba(59, 130, 246, 0.1); border-left: 4px solid var(--accent); padding: 20px; margin: 30px 0; border-radius: 0 12px 12px 0; }
+    .exam-guide { border: 1px solid rgba(250, 204, 21, 0.3); border-left: 4px solid var(--c-exam); background: linear-gradient(90deg, rgba(250, 204, 21, 0.05), transparent); }
+    .exam-guide h4 { color: #fef08a; }
     table { width: 100%; border-collapse: collapse; margin: 30px 0; background: rgba(255,255,255,0.02); border-radius: 12px; overflow: hidden; }
     th, td { padding: 16px; text-align: left; border-bottom: 1px solid var(--border-subtle); line-height: 1.6; }
     th { background: rgba(255,255,255,0.05); font-weight: 700; color: #fff; }
@@ -101,6 +83,7 @@
       .nav-h3 { display: inline-block; padding: 8px 12px; font-size: 0.85rem; border-left: none; }
       .nav-h3.active { background: rgba(59,130,246,0.2); border-radius: 8px; color: #fff; font-weight: 600; }
       #main-content { overflow-y: visible; padding: 25px 15px; }
+      .toggle-btn { margin-left: 0; }
       .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 15px; }
       .page-title { font-size: 2rem; }
       .page-subtitle { font-size: 1rem; margin-bottom: 30px; }
@@ -109,6 +92,7 @@
       .box { padding: 16px; }
     }
   </style>
+  <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
 
@@ -123,694 +107,581 @@
   </nav>
 
   <main id="main-content">
-    <button id="toggle-sidebar" class="toggle-btn" title="">
+    
+    <button id="toggle-sidebar" class="toggle-btn">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      Mostrar / Ocultar Índice
     </button>
+    
     <div class="content-container">
+      
       <div style="text-align: center; margin-bottom: 50px;">
         <h1 class="page-title">Guía Definitiva BDA</h1>
         <p class="page-subtitle" style="max-width: 600px; margin: 0 auto;">Resumen de alto rendimiento para dominar Bases de Datos Avanzadas. Diseñado para memorizar, estructurar y evitar trampas de examen.</p>
       </div>
-<section class="theme-section">
-  <h2 class="theme-title" id="t-01" style="border-bottom-color: #3b82f6; color: #3b82f6;">🗂️ Catálogo del Sistema</h2>
-  
-  <h3 class="subtheme-title" id="st-1-1">1. Conceptos Clave</h3>
-  <div class="grid-2">
-    <div class="box" style="border-top: 3px solid #3b82f6; padding: 1rem; background-color: rgba(255,255,255,0.05); margin-bottom: 1rem;">
-      <h4>Catálogo del Sistema vs Diccionario de Datos</h4>
-      <p><strong>Catálogo:</strong> Repositorio físico, de solo lectura, mantenido exclusivamente por el SGBD. Contiene metadatos puros (esquemas, restricciones, estadísticas del CBO) y es usado internamente por el motor.</p>
-      <p><strong>Diccionario de Datos:</strong> Repositorio conceptual, mantenido por humanos. Documenta el modelo del dominio y procesos asociados a la BD.</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #3b82f6; padding: 1rem; background-color: rgba(255,255,255,0.05); margin-bottom: 1rem;">
-      <h4>Uso Interno (Ejecución de Consultas)</h4>
-      <p>Al ejecutar una consulta, el SGBD usa intensivamente el catálogo para:</p>
-      <ul>
-        <li><strong>Validar:</strong> Existencia de los objetos y privilegios del usuario.</li>
-        <li><strong>Precompilar:</strong> Resolver léxicamente columnas (ej. expansión del comodín <code>*</code>).</li>
-        <li><strong>Optimizar:</strong> Obtener estadísticas para calcular el plan de menor coste en el CBO.</li>
-      </ul>
-    </div>
-  </div>
 
-  <h3 class="subtheme-title" id="st-1-2">2. Estructura y Estándares</h3>
-  <div class="grid-2">
-    <div class="box" style="border-top: 3px solid #10b981; padding: 1rem; background-color: rgba(255,255,255,0.05); margin-bottom: 1rem;">
-      <h4>SQL Estándar</h4>
-      <p><strong>Cluster:</strong> Conjunto de catálogos accesibles por el usuario (máximo ámbito de consulta).<br>
-      <strong>Catálogo:</strong> Colección de esquemas (debe incluir <code>INFORMATION_SCHEMA</code>).<br>
-      <strong>Esquema:</strong> Colección de elementos (tablas, vistas, etc.).<br>
-      <em>Nomenclatura absoluta:</em> <code>catalogo.esquema.elemento</code></p>
-    </div>
-    <div class="box" style="border-top: 3px solid #10b981; padding: 1rem; background-color: rgba(255,255,255,0.05); margin-bottom: 1rem;">
-      <h4>Implementaciones</h4>
-      <p><strong>Oracle:</strong> No sigue el estándar (Esquema = Usuario). Usa vistas jerárquicas: <code>USER_</code>, <code>ALL_</code>, <code>DBA_</code>.<br>
-      <strong>PostgreSQL:</strong> El Catálogo equivale a la Database. Contiene esquemas nativos como <code>pg_catalog</code> y el estándar <code>information_schema</code>.</p>
-    </div>
-  </div>
+      <section class="theme-section">
+        <h2 class="theme-title" id="t-01" style="border-bottom-color: var(--c-1); color: var(--c-1);">🗂️ 1. Catálogo del Sistema</h2>
+        
+        <h3 class="subtheme-title" id="st-1-1">1. Conceptos Clave</h3>
+        <div class="grid-2">
+          <div class="box" style="border-top: 3px solid var(--c-1);">
+            <div style="font-size: 2rem; margin-bottom: 10px;">🤖</div>
+            <h4 style="color: #60a5fa;">Catálogo del Sistema</h4>
+            <p style="font-size: 0.95rem;">Repositorio físico, de solo lectura, mantenido <strong>exclusivamente por el SGBD</strong>. Contiene metadatos puros (esquemas, restricciones, estadísticas del CBO) y es usado internamente por el motor.</p>
+          </div>
+          <div class="box" style="border-top: 3px solid var(--c-1);">
+            <div style="font-size: 2rem; margin-bottom: 10px;">👥</div>
+            <h4 style="color: #60a5fa;">Diccionario de Datos</h4>
+            <p style="font-size: 0.95rem;">Repositorio conceptual, <strong>mantenido por humanos</strong>. Documenta el modelo del dominio, reglas de negocio y procesos asociados a la Base de Datos.</p>
+          </div>
+        </div>
 
-      <div class="box" style="border-top: 3px solid #3b82f6; padding: 1rem; background-color: rgba(255,255,255,0.05); margin-bottom: 1rem;">
-      <h4>Vistas Clave del Catálogo Oracle</h4>
-      <ul>
-        <li><code>USER_TABLES</code> o <code>TABS</code>: Tablas propiedad del usuario.</li>
-        <li><code>USER_TAB_COLUMNS</code> o <code>COLS</code>: Definición de las columnas de sus tablas.</li>
-        <li><code>USER_OBJECTS</code> o <code>OBJ</code>: Todos sus objetos (procedimientos, vistas, secuencias).</li>
-        <li><code>USER_CONSTRAINTS</code>: Restricciones de integridad (PK, FK, CHECK).</li>
-        <li><code>USER_SYS_PRIVS</code> y <code>USER_TAB_PRIVS</code>: Privilegios de sistema y objeto.</li>
-      </ul>
-      <p><em>Regla de prefijos:</em> <code>USER_</code> (lo propio), <code>ALL_</code> (a lo que se tiene acceso), <code>DBA_</code> (todo el sistema, solo administradores).</p>
-    </div>
-  <h3 class="subtheme-title" id="st-1-3">3. Trucos de Examen (BDA)</h3>
-  <div class="alert" style="background-color: rgba(255,255,255,0.05); border-left: 4px solid #ef4444; padding: 1rem; margin-bottom: 1rem;">
-    <strong>Resolución Estática en Vistas:</strong> Al usar <code>CREATE VIEW ... AS SELECT * FROM tabla</code>, el catálogo precompila y graba los nombres exactos de las columnas que existían en ese instante. Si posteriormente se modifica la tabla con <code>ALTER TABLE</code> para añadir un campo, la vista preexistente <strong>no reflejará el nuevo campo</strong>.
-  </div>
-  <div class="alert" style="background-color: rgba(255,255,255,0.05); border-left: 4px solid #f59e0b; padding: 1rem; margin-bottom: 1rem;">
-    <strong>Seguridad en Oracle:</strong> Si se intenta consultar una tabla sin tener los privilegios adecuados, Oracle devolverá <code>ORA-00942: la tabla o vista no existe</code> en lugar de un error de acceso, ocultando la existencia real del objeto mediante el catálogo para evitar inferencias.
-  </div>
-</section>
+        <div class="box" style="border-left: 4px solid var(--c-1); background: rgba(59, 130, 246, 0.05); margin-bottom: 30px;">
+          <h4>Uso Interno (Ejecución de Consultas)</h4>
+          <p style="font-size: 0.95rem;">Al ejecutar una consulta, el SGBD usa intensivamente el catálogo para tres fases:</p>
+          <ul style="font-size: 0.95rem;">
+            <li><strong style="color: var(--c-1);">Validar:</strong> Existencia de los objetos y privilegios del usuario.</li>
+            <li><strong style="color: var(--c-1);">Precompilar:</strong> Resolver léxicamente columnas (ej. expansión del comodín <code>*</code>).</li>
+            <li><strong style="color: var(--c-1);">Optimizar:</strong> Obtener estadísticas (bloques, cardinalidad, histogramas) para calcular el plan de menor coste en el CBO.</li>
+          </ul>
+        </div>
 
-<section class="theme-section">
-  <h2 class="theme-title" id="t-02" style="border-bottom-color: #8b5cf6; color: #8b5cf6;">2. Vistas</h2>
-  
-  <h3 class="subtheme-title" id="st-2-1">1. Conceptos Clave</h3>
-  <div class="grid-2">
-    <div class="box" style="border-top: 3px solid #8b5cf6;">
-      <h4>Definición y Arquitectura</h4>
-      <p>Una vista es una <strong>"tabla virtual"</strong> que expone datos de consultas sobre otras tablas. Ayudan a conseguir <strong>independencia lógica</strong> y definen los esquemas externos en la arquitectura ANSI/SPARC.</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #8b5cf6;">
-      <h4>Almacenamiento</h4>
-      <p>Solo se almacena su <strong>definición precompilada en el catálogo</strong>, no sus datos, a excepción de las <strong>Vistas Materializadas</strong> que sí guardan datos en disco.</p>
-    </div>
-  </div>
+        <h3 class="subtheme-title" id="st-1-2">2. Estructura y Estándares</h3>
+        <div class="grid-2">
+          <div class="box">
+            <h4 style="color: #a5b4fc;">Estructura SQL Estándar</h4>
+            <ul style="font-size: 0.9rem; padding-left: 15px;">
+              <li><strong>Cluster:</strong> Conjunto de catálogos accesibles por el usuario.</li>
+              <li><strong>Catálogo:</strong> Colección de esquemas (debe incluir <code>INFORMATION_SCHEMA</code>).</li>
+              <li><strong>Esquema:</strong> Colección de elementos (tablas, vistas, etc.).</li>
+            </ul>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);"><em>Nomenclatura absoluta:</em> <code>catalogo.esquema.elemento</code></p>
+          </div>
+          <div class="box">
+            <h4 style="color: #a5b4fc;">Implementaciones Físicas</h4>
+            <p style="font-size: 0.9rem;"><strong>Oracle:</strong> No sigue el estándar (Esquema = Usuario). Usa vistas jerárquicas.<br><br>
+            <strong>PostgreSQL:</strong> El Catálogo equivale a la Database. Contiene esquemas nativos como <code>pg_catalog</code> y el estándar <code>information_schema</code>.</p>
+          </div>
+        </div>
 
-  <h3 class="subtheme-title" id="st-2-2">2. Actualización y Tuplas Migratorias</h3>
-  <div class="grid-2">
-    <div class="box" style="border-top: 3px solid #8b5cf6;">
-      <h4>Vistas Actualizables</h4>
-      <p>Para permitir DML, el SGBD debe trazar la ruta de vuelta a la tabla base de forma unívoca. <strong>No son actualizables</strong> si tienen: <code>DISTINCT</code>, <code>GROUP BY</code>, <code>HAVING</code>, operaciones de conjuntos (UNION...), o a veces JOINs.</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #8b5cf6;">
-      <h4>Tuplas Migratorias</h4>
-      <p>Filas que <strong>"desaparecen" de la vista</strong> tras un INSERT/UPDATE porque dejan de cumplir la condición base de la vista. Se evita su aparición usando <code>WITH CHECK OPTION</code>.</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #8b5cf6;">
-      <h4>CHECK OPTION: LOCAL vs CASCADED</h4>
-      <p><span class="tag" style="background-color: #8b5cf6; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.8em;">CASCADED</span> (por defecto): Comprueba la condición de la vista y de <em>todas</em> las vistas sobre las que está definida.<br><span class="tag" style="background-color: #8b5cf6; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.8em;">LOCAL</span>: Sólo comprueba la restricción de la vista actual (puede fallar garantizando la invulnerabilidad total).</p>
-    </div>
-  </div>
+        <div class="box" style="border-top: 3px solid var(--c-1);">
+          <h4>Vistas Clave del Catálogo Oracle</h4>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+            <span class="tag" style="background: rgba(59, 130, 246, 0.2); color: #93c5fd;">USER_TABLES / TABS</span>
+            <span class="tag" style="background: rgba(59, 130, 246, 0.2); color: #93c5fd;">USER_TAB_COLUMNS / COLS</span>
+            <span class="tag" style="background: rgba(59, 130, 246, 0.2); color: #93c5fd;">USER_OBJECTS / OBJ</span>
+            <span class="tag" style="background: rgba(59, 130, 246, 0.2); color: #93c5fd;">USER_CONSTRAINTS</span>
+            <span class="tag" style="background: rgba(59, 130, 246, 0.2); color: #93c5fd;">USER_SYS_PRIVS</span>
+          </div>
+          <p style="font-size: 0.9rem;"><em>Regla de prefijos de Oracle:</em> <code>USER_</code> (lo propio del usuario), <code>ALL_</code> (a lo que el usuario tiene acceso), <code>DBA_</code> (todo el sistema, solo administradores).</p>
+        </div>
 
-  <h3 class="subtheme-title" id="st-2-3">3. Vistas en Oracle y Vistas Materializadas</h3>
-  <div class="grid-2">
-    <div class="box" style="border-top: 3px solid #8b5cf6;">
-      <h4>Particularidades de Oracle</h4>
-      <p>Permite <code>ORDER BY</code> y <code>WITH READ ONLY</code>. El <code>CHECK OPTION</code> actúa <strong>siempre en cascada</strong>. La sentencia <code>ALTER VIEW nombre COMPILE;</code> sirve para validar/compilar vistas tras cambios, pero no cambia su definición (se usa <code>CREATE OR REPLACE VIEW</code>).</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #8b5cf6;">
-      <h4>Vistas Materializadas</h4>
-      <p>Aumentan rendimiento en entornos distribuidos guardando filas reales. Parámetros clave: <strong>BUILD</strong> (<code>IMMEDIATE</code>, <code>DEFERRED</code>) y <strong>REFRESH</strong> (<code>COMPLETE</code>, <code>FAST</code> [incremental por logs], <code>FORCE</code>).</p>
-    </div>
-  </div>
+        <h3 class="subtheme-title" id="st-1-3">3. Conceptos Avanzados de Catálogo</h3>
+        <div class="box" style="margin-top: 20px; border-left: 3px solid #14b8a6; background: rgba(20, 184, 166, 0.05);">
+          <strong style="color: #5eead4;">🌟 Concepto Nivel Pro: Histogramas en el Catálogo</strong><br>
+          <span style="font-size: 0.9rem;">El CBO no solo necesita saber cuántas filas hay, sino <strong>cómo se distribuyen</strong>. Si una columna está sesgada (ej. 95% de los clientes son de "Madrid"), el catálogo almacena un Histograma. Gracias a él, el CBO sabe que buscar "Madrid" requiere un Full Scan (porque es casi toda la tabla), pero buscar "Soria" justifica usar el índice.</span>
+        </div>
+      </section>
 
-  <h3 class="subtheme-title" id="st-2-4">4. 🚨 Trucos de Examen 🚨</h3>
-  <div class="grid-3">
-    <div class="box alert" style="border-top: 3px solid #ef4444;">
-      <h4>Resolución Estática del (*)</h4>
-      <p><code>SELECT *</code> se resuelve de forma <strong>estática</strong> en el catálogo al crear la vista. Si haces <code>ALTER TABLE</code> en la tabla original y añades un campo, la vista anterior <strong>no lo reflejará</strong>. (Frecuente en Exámenes 2022 y 2023).</p>
-    </div>
-    <div class="box alert" style="border-top: 3px solid #ef4444;">
-      <h4>Privilegios y Mensajes de Error</h4>
-      <p>Si faltan privilegios sobre la tabla/vista base, el SGBD oculta el detalle arrojando: <code>ORA-00942: la tabla o vista no existe</code>, evitando así la inferencia de estructuras por seguridad.</p>
-    </div>
-    <div class="box alert" style="border-top: 3px solid #ef4444;">
-      <h4>Reescritura de Consultas (Query Rewrite)</h4>
-      <p>El optimizador de Oracle puede usar las vistas materializadas internamente mediante <strong>Query Rewrite</strong>, redirigiendo al usuario a la instantánea precalculada aunque pregunte explícitamente a las tablas base.</p>
-    </div>
-  </div>
-</section>
+      <section class="theme-section">
+        <h2 class="theme-title" id="t-02" style="border-bottom-color: var(--c-2); color: var(--c-2);">👁️ 2. Vistas</h2>
+        
+        <h3 class="subtheme-title" id="st-2-1">1. Conceptos Clave</h3>
+        <div class="grid-2">
+          <div class="box" style="border-top: 3px solid var(--c-2);">
+            <h4>Definición y Arquitectura</h4>
+            <p style="font-size: 0.95rem;">Una vista es una <strong>"tabla virtual"</strong> que expone datos de consultas sobre otras tablas. Ayudan a conseguir <strong>independencia lógica</strong> y definen los esquemas externos en la arquitectura ANSI/SPARC.</p>
+          </div>
+          <div class="box" style="border-top: 3px solid var(--c-2);">
+            <h4>Almacenamiento</h4>
+            <p style="font-size: 0.95rem;">Solo se almacena su <strong>definición precompilada en el catálogo</strong>, no sus datos. La excepción son las <strong>Vistas Materializadas</strong> que sí guardan datos físicos en disco.</p>
+          </div>
+        </div>
 
-<section class="theme-section">
-  <h2 class="theme-title" id="t-03" style="border-bottom: 3px solid #10b981; color: #10b981; padding-bottom: 8px; margin-bottom: 20px; font-size: 28px;">3. Integridad</h2>
-  
-  <h3 class="subtheme-title" id="st-3-1" style=" font-size: 22px; margin-bottom: 12px;">1. Conceptos Claves</h3>
-  <div class="grid-2" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-bottom: 24px;">
-    <div class="box" style="border-top: 4px solid #10b981; padding: 16px; background-color: rgba(255,255,255,0.05); border-radius: 6px; ">
-      <h4 style="margin-top: 0;  font-size: 18px;">Definición de Integridad</h4>
-      <p style="margin-bottom: 0;  font-size: 15px;">La información almacenada en la BD debe ser <strong>Correcta</strong> (evitar información errónea, ej. salario negativo) y <strong>Completa</strong> (toda información requerida presente, ej. empleado con nombre).</p>
-    </div>
-    <div class="box" style="border-top: 4px solid #3b82f6; padding: 16px; background-color: rgba(255,255,255,0.05); border-radius: 6px; ">
-      <h4 style="margin-top: 0;  font-size: 18px;">Mecanismos de Garantía</h4>
-      <div style="margin-bottom: 0;">
-        <span class="tag" style="background-color: rgba(255,255,255,0.05);  padding: 4px 10px; border-radius: 16px; font-size: 13px; display: inline-block; margin-bottom: 6px; font-weight: 500;">SGBD Transaccional</span><br>
-        <span class="tag" style="background-color: rgba(255,255,255,0.05);  padding: 4px 10px; border-radius: 16px; font-size: 13px; display: inline-block; margin-bottom: 6px; font-weight: 500;">Restricciones Declarativas</span><br>
-        <span class="tag" style="background-color: rgba(255,255,255,0.05);  padding: 4px 10px; border-radius: 16px; font-size: 13px; display: inline-block; font-weight: 500;">Triggers (Reglas ECA)</span>
-      </div>
-    </div>
-  </div>
+        <h3 class="subtheme-title" id="st-2-2">2. Actualización y Tuplas Migratorias</h3>
+        <div class="grid-3">
+          <div class="box">
+            <h4 style="color: #c4b5fd;">Vistas Actualizables</h4>
+            <p style="font-size: 0.85rem;">Para permitir DML, el SGBD debe trazar la ruta de vuelta a la tabla base unívocamente. <strong>No son actualizables</strong> si tienen: <code>DISTINCT</code>, <code>GROUP BY</code>, <code>HAVING</code>, operaciones de conjuntos, o ciertos JOINs.</p>
+          </div>
+          <div class="box">
+            <h4 style="color: #c4b5fd;">Tuplas Migratorias</h4>
+            <p style="font-size: 0.85rem;">Filas que <strong>"desaparecen" de la vista</strong> tras un INSERT/UPDATE porque dejan de cumplir la condición (WHERE) de la vista. Se evita su aparición usando <code>WITH CHECK OPTION</code>.</p>
+          </div>
+          <div class="box">
+            <h4 style="color: #c4b5fd;">Tipos de CHECK OPTION</h4>
+            <ul style="font-size: 0.85rem; padding-left: 15px; margin-bottom: 0;">
+              <li><span class="tag" style="background: rgba(139, 92, 246, 0.2);">CASCADED</span> (Defecto): Comprueba la condición de la vista y de <em>todas</em> sus vistas base.</li>
+              <li><span class="tag" style="background: rgba(139, 92, 246, 0.2);">LOCAL</span>: Sólo comprueba la restricción de la vista actual.</li>
+            </ul>
+          </div>
+        </div>
 
-  <h3 class="subtheme-title" id="st-3-2" style=" font-size: 22px; margin-bottom: 12px;">2. Restricciones en SQL</h3>
-  <div class="grid-3" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
-    <div class="box" style="border: 1px solid #e5e7eb; border-left: 4px solid #6366f1; padding: 16px; border-radius: 6px; background-color: rgba(255,255,255,0.05);">
-      <h4 style="margin-top: 0;  font-size: 16px;">PRIMARY KEY & UNIQUE</h4>
-      <p style="font-size: 14px;  margin-bottom: 0;"><strong>PK:</strong> No admite nulos ni duplicados. Solo 1 por tabla.<br><br><strong>UNIQUE:</strong> No admite duplicados en valores no nulos. Puede haber varias.</p>
-    </div>
-    <div class="box" style="border: 1px solid #e5e7eb; border-left: 4px solid #8b5cf6; padding: 16px; border-radius: 6px; background-color: rgba(255,255,255,0.05);">
-      <h4 style="margin-top: 0;  font-size: 16px;">NOT NULL & CHECK</h4>
-      <p style="font-size: 14px;  margin-bottom: 0;"><strong>NOT NULL:</strong> Opera solo a nivel atributo.<br><br><strong>CHECK:</strong> Establece valores válidos. <em>Limitación:</em> no admite subconsultas en los SGBD reales.</p>
-    </div>
-    <div class="box" style="border: 1px solid #e5e7eb; border-left: 4px solid #ec4899; padding: 16px; border-radius: 6px; background-color: rgba(255,255,255,0.05);">
-      <h4 style="margin-top: 0;  font-size: 16px;">FOREIGN KEY</h4>
-      <p style="font-size: 14px;  margin-bottom: 0;">Asegura la integridad referencial. Apunta a una clave candidata (PK o UNIQUE) de la misma u otra tabla.</p>
-    </div>
-  </div>
+        <h3 class="subtheme-title" id="st-2-3">3. Oracle y Vistas Materializadas</h3>
+        <div class="grid-2">
+          <div class="box" style="border-left: 3px solid var(--c-2);">
+            <h4>Particularidades de Oracle</h4>
+            <p style="font-size: 0.9rem;">Permite <code>ORDER BY</code> (el estándar no) y la restricción <code>WITH READ ONLY</code>. El <code>CHECK OPTION</code> actúa <strong>siempre en cascada</strong>. <br><em>Nota:</em> <code>ALTER VIEW nombre COMPILE;</code> solo valida la vista, no cambia su definición (se usa <code>CREATE OR REPLACE</code>).</p>
+          </div>
+          <div class="box" style="border-left: 3px solid var(--c-2);">
+            <h4>Vistas Materializadas</h4>
+            <p style="font-size: 0.9rem;">Aumentan rendimiento guardando filas reales (instantáneas) para DWH. <br><strong>BUILD:</strong> <code>IMMEDIATE</code>, <code>DEFERRED</code>.<br><strong>REFRESH:</strong> <code>COMPLETE</code>, <code>FAST</code> (incremental por logs), <code>FORCE</code>.</p>
+          </div>
+        </div>
 
-  <h3 class="subtheme-title" id="st-3-3" style=" font-size: 22px; margin-bottom: 12px;">3. Acciones Referenciales (ON DELETE / ON UPDATE)</h3>
-  <div class="box" style="border-left: 4px solid #f59e0b; padding: 16px; background-color: rgba(255,255,255,0.05); border-radius: 6px; margin-bottom: 24px;">
-    <ul style="margin-top: 0; margin-bottom: 0; padding-left: 20px;  font-size: 15px; line-height: 1.6;">
-      <li><strong>NO ACTION:</strong> Bloquea cambios si se rompe la integridad. <em>(Permite ser DEFERRED)</em>.</li>
-      <li><strong>RESTRICT:</strong> Equivalente a NO ACTION pero con comprobación <strong>inmediata</strong> estricta.</li>
-            <li><strong>CASCADE:</strong> Borrado o actualización "en cascada" hacia las filas hijas. <em>(¡Atención! Oracle <strong>NO</strong> soporta ON UPDATE CASCADE nativamente, asume NO ACTION y debe simularse con triggers).</em></li>
-      <li><strong>SET NULL / SET DEFAULT:</strong> Sustituye el valor de la clave foránea en la tabla hija.</li>
-    </ul>
-  </div>
+        <div class="alert" style="border-left-color: var(--c-2); display: flex; align-items: center; gap: 15px; background: rgba(139, 92, 246, 0.1);">
+          <span style="font-size: 1.5rem;">👑</span>
+          <div><strong>Query Rewrite (Truco Optimización):</strong> El optimizador de Oracle puede usar vistas materializadas internamente mediante <strong>Query Rewrite</strong>, redirigiendo tu consulta hacia la instantánea precalculada aunque tú hayas hecho explícitamente el <code>SELECT</code> a las tablas base.</div>
+        </div>
 
-  <div class="alert" style="background-color: rgba(255,255,255,0.05); border: 1px solid #bfdbfe;  padding: 16px; border-radius: 6px; margin-bottom: 24px; ">
-    <strong style="font-size: 16px;">Comportamiento ante Nulos en Claves Foráneas: Cláusula MATCH</strong><br>
-    <span style="font-size: 14px;">Cuando una clave foránea (FK) compuesta admite valores nulos, la cláusula <code>MATCH</code> define las reglas de aceptación. Existen tres niveles de validación:</span>
-    <ul style="margin-top: 8px; margin-bottom: 0; padding-left: 20px; font-size: 14px;">
-      <li><strong>MATCH SIMPLE (Predeterminado):</strong> La restricción se cumple si <em>al menos un</em> campo de la FK es nulo, o si ningún campo es nulo y la FK completa coincide con una clave candidata. Permite combinaciones parciales sin comprobación exhaustiva del resto de campos.</li>
-      <li><strong>MATCH PARTIAL:</strong> La restricción se cumple si cada campo de la FK es nulo, o su valor no nulo existe en el campo correspondiente de una <em>misma fila</em> en la clave candidata. (No implementado en PostgreSQL).</li>
-      <li><strong>MATCH FULL:</strong> Exige un comportamiento de "todo o nada". La restricción solo se verifica si <em>todos</em> los campos son nulos simultáneamente, o si <em>ningún</em> campo es nulo y la FK completa coincide con una clave candidata. Si se mezcla un valor nulo con uno no nulo, la inserción es rechazada de inmediato.</li>
-    </ul>
-  </div>
+        <h3 class="subtheme-title exam-title" id="st-2-exam">🎓 Guía de Resolución: Vistas Congeladas</h3>
+        <div class="box exam-guide">
+          <h4>Vistas y el SELECT * (Trampa de Catálogo)</h4>
+          <p style="font-size: 0.95rem;"><strong>Patrón de Examen:</strong> Te preguntan qué ocurre si una vista se define con <code>SELECT * FROM tabla</code> y posteriormente se hace un <code>ALTER TABLE</code> añadiendo una nueva columna a dicha tabla.</p>
+          <ul style="font-size: 0.9rem;">
+            <li><strong>Resolución Estática:</strong> El usuario de la vista <strong>NO verá la nueva columna</strong>.</li>
+            <li><strong>¿Por qué?:</strong> El catálogo de la Base de Datos "precompila" la vista sustituyendo el asterisco (<code>*</code>) por los nombres literales y exactos de las columnas que existían en el milisegundo de su creación. </li>
+          </ul>
+        </div>
+      </section>
 
-  <h3 class="subtheme-title" id="st-3-4" style=" font-size: 22px; margin-bottom: 12px;">4. Restricciones Aplazadas (DEFERRABLE)</h3>
-  <div class="box" style="border-top: 4px solid #14b8a6; padding: 16px; background-color: rgba(255,255,255,0.05); border-radius: 6px;  margin-bottom: 24px;">
-    <p style="margin-top: 0; margin-bottom: 12px;  font-size: 15px;">La comprobación de la restricción se pospone al final de la transacción (<code>COMMIT</code>). Si en ese momento falla la validación, la BD realiza un <code>ROLLBACK</code> completo.</p>
-    <ul style="margin-bottom: 0; padding-left: 20px;  font-size: 14px; line-height: 1.6;">
-      <li><code>DEFERRABLE INITIALLY DEFERRED</code>: Inicia aplazada para toda la transacción.</li>
-      <li><code>DEFERRABLE INITIALLY IMMEDIATE</code>: Inicia con comprobación inmediata pero permite ser modificada.</li>
-      <li>Modificar comportamiento en vuelo: <code>SET CONSTRAINTS &lt;nombre&gt; {IMMEDIATE | DEFERRED}</code>.</li>
-      <li><strong>Casos de uso Típicos:</strong> Resolver <em>ciclos referenciales</em> de inserción cruzada y <em>cargas masivas</em> de datos.</li>
-    </ul>
-  </div>
-  
-  <div class="alert" style="background-color: rgba(255,255,255,0.05); border: 1px solid #fecaca;  padding: 16px; border-radius: 6px; margin-bottom: 24px; ">
-    <strong style="font-size: 16px;">⚠️ Ojo en Examen: Integridad, Triggers y Vistas</strong><br>
-    <ul style="margin-top: 8px; margin-bottom: 0; padding-left: 20px; font-size: 14px;">
-      <li><strong>Triggers (Alternativa a ASSERTION):</strong> Puesto que las aserciones no están implementadas y el <code>CHECK</code> no admite subconsultas, los Triggers (Event-Condition-Action) se usan para validaciones complejas entre tablas.</li>
-      <li><strong>Tuplas Migratorias en Vistas:</strong> Insertar en una vista un registro que no cumple su <code>WHERE</code> se guardará en la tabla base y desaparecerá de la vista. Evítalo obligando la integridad con <code>WITH CHECK OPTION</code> (o <code>WITH CASCADED CHECK OPTION</code> para todo el árbol).</li>
-    </ul>
-  </div>
-</section>
+      <section class="theme-section">
+        <h2 class="theme-title" id="t-03" style="border-bottom-color: var(--c-3); color: var(--c-3);">🛡️ 3. Integridad</h2>
+        
+        <h3 class="subtheme-title" id="st-3-1">1. Conceptos Claves</h3>
+        <div class="grid-2">
+          <div class="box" style="border-top: 3px solid var(--c-3);">
+            <h4>Definición de Integridad</h4>
+            <p style="font-size: 0.95rem;">La información almacenada debe ser <strong>Correcta</strong> (evitar información errónea, ej. edad negativa) y <strong>Completa</strong> (toda información requerida debe estar presente).</p>
+          </div>
+          <div class="box" style="border-top: 3px solid var(--c-3);">
+            <h4>Mecanismos de Garantía</h4>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <span class="tag" style="background: rgba(16, 185, 129, 0.2); color: #6ee7b7;">SGBD Transaccional (ACID)</span>
+              <span class="tag" style="background: rgba(16, 185, 129, 0.2); color: #6ee7b7;">Restricciones Declarativas</span>
+              <span class="tag" style="background: rgba(16, 185, 129, 0.2); color: #6ee7b7;">Triggers (Reglas ECA)</span>
+            </div>
+          </div>
+        </div>
 
-<section class="theme-section">
-  <h2 class="theme-title" id="t-04" style="border-bottom-color: #ef4444; color: #ef4444;">4. Seguridad en SGBD</h2>
-  
-  <h3 class="subtheme-title" id="st-4-1">1. Conceptos Fundamentales</h3>
-  <div class="grid-3">
-    <div class="box" style="border-top: 3px solid #ef4444;">
-      <h4>Propiedades Core <span class="tag" style="background: #ef4444; color: white; padding: 2px 4px; border-radius: 4px; font-size: 0.8em; margin-left: 5px;">CIA</span></h4>
-      <p>Toda estrategia se basa en garantizar: <strong>Confidencialidad</strong> (datos privados protegidos), <strong>Integridad</strong> (sin modificaciones indebidas) y <strong>Disponibilidad</strong> (acceso a los datos garantizado).</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #ef4444;">
-      <h4>SGSI y PDCA <span class="tag" style="background: #ef4444; color: white; padding: 2px 4px; border-radius: 4px; font-size: 0.8em; margin-left: 5px;">ISO 27001</span></h4>
-      <p>Estándar de buenas prácticas para la gestión de seguridad de la información. Su metodología se basa en identificar activos, amenazas y evaluar el riesgo mediante el <strong>ciclo de Deming (PDCA)</strong>.</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #ef4444;">
-      <h4>Auditoría FGA <span class="tag" style="background: #ef4444; color: white; padding: 2px 4px; border-radius: 4px; font-size: 0.8em; margin-left: 5px;">DBMS_FGA</span></h4>
-      <p>La <em>Fine Grain Auditing</em> permite capturar accesos de lectura (<code>SELECT</code>) implementando políticas granulares a <strong>nivel de fila y columna</strong> en base a condiciones configuradas.</p>
-    </div>
-  </div>
+        <h3 class="subtheme-title" id="st-3-2">2. Restricciones en SQL</h3>
+        <div class="grid-3">
+          <div class="box">
+            <h4 style="color: #6ee7b7;">PK & UNIQUE</h4>
+            <p style="font-size: 0.85rem;"><strong>PK:</strong> No nulos, no duplicados. Solo 1 por tabla.<br><br><strong>UNIQUE:</strong> No duplicados. Puede haber varias y admiten nulos.</p>
+          </div>
+          <div class="box">
+            <h4 style="color: #6ee7b7;">NOT NULL & CHECK</h4>
+            <p style="font-size: 0.85rem;"><strong>NOT NULL:</strong> Solo a nivel atributo.<br><br><strong>CHECK:</strong> Establece valores válidos. <em>Limitación:</em> no admite subconsultas reales en ningún SGBD.</p>
+          </div>
+          <div class="box">
+            <h4 style="color: #6ee7b7;">FOREIGN KEY</h4>
+            <p style="font-size: 0.85rem;">Garantiza integridad referencial. Apunta a una clave candidata (PK o UNIQUE) obligatoriamente.</p>
+          </div>
+        </div>
 
-  <h3 class="subtheme-title" id="st-4-2">2. Modelos de Control de Acceso</h3>
-  <div class="grid-2">
-    <div class="box" style="border-top: 3px solid #ef4444; grid-column: 1 / -1;">
-      <h4>Cadenas de Concesión en Control Discrecional <span class="tag" style="background: rgba(255,255,255,0.1); color: #ef4444; padding: 2px 4px; border-radius: 4px; font-size: 0.8em; margin-left: 5px;">DAC</span></h4>
-      <p>El creador del objeto decide quién accede mediante las sentencias <code>GRANT</code> y <code>REVOKE</code>. Soporta delegación (<code>WITH GRANT OPTION</code> para objetos, <code>WITH ADMIN OPTION</code> para roles y sistema) formando cadenas de privilegios.</p>
-      <p><strong>Privilegios de Sistema vs Objeto (Oracle):</strong> Los privilegios de sistema son independientes de objetos concretos (ej. <code>CREATE TABLE</code>) y toman efecto de inmediato. Los roles, sin embargo, a menudo requieren ser activados explícitamente en la sesión (<code>SET ROLE</code>).</p>
-      <p>Cuando se revoca un permiso de objeto con <code>GRANT OPTION</code>, se usa <code>CASCADE</code> para revocar recursivamente a terceros. En cambio, en Oracle, la revocación de un privilegio de sistema o rol concedido con <code>ADMIN OPTION</code> no se propaga en cascada.</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #ef4444; grid-column: 1 / -1;">
-      <h4>Reglas MAC y Confidencialidad <span class="tag" style="background: rgba(255,255,255,0.1); color: #ef4444; padding: 2px 4px; border-radius: 4px; font-size: 0.8em; margin-left: 5px;">MAC</span></h4>
-      <p>Políticas centralizadas dictadas por el sistema. Asigna <strong>Clases de Seguridad</strong> a objetos y <strong>Niveles de Autorización</strong> a usuarios. No está incluido en el estándar SQL básico.</p>
-      <p>Usando el modelo <strong>Bell-LaPadula</strong>, se aplican dos reglas para evitar filtraciones de confidencialidad:</p>
-      <ul>
-        <li><strong>Propiedad Simple:</strong> Un sujeto puede leer un objeto solo si su nivel de autorización es &ge; al del objeto (<em>no leer hacia arriba</em>).</li>
-        <li><strong>Propiedad Estrela (*):</strong> Un sujeto puede escribir un objeto solo si su nivel de autorización es &le; al del objeto (<em>no escribir hacia abajo</em>, previniendo que un usuario autorizado copie datos secretos en archivos públicos).</li>
-      </ul>
-    </div>
-  </div>
+        <h3 class="subtheme-title" id="st-3-3">3. Restricciones Aplazadas (DEFERRABLE)</h3>
+        <p style="font-size: 0.95rem;">Posponen la comprobación al final de la transacción (<code>COMMIT</code>). Si falla, hace ROLLBACK total. Útiles para <strong>ciclos referenciales</strong> y cargas masivas.</p>
+        <div class="grid-2">
+          <div class="box" style="padding: 15px; text-align: center;">
+            <code style="color: #6ee7b7; font-size: 0.9rem;">INITIALLY DEFERRED</code><br>
+            <span style="font-size: 0.85rem;">Inicia aplazada para toda la transacción.</span>
+          </div>
+          <div class="box" style="padding: 15px; text-align: center;">
+            <code style="color: #6ee7b7; font-size: 0.9rem;">INITIALLY IMMEDIATE</code><br>
+            <span style="font-size: 0.85rem;">Inicia inmediata pero permite modificarse en vuelo con <code>SET CONSTRAINTS</code>.</span>
+          </div>
+        </div>
 
-  <h3 class="subtheme-title" id="st-4-3">3. Claves y Trampas de Examen (Oracle)</h3>
-  <div class="grid-2">
-    <div class="box alert" style="border-left: 4px solid #ef4444; background: rgba(255,255,255,0.05);">
-      <h4 style="color: #ef4444;">Prevención de Inferencia (ORA-00942)</h4>
-      <p>Para evitar deducir metadatos sensibles, si un usuario realiza un <code>SELECT</code> sobre una tabla en la que no posee privilegios, Oracle lanzará un error de <strong>"tabla o vista no existe"</strong>, ocultando el problema de permisos real.</p>
-    </div>
-    <div class="box alert" style="border-left: 4px solid #ef4444; background: rgba(255,255,255,0.05);">
-      <h4 style="color: #ef4444;">Filtros de Seguridad mediante Vistas</h4>
-      <p>Para conceder acceso de actualización o lectura únicamente a un subconjunto de filas o columnas de una tabla, la solución obligatoria exige crear un <code>CREATE VIEW</code> y aplicar la protección estructural de seguridad <code>WITH CHECK OPTION</code>.</p>
-    </div>
-    <div class="box alert" style="border-left: 4px solid #ef4444; background: rgba(255,255,255,0.05);">
-      <h4 style="color: #ef4444;">Tiempos de Revocación de Privilegios</h4>
-      <p>Un usuario activo perderá instantáneamente los permisos si el DBA lanza <code>DROP ROLE</code> o le revoca un permiso explícito a la tabla. Sin embargo, usar <strong><code>REVOKE rol</code> no tendrá efecto inmediato</strong> en el usuario; requerirá una nueva conexión de sesión.</p>
-    </div>
-    <div class="box alert" style="border-left: 4px solid #ef4444; background: rgba(255,255,255,0.05);">
-      <h4 style="color: #ef4444;">Limitaciones Ocultas del Rol DBA</h4>
-      <p>Asumir que el rol <code>DBA</code> te permite ver las tablas de cualquier esquema es un engaño. Si un usuario con rol DBA carece del permiso explícito de sistema <code>SELECT ANY TABLE</code> e intenta consultar el esquema <code>SCOTT.EMP</code>, recibirá un error de <code>ORA-00942</code>.</p>
-    </div>
-  </div>
-  <h3 class="subtheme-title" id="st-4-4">4. Técnicas Adicionales y Auditoría</h3>
-  <div class="grid-2">
-    <div class="box" style="border-top: 3px solid #ef4444; padding: 1rem; background-color: rgba(255,255,255,0.05); margin-bottom: 1rem;">
-      <h4>Técnicas Adicionales de Seguridad</h4>
-      <ul>
-        <li><strong>Inyección SQL:</strong> Vulnerabilidad causada por no sanear entradas de usuario. Prevención principal: Uso estricto de parámetros vinculados (bind parameters).</li>
-        <li><strong>Cifrado de Información:</strong> Las contraseñas usan cifrado unidireccional (Hash, SHA, MD5). Datos sensibles usan cifrado bidireccional (Oracle TDE).</li>
-        <li><strong>Bases de Datos Estadísticas:</strong> Protegen la privacidad publicando solo agregados (SUM, AVG), limitando respuestas a grupos pequeños para evitar inferencia.</li>
-      </ul>
-    </div>
-    <div class="box" style="border-top: 3px solid #ef4444; padding: 1rem; background-color: rgba(255,255,255,0.05); margin-bottom: 1rem;">
-      <h4>Auditoría Estándar vs. FGA</h4>
-      <p>Más allá de la Fine Grain Auditing (FGA), los SGBD incluyen:</p>
-      <ul>
-        <li><strong>Auditoría Nativa (Oracle Audit):</strong> Registra eventos DDL, de sesión o accesos. Se consulta en <code>DBA_STMT_AUDIT_OPTS</code>.</li>
-        <li><strong>Triggers de Sistema:</strong> Usados a nivel de base de datos para registrar eventos globales ajenos a DML (<code>AFTER LOGON ON DATABASE</code>, <code>BEFORE LOGOFF</code>).</li>
-      </ul>
-    </div>
-  </div>
-</section>
+        <h3 class="subtheme-title exam-title" id="st-3-exam">🎓 Guía de Resolución: Integridad y Claves Foráneas</h3>
+        <div class="box exam-guide">
+          <h4>A. Cláusula MATCH (Nulos en FK compuestas)</h4>
+          <p style="font-size: 0.95rem;"><strong>Patrón de Examen:</strong> Te dan una PK y una FK compuesta que incluye valores NULOS, y te preguntan qué filas insertadas son válidas bajo MATCH SIMPLE, PARTIAL y FULL. </p>
+          <ul style="font-size: 0.9rem;">
+            <li><strong>MATCH SIMPLE (Por defecto):</strong> Si la fila de la clave foránea contiene <strong>al menos un NULL</strong>, es VÁLIDA automáticamente sin buscar en el padre.</li>
+            <li><strong>MATCH PARTIAL:</strong> Permite nulos, pero si algún atributo tiene valor, ese valor <strong>debe existir en la tabla padre</strong> (junto con el resto de componentes no nulos en la misma fila del padre).</li>
+            <li><strong>MATCH FULL:</strong> Es de "todo o nada". Requiere que TODOS los atributos sean NULL o que NINGUNO sea NULL (y coincida con el padre). <strong>Si hay mezcla de nulos y no-nulos, es INVÁLIDA inmediatamente</strong>.</li>
+          </ul>
 
-<section class="theme-section">
-  <h2 class="theme-title" id="t-05" style="border-bottom-color: #f59e0b; color: #f59e0b;">5. Reglas Activas y Triggers</h2>
-  
-  <h3 class="subtheme-title" id="st-5-1">1. Conceptos Clave</h3>
-  <div class="grid-2">
-    <div class="box" style="border-top: 3px solid #f59e0b;">
-      <h4>BD Pasivas vs. Activas</h4>
-      <p>Las <strong>pasivas</strong> son simples almacenes (gestión explícita), mientras que las <strong>activas</strong> reaccionan automáticamente a eventos (cambios de datos) utilizando <em>triggers</em> para controlar restricciones de negocio complejas o auditar acciones.</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #f59e0b;">
-      <h4>Reglas ECA</h4>
-      <p>Base del funcionamiento de un trigger: <br>
-         <span class="tag" style="background-color: rgba(245, 158, 11, 0.1); color: #f59e0b;">E</span> <strong>Evento:</strong> Acción que lo dispara (INSERT, UPDATE, DELETE).<br>
-         <span class="tag" style="background-color: rgba(245, 158, 11, 0.1); color: #f59e0b;">C</span> <strong>Condición:</strong> Expresión lógica opcional (cláusula WHEN).<br>
-         <span class="tag" style="background-color: rgba(245, 158, 11, 0.1); color: #f59e0b;">A</span> <strong>Acción:</strong> Bloque de código ejecutado (ej. PL/SQL).</p>
-    </div>
-  </div>
+          <h4 style="margin-top: 25px;">B. Acciones Referenciales (NO ACTION vs RESTRICT)</h4>
+          <p style="font-size: 0.95rem;"><strong>Patrón de Examen:</strong> La trampa típica es preguntar la diferencia entre ambas políticas de borrado/actualización.</p>
+          <ul style="font-size: 0.9rem;">
+            <li>La respuesta clave es que <strong>NO ACTION puede ser aplazada</strong> hasta el momento del <code>COMMIT</code> (usando <code>DEFERRABLE</code>).</li>
+            <li><strong>RESTRICT no puede ser aplazada jamás</strong> (comprobación inmediata estricta). Esto es vital para romper ciclos referenciales (ej. dos tablas que se apuntan mutuamente con restricción NOT NULL).</li>
+          </ul>
+        </div>
+      </section>
 
-  <h3 class="subtheme-title" id="st-5-2">2. Elementos y Sintaxis (Oracle)</h3>
-  <div class="grid-3">
-    <div class="box">
-      <h4>Tiempos y Granularidad</h4>
-      <p><strong>Tiempos:</strong> <code>BEFORE</code>, <code>AFTER</code>, y <code>INSTEAD OF</code> (exclusivo para Vistas).<br>
-         <strong>Granularidad:</strong> <code>FOR EACH ROW</code> (se dispara por cada fila afectada) o <code>FOR EACH STATEMENT</code> (se dispara una sola vez por sentencia, es el comportamiento por defecto).</p>
-    </div>
-    <div class="box">
-      <h4>Variables y Tablas de Transición</h4>
-      <p>Para granularidad <em>ROW</em> (nivel de fila) usamos: <br>
-      <code>:OLD</code> (valores previos) y <code>:NEW</code> (valores posteriores). <br>
-      Para granularidad <em>STATEMENT</em> (nivel de sentencia) el estándar SQL:2008 distingue: <br>
-      <code>OLD TABLE</code> y <code>NEW TABLE</code> para referenciar el conjunto de filas afectadas.<br>
-      ⚠️ <em>Clave de Examen:</em> <code>:OLD</code> <strong>nunca</strong> es modificable; <code>:NEW</code> <strong>sólo</strong> puede ser modificado en triggers <code>BEFORE</code>.</p>
-    </div>
-    <div class="box">
-      <h4>Eventos Múltiples</h4>
-      <p>Un trigger puede responder a varios eventos DML simultáneamente (ej: <code>BEFORE INSERT OR UPDATE</code>). <br>
-      Dentro de la acción se diferencian usando predicados booleanos: <code>INSERTING</code>, <code>UPDATING</code>, <code>DELETING</code>.</p>
-    </div>
-  </div>
+      <section class="theme-section">
+        <h2 class="theme-title" id="t-04" style="border-bottom-color: var(--c-4); color: var(--c-4);">🔐 4. Seguridad en SGBD</h2>
+        
+        <h3 class="subtheme-title" id="st-4-1">1. Conceptos Fundamentales</h3>
+        <div class="grid-3">
+          <div class="box" style="border-top: 3px solid var(--c-4);">
+            <div style="font-size: 2rem; margin-bottom: 10px;">🛡️</div>
+            <h4 style="color: #fca5a5;">Propiedades CIA</h4>
+            <p style="font-size: 0.85rem;">La base de la seguridad: <strong>Confidencialidad</strong> (datos privados), <strong>Integridad</strong> (sin modificación indebida) y <strong>Disponibilidad</strong> (acceso garantizado).</p>
+          </div>
+          <div class="box" style="border-top: 3px solid var(--c-4);">
+            <div style="font-size: 2rem; margin-bottom: 10px;">📋</div>
+            <h4 style="color: #fca5a5;">SGSI e ISO 27001</h4>
+            <p style="font-size: 0.85rem;">Metodología basada en identificar activos, amenazas y evaluar el riesgo mediante el <strong>ciclo PDCA</strong> de mejora continua.</p>
+          </div>
+          <div class="box" style="border-top: 3px solid var(--c-4);">
+            <div style="font-size: 2rem; margin-bottom: 10px;">🔎</div>
+            <h4 style="color: #fca5a5;">Auditoría FGA</h4>
+            <p style="font-size: 0.85rem;"><em>Fine Grain Auditing</em> permite auditar operaciones de lectura pura (<code>SELECT</code>) implementando políticas granulares a nivel de fila y columna.</p>
+          </div>
+        </div>
 
-  <h3 class="subtheme-title" id="st-5-3">3. Casos Especiales y Errores Típicos</h3>
-  <div class="grid-2">
-    <div class="alert" style="border-left-color: #ef4444; background-color: rgba(239, 68, 68, 0.05);">
-      <h4 style="color: #ef4444;">⚠️ Tabla Mutante (ORA-04091)</h4>
-      <p>Error clásico en Oracle: Ocurre cuando un trigger a nivel de fila (<code>FOR EACH ROW</code>) intenta acceder mediante SQL (<code>SELECT</code>, <code>UPDATE</code>, etc.) a la <strong>misma tabla</strong> sobre la que se está disparando. <br><em>Solución:</em> Usar variables de transición o plantear un trigger a nivel de sentencia en lugar de fila.</p>
-    </div>
-    <div class="alert" style="border-left-color: #3b82f6; background-color: rgba(59, 130, 246, 0.05);">
-      <h4 style="color: #3b82f6;">💡 Triggers INSTEAD OF</h4>
-      <p>Tienen una regla estricta: Sólo pueden aplicarse sobre <strong>VISTAS</strong> y nunca sobre tablas. Su acción se ejecuta <em>en lugar de</em> la operación original. <br><em>Uso estrella:</em> Hacer actualizables vistas complejas (con JOINs, GROUP BY, etc.) que por defecto el SGBD no permite actualizar.</p>
-    </div>
-  </div>
-</section>
+        <h3 class="subtheme-title" id="st-4-2">2. Modelos de Control de Acceso</h3>
+        <div class="grid-3">
+          <div class="box" style="background: rgba(239, 68, 68, 0.05); border-left: 3px solid var(--c-4);">
+            <h4 style="color: #fca5a5;">DAC (Discrecional)</h4>
+            <p style="font-size: 0.85rem;">El creador decide mediante <code>GRANT/REVOKE</code>. Permite delegación (<code>WITH GRANT OPTION</code>). <em>La revocación de objetos se propaga en cascada recursivamente.</em></p>
+          </div>
+          <div class="box" style="background: rgba(239, 68, 68, 0.05); border-left: 3px solid var(--c-4);">
+            <h4 style="color: #fca5a5;">MAC (Obligatorio)</h4>
+            <p style="font-size: 0.85rem;">Políticas del sistema (niveles de seguridad). <strong>Bell-LaPadula:</strong> No leer hacia arriba (Prop. Simple), No escribir hacia abajo (Prop. Estrella).</p>
+          </div>
+          <div class="box" style="background: rgba(239, 68, 68, 0.05); border-left: 3px solid var(--c-4);">
+            <h4 style="color: #fca5a5;">RBAC (Roles) 🚨</h4>
+            <p style="font-size: 0.85rem;"><strong>Estándar en SGBD modernos.</strong> Los permisos se asignan a roles (perfiles) y estos a usuarios. Simplifica drásticamente la administración frente al caos de cadenas del DAC puro.</p>
+          </div>
+        </div>
 
-<section class="theme-section">
-  <h2 class="theme-title" id="t-06" style="border-bottom-color: #06b6d4; color: #06b6d4;">6. Diseño Físico</h2>
-  
-  <h3 class="subtheme-title" id="st-6-1">1. Conceptos Clave y Almacenamiento</h3>
-  <div class="grid-2">
-    <div class="box" style="border-top: 3px solid #06b6d4;">
-      <h4>Independencia Física</h4>
-      <p>Separación del Nivel Lógico (tablas, SQL) y Nivel Físico. El usuario y las aplicaciones operan sin necesidad de conocer en qué ficheros o bloques están guardados los datos reales.</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #06b6d4;">
-      <h4>Jerarquía de Almacenamiento</h4>
-      <p>Zona Lógica (<strong>Tablespace</strong>) &rarr; Zona Física (<strong>Datafiles</strong>) &rarr; <strong>Segmentos</strong> (datos de un objeto) &rarr; <strong>Extensiones</strong> (asignación de espacio) &rarr; <strong>Bloques</strong> (unidad mínima de transferencia I/O, ej: 8KB).</p>
-    </div>
-  </div>
+        <h3 class="subtheme-title" id="st-4-3">3. Técnicas Adicionales y Auditoría</h3>
+        <div class="box" style="border-top: 3px solid var(--c-4);">
+          <ul style="font-size: 0.9rem;">
+            <li><strong style="color: #fca5a5;">Inyección SQL:</strong> Vulnerabilidad por no sanear entradas. Prevención: Uso estricto de <em>Bind Parameters</em> (parámetros vinculados).</li>
+            <li><strong style="color: #fca5a5;">Cifrado TDE:</strong> Transparent Data Encryption cifra los datos físicos en disco bidireccionalmente. Las contraseñas, en cambio, usan Hashes unidireccionales.</li>
+            <li><strong style="color: #fca5a5;">Bases de Datos Estadísticas:</strong> Protegen la privacidad publicando solo agregados (SUM, AVG) y limitando respuestas a grupos pequeños para evitar inferencia.</li>
+            <li><strong style="color: #fca5a5;">Auditoría Nativa vs Triggers:</strong> La nativa registra eventos DDL o accesos genéricos. Los Triggers de Sistema capturan eventos globales ajenos a tablas, como <code>AFTER LOGON ON DATABASE</code>.</li>
+          </ul>
+        </div>
 
-  <h3 class="subtheme-title" id="st-6-2">2. Estructuras y Organizaciones Físicas</h3>
-  <div class="grid-3">
-    <div class="box" style="border-top: 3px solid #06b6d4;">
-      <h4>Heap Table (Apilada)</h4>
-      <p>Organización predeterminada. Las filas se añaden donde hay hueco, sin orden. Inserción eficiente, pero búsqueda muy ineficiente sin índices (Full Table Scan).</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #06b6d4;">
-      <h4>IOT (Index-Organized Table)</h4>
-      <p>La tabla <strong>ES</strong> el índice (árbol B+). Desaparece el ROWID. Datos ordenados físicamente por PK. Máxima eficiencia de lectura por PK, pero penaliza gravemente DML e índices secundarios.</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #06b6d4;">
-      <h4>Cluster (Agrupamiento)</h4>
-      <p>Almacena filas de <strong>múltiples tablas</strong> mezcladas en el mismo bloque físico si comparten una clave de cluster. Resuelve JOINs instantáneamente. <span class="tag" style="background-color: rgba(255,255,255,0.05);  padding: 2px 4px; border-radius: 4px; font-size: 0.8em;">¡No es Clustered Index!</span></p>
-      <p>Existen dos tipos en Oracle: <strong>B+-tree cluster</strong> (usa un índice B+ en la clave compartida para ubicar los bloques) y <strong>Hash cluster</strong> (evita el índice aplicando una función hash a la clave para preasignar espacio directamente).</p>
-    </div>
-  </div>
+        <h3 class="subtheme-title exam-title" id="st-4-exam">🎓 Guía de Resolución: Escalabilidad y Permisos</h3>
+        <div class="box exam-guide">
+          <h4>A. Dar acceso granular a varios usuarios</h4>
+          <p style="font-size: 0.95rem;"><strong>Patrón de Examen:</strong> Se te pide dar acceso a un subconjunto de filas/columnas a varios usuarios (ej. u1, u2, u3) de manera que sea fácilmente escalable para futuros usuarios.</p>
+          <ul style="font-size: 0.9rem;">
+            <li><strong>Regla 1:</strong> NUNCA concedas privilegios directamente sobre la tabla base si hay condiciones de filas/columnas.</li>
+            <li><strong>Paso 1 (Crear Vista):</strong> Encapsula la consulta con un <code>CREATE VIEW</code> usando la condición exigida (ej. <code>WHERE deptno = 10</code>). Añade siempre la cláusula <code>WITH CASCADED CHECK OPTION</code> para evitar tuplas migratorias (que no inserten datos de otros departamentos).</li>
+            <li><strong>Paso 2 (Crear Rol):</strong> Para hacer el sistema escalable, crea un rol intermedio (<code>CREATE ROLE rol_dept10</code>).</li>
+            <li><strong>Paso 3 (Concesión):</strong> Otorga los privilegios (SELECT, INSERT, etc.) a la vista sobre el rol, y luego asigna el rol a los usuarios finales.</li>
+          </ul>
 
-  <h3 class="subtheme-title" id="st-6-3">3. Índices</h3>
-  <div class="grid-2">
-    <div class="box" style="border-top: 3px solid #06b6d4;">
-      <h4>Árbol B+ (Convencional)</h4>
-      <p>Ideal para <strong>alta selectividad/cardinalidad</strong> (ej: IDs en OLTP). Nodos hoja con pares (Clave, <strong>ROWID</strong>) hacia el heap. Las hojas están enlazadas. Aceleran <code>SELECT</code> pero penalizan <code>INSERT/UPDATE/DELETE</code>.</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #06b6d4;">
-      <h4>Índice Bitmap</h4>
-      <p>Ideal para <strong>baja cardinalidad</strong> (ej: género, estado) en Data Warehouses (OLAP). Usa matrices de bits. Resuelve combinaciones rápidas con <code>AND/OR</code>, pero sufre contención/bloqueos ante modificaciones concurrentes.</p>
-    </div>
-  </div>
+          <h4 style="margin-top: 25px;">B. Otras Trampas de Seguridad</h4>
+          <ul style="font-size: 0.9rem;">
+            <li><strong>Inferencia en Oracle (ORA-00942):</strong> Si consultas una tabla sin permisos, Oracle miente y dice "la tabla o vista no existe", ocultando el fallo de permisos real.</li>
+            <li><strong>REVOKE PUBLIC:</strong> Si te preguntan qué pasa si el administrador hace <code>REVOKE CONNECT FROM PUBLIC</code>, debes indicar que afectará a todos los usuarios, pero <strong>el efecto no es inmediato</strong> para los que ya tienen su sesión abierta; se aplicará cuando intenten reconectarse.</li>
+            <li><strong>El usuario Administrador:</strong> Un usuario normal NO puede revocar permisos a un DBA a menos que haya sido el propio usuario común quien le otorgó ese permiso previamente con <code>WITH GRANT OPTION</code>.</li>
+          </ul>
+        </div>
+      </section>
 
-  <div class="alert" style="background-color: rgba(255,255,255,0.05); border-left: 4px solid #ef4444; padding: 12px; margin-top: 15px; margin-bottom: 15px;">
-    <strong>¡TRUCO DE EXAMEN - La Trampa de los Nulos!</strong><br>
-    Oracle <strong>NO</strong> indexa valores nulos en un árbol B+ convencional. Si en un ejercicio hay un <code>SELECT DISTINCT</code>, o se buscan nulos (<code>IS NULL</code>) sin filtros adicionales restrictivos, <strong>el motor ignora el índice por completo</strong> y ejecuta un <em>Table Access Full</em>, incluso si se fuerza con un <em>Hint</em>.<br>
-    <em>Excepción clave:</em> Con funciones de agrupamiento como <code>MAX</code> o <code>AVG</code>, Oracle <strong>SÍ</strong> usa el índice leyendo directamente los valores válidos de los extremos.
-  </div>
+      <section class="theme-section">
+        <h2 class="theme-title" id="t-05" style="border-bottom-color: var(--c-5); color: var(--c-5);">⚡ 5. Reglas Activas y Triggers</h2>
+        
+        <h3 class="subtheme-title" id="st-5-1">1. BD Pasivas vs Activas</h3>
+        <p style="font-size: 0.95rem;">Las pasivas requieren gestión explícita. Las activas reaccionan automáticamente a eventos (DML) usando <strong>Triggers</strong> para controlar restricciones de negocio complejas o realizar auditorías en la sombra.</p>
+        
+        <div class="box" style="margin-bottom: 30px; text-align: center;">
+          <h4 style="color: #fcd34d;">La Arquitectura ECA</h4>
+          <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+            <span class="tag" style="background: rgba(245, 158, 11, 0.2); color: #fde68a; font-size: 0.9rem; padding: 8px 15px;">E - Evento (INSERT/UPDATE)</span>
+            <span class="tag" style="background: rgba(245, 158, 11, 0.2); color: #fde68a; font-size: 0.9rem; padding: 8px 15px;">C - Condición (WHEN)</span>
+            <span class="tag" style="background: rgba(245, 158, 11, 0.2); color: #fde68a; font-size: 0.9rem; padding: 8px 15px;">A - Acción (PL/SQL)</span>
+          </div>
+        </div>
 
-      <div class="box" style="border-top: 3px solid #06b6d4; padding: 1rem; background-color: rgba(255,255,255,0.05); margin-bottom: 1rem;">
-      <h4>Índices Avanzados y Particionado</h4>
-      <p><strong>De clave inversa (Reverse Key):</strong> Invierte los bytes (ej. 1234 -> 4321). Ideal para columnas secuenciales (<code>SEQUENCE</code>) para evitar contención en el mismo nodo hoja. No soporta rangos.</p>
-      <p><strong>Basados en Funciones:</strong> Indexan el resultado de una expresión (ej. <code>UPPER(nombre)</code>).</p>
-      <p><strong>Particionado de Índices (con particionado de tabla):</strong></p>
-      <ul>
-        <li><strong>Local:</strong> El índice se fragmenta idéntico a la tabla (cada partición de índice apunta a su partición de datos). Fácil mantenimiento.</li>
-        <li><strong>Global:</strong> El índice sigue su propia regla, apuntando a múltiples particiones de tabla.</li>
-      </ul>
-    </div>
-  <h3 class="subtheme-title" id="st-6-4">4. Particionado</h3>
-  <div class="grid-2">
-    <div class="box" style="border-top: 3px solid #06b6d4;">
-      <h4>Concepto</h4>
-      <p>Fragmentación horizontal de tablas o índices masivos (>1GB) en segmentos independientes (particiones). Criterios comunes: <strong>Rangos</strong> (fechas), <strong>Listas</strong> (valores discretos), <strong>Hash</strong> (alta cardinalidad), o Híbrido.</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #06b6d4;">
-      <h4>Ventajas (Partition Pruning)</h4>
-      <p>El CBO <strong>descarta particiones enteras</strong> durante las consultas (ahorro gigante de I/O). Mejora los borrados/cargas masivas de históricos sin bloquear y aumenta la disponibilidad aislando errores físicos.</p>
-    </div>
-  </div>
-</section>
+        <h3 class="subtheme-title" id="st-5-2">2. Granularidad y Variables de Transición</h3>
+        <div class="grid-2">
+          <div class="box" style="border-top: 3px solid var(--c-5);">
+            <h4 style="color: #fcd34d;">Tiempos y Tipos</h4>
+            <ul style="font-size: 0.9rem; margin-bottom: 0;">
+              <li><strong>Tiempos:</strong> <code>BEFORE</code>, <code>AFTER</code>, <code>INSTEAD OF</code> (solo vistas).</li>
+              <li><strong>Granularidad:</strong> <code>FOR EACH ROW</code> (por fila) o <code>STATEMENT</code> (por sentencia, defecto).</li>
+              <li>Diferenciador DML: <code>INSERTING</code>, <code>UPDATING</code>, <code>DELETING</code>.</li>
+            </ul>
+          </div>
+          <div class="box" style="border-top: 3px solid var(--c-5);">
+            <h4 style="color: #fcd34d;">Variables <code>:OLD</code> y <code>:NEW</code></h4>
+            <p style="font-size: 0.9rem;">Exclusivas de <code>FOR EACH ROW</code>. <br>⚠️ <em>Clave de Examen:</em> <code>:OLD</code> <strong>nunca</strong> es modificable; <code>:NEW</code> <strong>sólo</strong> puede ser modificado en triggers <code>BEFORE</code>.</p>
+          </div>
+        </div>
 
-<section class="theme-section">
-  <h2 class="theme-title" id="t-07" style="border-bottom-color: #ec4899; color: #ec4899;">7. Optimización de Consultas</h2>
+        <h3 class="subtheme-title" id="st-5-3">3. Errores Típicos y Soluciones Modernas</h3>
+        <div class="grid-2">
+          <div class="alert" style="margin:0; border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);">
+            <strong style="color: #fca5a5;">Tabla Mutante (ORA-04091)</strong>
+            <p style="font-size: 0.85rem; margin-top: 5px; margin-bottom:0;">Ocurre cuando un trigger a nivel de fila intenta leer/modificar (SELECT/UPDATE) la <strong>misma tabla</strong> que lo está disparando.</p>
+          </div>
+          <div class="alert" style="margin:0; border-left-color: #10b981; background: rgba(16, 185, 129, 0.1);">
+            <strong style="color: #6ee7b7;">Solución: Triggers Compuestos 🚨</strong>
+            <p style="font-size: 0.85rem; margin-top: 5px; margin-bottom:0;">(Oracle 11g+). Permiten agrupar tiempos STATEMENT y ROW en un solo bloque con estado de memoria compartido, esquivando la tabla mutante elegantemente.</p>
+          </div>
+        </div>
+        <p style="font-size: 0.9rem; margin-top: 15px;">* Nota: Los triggers <strong>INSTEAD OF</strong> son la única forma de hacer actualizables las vistas complejas (con JOINs o GROUP BY).</p>
+      </section>
 
-  <h3 class="subtheme-title" id="st-7-1">1. Fases de Ejecución</h3>
-  <div class="grid-3">
-    <div class="box" style="border-top: 3px solid #ec4899;">
-      <h4>1. Análisis y Transformación</h4>
-      <p>Paso de <span class="tag" style="background-color: rgba(255,255,255,0.05); color: #ec4899;">SQL</span> a una expresión en <strong>Álgebra Relacional Extendida</strong> (Árbol o Grafo).</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #ec4899;">
-      <h4>2. Optimización Algebraica</h4>
-      <p>Basada en <strong>heurísticas</strong> y equivalencias algebraicas para obtener una <em>Forma Canónica</em> óptima (reduce el tamaño de datos intermedios).</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #ec4899;">
-      <h4>3. Optimización por Costes</h4>
-      <p>El CBO usa <strong>estadísticas del Catálogo</strong> para calcular costes físicos (E/S, RAM) y seleccionar el <em>Plan de Ejecución</em> más eficiente.</p>
-    </div>
-  </div>
-  
-  <div class="grid-2">
-    <div class="box alert" style="border-left: 4px solid #ec4899; grid-column: 1 / -1;">
-      <h4>Reglas de Equivalencia del Álgebra Relacional (Optimización Heurística)</h4>
-      <p>Para lograr la forma canónica de una consulta minimizando el tamaño de las relaciones intermedias:</p>
-      <ol style="columns: 2; column-gap: 40px; margin-top: 10px;">
-        <li><strong>Cascada selecciones:</strong> &sigma;<sub>&theta;1 &wedge; &theta;2</sub>(R) = &sigma;<sub>&theta;1</sub>(&sigma;<sub>&theta;2</sub>(R))</li>
-        <li><strong>Conmutatividad sel.:</strong> &sigma;<sub>&theta;1</sub>(&sigma;<sub>&theta;2</sub>(R)) = &sigma;<sub>&theta;2</sub>(&sigma;<sub>&theta;1</sub>(R))</li>
-        <li><strong>Cascada proyecciones:</strong> &Pi;<sub>C1</sub>(&Pi;<sub>C2</sub>(R)) = &Pi;<sub>C1</sub>(R)</li>
-        <li><strong>Conmutatividad sel/proy:</strong> &sigma;<sub>&theta;</sub>(&Pi;<sub>C</sub>(R)) = &Pi;<sub>C</sub>(&sigma;<sub>&theta;</sub>(R))</li>
-        <li><strong>Cartesiano+sel = &theta;-join:</strong> &sigma;<sub>&theta;</sub>(R &times; S) = R &#x2A1D;<sub>&theta;</sub> S</li>
-        <li><strong>Conmutatividad joins:</strong> R &#x2A1D;<sub>&theta;</sub> S = S &#x2A1D;<sub>&theta;</sub> R</li>
-        <li><strong>Asociatividad joins:</strong> (R &#x2A1D; S) &#x2A1D; T = R &#x2A1D; (S &#x2A1D; T)</li>
-        <li><strong>Distribución sel/join:</strong> &sigma;<sub>&theta;1&wedge;&theta;2</sub>(R&times;S) = &sigma;<sub>&theta;1</sub>(R) &times; &sigma;<sub>&theta;2</sub>(S)</li>
-        <li><strong>Distribución proy/join:</strong> &Pi;<sub>C1&cup;C2</sub>(R&#x2A1D;S) = &Pi;<sub>C1</sub>(R) &#x2A1D; &Pi;<sub>C2</sub>(S)</li>
-        <li><strong>Conmutatividad conj.:</strong> Aplica a Uni&oacute;n (&cup;) e Intersec (&cap;)</li>
-        <li><strong>Asociatividad conj.:</strong> Aplica a Uni&oacute;n (&cup;) e Intersec (&cap;)</li>
-        <li><strong>Distrib. sel/conjuntos:</strong> &sigma;<sub>&theta;</sub>(R &cup; S) = &sigma;<sub>&theta;</sub>(R) &cup; &sigma;<sub>&theta;</sub>(S)</li>
-      </ol>
-    </div>
-    <div class="box alert" style="border-left: 4px solid #ec4899; grid-column: 1 / -1;">
-      <h4>Procedimientos de Acceso de Bajo Nivel (Lectura de Planes)</h4>
-      <ul>
-        <li><strong>TABLE ACCESS FULL / Seq Scan:</strong> Exploración secuencial de toda la tabla. Preferido en baja selectividad (consultas que devuelven gran parte de la tabla) o si no hay índices.</li>
-        <li><strong>INDEX UNIQUE SCAN:</strong> Búsqueda de igualdad en clave primaria/única (devuelve 1 fila).</li>
-        <li><strong>INDEX RANGE SCAN:</strong> Búsqueda por rangos o desigualdades.</li>
-        <li><strong>INDEX FAST FULL SCAN:</strong> Lee todo el índice sin mantener el orden, útil para evitar tocar la tabla si todos los atributos están en el índice.</li>
-        <li><strong>INDEX SKIP SCAN:</strong> Se usa en índices compuestos cuando la consulta filtra por columnas secundarias del índice sin proporcionar la primera.</li>
-      </ul>
-    </div>
-  </div>
+      <section class="theme-section">
+        <h2 class="theme-title" id="t-06" style="border-bottom-color: var(--c-6); color: var(--c-6);">💾 6. Diseño Físico</h2>
+        
+        <h3 class="subtheme-title" id="st-6-1">1. Organización Física (La Independencia Física)</h3>
+        <p style="font-size: 0.95rem;">El usuario consulta el nivel lógico (tablas) sin preocuparse del físico (ficheros). <br><em>Jerarquía:</em> Tablespace &rarr; Datafiles &rarr; Segmentos &rarr; Extensiones &rarr; <strong>Bloques (unidad mínima I/O, ej: 8KB)</strong>.</p>
+        
+        <div class="grid-3">
+          <div class="box text-center" style="text-align: center; border-top: 3px solid var(--c-6);">
+            <div style="font-size: 2rem; margin-bottom: 5px;">🥞</div>
+            <h4 style="color: #67e8f9;">Heap (Apilada)</h4>
+            <p style="font-size: 0.85rem;">Por defecto. Inserción rápida (donde haya hueco), pero exige Full Table Scan sin índices.</p>
+          </div>
+          <div class="box text-center" style="text-align: center; border-top: 3px solid var(--c-6);">
+            <div style="font-size: 2rem; margin-bottom: 5px;">🌲</div>
+            <h4 style="color: #67e8f9;">IOT</h4>
+            <p style="font-size: 0.85rem;">La tabla ES el índice (B+). Datos ordenados por PK. Lectura brutal por PK, escritura lenta.</p>
+          </div>
+          <div class="box text-center" style="text-align: center; border-top: 3px solid var(--c-6);">
+            <div style="font-size: 2rem; margin-bottom: 5px;">🔗</div>
+            <h4 style="color: #67e8f9;">Cluster</h4>
+            <p style="font-size: 0.85rem;">Mezcla filas de <strong>distintas tablas</strong> en el mismo bloque si comparten clave (B+ tree o Hash). JOINs instantáneos.</p>
+          </div>
+        </div>
 
-  <div class="alert" style="background-color: rgba(255,255,255,0.05); border-left: 4px solid #ec4899; padding: 1rem; margin: 1rem 0;">
-    <strong>¡Típico de Examen! Evolución de la Optimización Heurística (4 Pasos)</strong>
-    <ol>
-      <li><strong>Descomposición de la Selección Masiva:</strong> Dividir las condiciones complejas (AND) en selecciones en cascada.</li>
-      <li><strong>Bajada de Selecciones Monódicas (Push-down):</strong> Mover las selecciones (σ) lo más cerca posible de sus tablas base (hojas) para reducir el número de filas rápidamente.</li>
-      <li><strong>Transformación en Juntas Internas (Joins):</strong> Combinar Productos Cartesianos (✕) y Selecciones (σ) superiores en Equi-Joins (⋈) o Theta-Joins.</li>
-      <li><strong>Proyecciones Tempranas:</strong> Insertar proyecciones (π) cerca de las hojas para descartar tempranamente todas las columnas innecesarias.</li>
-    </ol>
-  </div>
+        <h3 class="subtheme-title" id="st-6-2">2. Índices Core</h3>
+        <div class="grid-2">
+          <div class="box" style="background: rgba(6, 182, 212, 0.05); border-left: 3px solid var(--c-6);">
+            <h4 style="color: #67e8f9;">Árbol B+ y Complejidad</h4>
+            <p style="font-size: 0.85rem;">Para <strong>alta cardinalidad</strong> (ej. DNI). Nodos hoja con pares Clave-ROWID enlazados. Asegura búsquedas logarítmicas <strong>O(log n)</strong>. Penaliza escrituras DML.</p>
+          </div>
+          <div class="box" style="background: rgba(6, 182, 212, 0.05); border-left: 3px solid var(--c-6);">
+            <h4 style="color: #67e8f9;">Bitmap (Mapa de Bits)</h4>
+            <p style="font-size: 0.85rem;">Para <strong>baja cardinalidad</strong> (ej. Sexo) en Data Warehouses. Muy rápidos para cruces AND/OR, pero sufren bloqueos masivos ante modificaciones concurrentes.</p>
+          </div>
+        </div>
+        
+        <h3 class="subtheme-title" id="st-6-3">3. Índices Avanzados y Particionado</h3>
+        <div class="box" style="border-top: 3px solid var(--c-6);">
+          <ul style="font-size: 0.9rem;">
+            <li><strong style="color: #67e8f9;">Índices de Clave Inversa (Reverse Key):</strong> Invierten los bytes (ej. 1234 &rarr; 4321). Obligatorios para columnas alimentadas por <code>SEQUENCE</code> para evitar la contención (cuello de botella) en el mismo nodo hoja. <em>No soportan búsquedas por rangos</em>.</li>
+            <li><strong style="color: #67e8f9;">Basados en Funciones:</strong> Indexan el resultado precalculado de una expresión, como <code>UPPER(nombre)</code>.</li>
+            <li><strong style="color: #67e8f9;">Particionado de Índices:</strong> Al fragmentar una tabla masiva (>1GB) por rangos, listas o hash, el índice puede ser <strong>Local</strong> (se divide igual que la tabla) o <strong>Global</strong> (sigue su propia regla). Mayor ventaja: <strong>Partition Pruning</strong>.</li>
+          </ul>
+        </div>
 
-  <h3 class="subtheme-title" id="st-7-2">2. Optimización Basada en Costes (CBO)</h3>
-  <div class="grid-2">
-    <div class="box" style="border-top: 3px solid #ec4899;">
-      <h4>Cálculo y Catálogo</h4>
-      <p>Normalmente el coste predominante es el <strong>Acceso a Disco</strong>. Se evalúan mediante las estadísticas del catálogo: 
-      <code>n_R</code> (nº de filas), <code>b_R</code> (bloques), <code>h_idx</code> (altura del índice), <code>V(A, R)</code> (cardinalidad).</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #ec4899;">
-      <h4>Oracle Optimizer Mode</h4>
-      <p>El modo CBO puede priorizar el final con <span class="tag" style="background-color: rgba(255,255,255,0.05); color: #ec4899;">ALL_ROWS</span> o la latencia inicial con <span class="tag" style="background-color: rgba(255,255,255,0.05); color: #ec4899;">FIRST_ROWS_n</span>. ¡Vital actualizar estadísticas con <code>DBMS_STATS.GATHER_TABLE_STATS</code> para evitar planes ineficientes!</p>
-    </div>
-  </div>
+        <h3 class="subtheme-title exam-title" id="st-6-exam">🎓 Guía de Resolución: Índices y Nulos</h3>
+        <div class="box exam-guide">
+          <h4>La Trampa Principal del Examen</h4>
+          <p style="font-size: 0.95rem;"><strong>Patrón de Examen:</strong> Te dan un índice (ej. sobre la columna <code>COMM</code>) y un Hint en la consulta (ej. <code>/*+ INDEX(EMP I_EMP_COMM) */</code>). Te preguntan si Oracle usará el índice. </p>
+          <ul style="font-size: 0.9rem;">
+            <li><strong>Regla de Oro:</strong> Los árboles B+ convencionales en Oracle <strong>NO indexan valores totalmente nulos</strong>.</li>
+            <li><strong>Escenario 1 (SELECT Genérico / DISTINCT):</strong> Si haces un <code>SELECT COMM</code> o un <code>SELECT DISTINCT(COMM)</code>, Oracle <strong>NO USARÁ EL ÍNDICE</strong> e ignorará el hint. Al no indexar los nulos, si usa el índice estaría dando un resultado incompleto. Hará un <code>TABLE ACCESS FULL</code>.</li>
+            <li><strong>Escenario 2 (Funciones de Agregación):</strong> Si haces funciones matemáticas extremas como <code>SELECT MAX(COMM)</code>, <code>AVG(COMM)</code> o <code>SUM(COMM)</code>, Oracle <strong>SÍ USARÁ EL ÍNDICE</strong>. Estas funciones excluyen los nulos de forma natural, por lo que el índice B+ tiene toda la información útil necesaria para resolverlo (usualmente con <code>INDEX FULL SCAN</code> o <code>INDEX RANGE SCAN</code>).</li>
+          </ul>
+        </div>
+      </section>
 
-  <h3 class="subtheme-title" id="st-7-3">3. Algoritmos de Joins (Implementaciones Físicas)</h3>
-  <div class="grid-3">
-    <div class="box" style="border-top: 3px solid #ec4899;">
-      <h4>Nested Loop Join</h4>
-      <p><strong>(Bucles Anidados)</strong> Itera filas de tabla externa contra la interna. Excelente si la tabla interna cabe en memoria o si posee un <strong>índice</strong> en el campo de cruce. Útil para cualquier tipo de condición.</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #ec4899;">
-      <h4>Sort-Merge Join</h4>
-      <p><strong>(Ordenación-Mezcla)</strong> Requiere ordenar previamente ambas tablas. Luego realiza una mezcla lineal de las filas. Es válido <strong>solo para equi-joins</strong>. El rol de tabla externa/interna no importa.</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #ec4899;">
-      <h4>Hash Join</h4>
-      <p>Aplica un Hash sobre la tabla más pequeña <em>(Build table)</em> en memoria, luego escanea la otra <em>(Probe table)</em> para buscar coincidencias. Ideal <strong>cuando no existen índices</strong>. Válido solo para <em>equi-joins</em>.</p>
-    </div>
-  </div>
-</section>
+      <section class="theme-section">
+        <h2 class="theme-title" id="t-07" style="border-bottom-color: var(--c-7); color: var(--c-7);">⚙️ 7. Optimización de Consultas</h2>
 
-<section class="theme-section">
-  <h2 class="theme-title" id="t-08" style="border-bottom-color: #14b8a6; color: #14b8a6;">8. Recuperación ante Fallos</h2>
-  
-  <h3 class="subtheme-title" id="st-8-1">1. Conceptos Clave</h3>
-  <div class="grid-2">
-    <div class="box" style="border-top: 3px solid #14b8a6;">
-      <h4>Recuperación y Redundancia</h4>
-      <p>Proceso para devolver la base de datos a un <strong>estado consistente</strong> tras un fallo, basado íntegramente en la <span class="tag">redundancia</span> (copiar o reconstruir datos perdidos).</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #14b8a6;">
-      <h4>Garantía ACID</h4>
-      <p>Asegura la <strong>Atomicidad</strong> y <strong>Durabilidad</strong>: las transacciones confirmadas (<code>COMMIT</code>) sobreviven, y las abortadas (<code>ROLLBACK</code>) se deshacen (con UNDO) para devolver el disco a su estado original, ya que sí pudieron dejar rastro físico si el SGBD aplicó la política "Robar" (Steal).</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #14b8a6;">
-            <p><strong>Estados de Transacción:</strong> Activa &rarr; Parcialmente Confirmada &rarr; Confirmada. (Si hay error pasa a Fracasada &rarr; Abortada).</p>
-      <h4>Idempotencia de UNDO / REDO</h4>
-      <p>Aplicar las acciones de recuperación repetidas veces produce el mismo resultado. <span class="clave-examen" style="color: #b91c1c; font-weight: bold;">★ Clave de examen:</span> Es una propiedad vital para sobrevivir y no duplicar datos si ocurre una segunda caída eléctrica durante el propio proceso de recuperación.</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #14b8a6;">
-      <h4>Protocolo WAL (Write Ahead Logging)</h4>
-      <p>Exige volcar los buffers de log al disco <strong>antes</strong> que los bloques de datos. <span class="clave-examen" style="color: #b91c1c; font-weight: bold;">★ Clave de examen:</span> Si no se hace así y ocurre un fallo de energía, la BD se corrompería al haber datos alterados sin rastro para deshacerlos (<code>UNDO</code>).</p>
-    </div>
-  </div>
+        <h3 class="subtheme-title" id="st-7-1">1. Fases de Ejecución</h3>
+        <div class="grid-3">
+          <div class="box" style="border-top: 3px solid var(--c-7);">
+            <h4 style="color: #f9a8d4;">1. Transformación</h4>
+            <p style="font-size: 0.85rem;">Paso de SQL a un Árbol o Grafo de <strong>Álgebra Relacional Extendida</strong>.</p>
+          </div>
+          <div class="box" style="border-top: 3px solid var(--c-7);">
+            <h4 style="color: #f9a8d4;">2. Opt. Heurística</h4>
+            <p style="font-size: 0.85rem;">Aplicación de equivalencias algebraicas para reducir el tamaño de datos intermedios (Forma Canónica).</p>
+          </div>
+          <div class="box" style="border-top: 3px solid var(--c-7);">
+            <h4 style="color: #f9a8d4;">3. Opt. Costes (CBO)</h4>
+            <p style="font-size: 0.85rem;">Usa el catálogo (bloques, histogramas) para estimar I/O y elegir el plan físico óptimo.</p>
+          </div>
+        </div>
 
-  <h3 class="subtheme-title" id="st-8-2">2. Técnicas de Actualización (Logs)</h3>
-  <div class="grid-2">
-    <div class="box" style="border-top: 3px solid #f59e0b; grid-column: 1 / -1;">
-      <h4>Dinámica estricta de UNDO / REDO</h4>
-      <p>Las funciones de recuperación son <strong>idempotentes</strong>: aplicar <code>redo(redo(Ti))</code> tiene el mismo efecto que <code>redo(Ti)</code>, lo que permite retomar la recuperación si el sistema cae durante la misma. El comportamiento varía según la estrategia de actualización:</p>
-      <ul>
-        <li><strong>Actualizaciones Inmediatas:</strong> Al permitirse volcar a disco (robar búferes) antes del <em>commit</em>, las transacciones no confirmadas requieren <code>undo(Ti)</code> en orden inverso. Las confirmadas requieren <code>redo(Ti)</code> en orden directo, ya que no se garantiza que el búfer final haya llegado a disco (política no forzar). El log almacena <code>&lt;Ti, Dato, valor_anterior, valor_nuevo&gt;</code>.</li>
-        <li><strong>Actualizaciones Diferidas:</strong> Las modificaciones en búfer de datos ocurren solo en el <em>commit</em>. Las transacciones no confirmadas se ignoran (no hay <code>undo</code>). Solo requieren <code>redo(Ti)</code> las confirmadas. El log solo necesita <code>&lt;Ti, Dato, valor_nuevo&gt;</code>.</li>
-      </ul>
-      <p style="margin-top: 10px;"><strong>Tras un Checkpoint:</strong> En un fallo sin pérdida física de disco, se ignoran las transacciones terminadas <em>antes</em> del checkpoint. Se aplica <code>UNDO</code> (si aplica) a las transacciones que estaban activas o iniciaron tras el checkpoint y no confirmaron. Se aplica <code>REDO</code> a las confirmadas tras el checkpoint.</p>
-    </div>
-  </div>
+        <h3 class="subtheme-title" id="st-7-2">2. Procedimientos Físicos (Acceso y Joins)</h3>
+        <div class="grid-2">
+          <div class="box" style="background: rgba(236, 72, 153, 0.05);">
+            <h4 style="color: #f9a8d4;">Acceso de Bajo Nivel (CBO)</h4>
+            <ul style="font-size: 0.85rem; margin-bottom: 0;">
+              <li><strong>TABLE ACCESS FULL:</strong> Escaneo completo. Usado sin índices o con baja selectividad.</li>
+              <li><strong>INDEX UNIQUE SCAN:</strong> Devuelve exactamente 1 fila (por PK/Unique).</li>
+              <li><strong>INDEX RANGE SCAN:</strong> Búsqueda de rangos (&gt;, &lt;) o desigualdades.</li>
+              <li><strong>INDEX FAST FULL SCAN:</strong> Lee todo el índice ignorando orden (evita la tabla base).</li>
+              <li><strong>INDEX SKIP SCAN:</strong> Filtra por columnas secundarias de un índice compuesto saltándose la primera.</li>
+            </ul>
+          </div>
+          <div class="box" style="background: rgba(236, 72, 153, 0.05);">
+            <h4 style="color: #f9a8d4;">Algoritmos de Joins Físicos</h4>
+            <ul style="font-size: 0.85rem; margin-bottom: 0;">
+              <li><strong>Nested Loop:</strong> Itera externa contra interna. Excelente si la interna tiene índice. Vale para cualquier condición.</li>
+              <li><strong>Sort-Merge:</strong> Ordena ambas y mezcla linealmente. Solo para <strong>equi-joins</strong>. El rol externa/interna da igual.</li>
+              <li><strong>Hash Join:</strong> Aplica hash a la tabla pequeña en RAM, y escanea la grande. Ideal <strong>sin índices</strong> (solo equi-joins).</li>
+            </ul>
+          </div>
+        </div>
 
-      <div class="box" style="border-top: 3px solid #14b8a6; padding: 1rem; background-color: rgba(255,255,255,0.05); margin-bottom: 1rem;">
-      <h4>Gestión de Buffers y Tipos de Log</h4>
-      <p>La política de volcado de buffers al disco que dicta mayor eficiencia es <strong>Roubar (Steal) / Non forzar (No-force)</strong>: permite volcar datos no confirmados al disco (steal) y no obliga a volcar masivamente en un COMMIT (no-force), confiando en WAL.</p>
-      <p>Tipos de Log:</p>
-      <ul>
-        <li><strong>Logs Online:</strong> Ficheros en disco usados de forma circular.</li>
-        <li><strong>Logs Offline (Archivados):</strong> Copia permanente generada al llenarse un log online, vitales para ventanas de recuperación ante pérdidas físicas. Al restaurar un backup físico (Completo + Incrementales), se aplican los logs archivados y online para avanzar la base de datos hasta el momento del desastre.</li>
-      </ul>
-    </div>
-  <h3 class="subtheme-title" id="st-8-3">3. Puntos de Control y Copias de Seguridad</h3>
-  <div class="grid-2">
-    <div class="box" style="border-top: 3px solid #3b82f6;">
-      <h4>La Barrera del CHECKPOINT</h4>
-      <p>Fuerza el volcado de todos los buffers a disco, acotando el tiempo de barrido de los logs (RTO). <span class="clave-examen" style="color: #b91c1c; font-weight: bold;">★ Truco Examen:</span> Ignora y tacha del ejercicio por completo las transacciones que hayan hecho <code>COMMIT</code> <strong>antes</strong> del registro de checkpoint, ya que sus bloques ya residen de forma segura en disco.</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #3b82f6;">
-      <h4>Backups Lógicos vs Físicos</h4>
-      <p><span class="clave-examen" style="color: #b91c1c; font-weight: bold;">★ Pregunta de examen:</span> Los Backups Lógicos (exportación SQL) no sirven contra una pérdida física de discos porque son texto plano que destruye el mapeo posicional de bloques binarios, impidiendo aplicar la secuencia de archivos de <code>Archive Logs</code> para una recuperación exacta.</p>
-    </div>
-  </div>
-</section>
+        <h3 class="subtheme-title exam-title" id="st-7-exam">🎓 Guía de Resolución: Álgebra Relacional y Planes</h3>
+        <div class="box exam-guide">
+          <h4>A. Álgebra Relacional (Árbol Canónico a Optimizado)</h4>
+          <p style="font-size: 0.95rem;"><strong>Patrón de Examen:</strong> Traducir SQL a un árbol en bruto y luego optimizarlo en varios pasos. </p>
+          <ol style="font-size: 0.9rem;">
+            <li><strong>Árbol Básico:</strong> Pon los productos cartesianos ($\times$) en la base con las tablas. Encima, un macro-filtro ($\sigma$) con todas las condiciones del <code>WHERE</code>. Arriba, la proyección ($\pi$) de las columnas del <code>SELECT</code> (y si hay <code>GROUP BY</code>, el nodo de agregación $\gamma$).</li>
+            <li><strong>Descenso de Selecciones (Push-down):</strong> Fragmenta el <code>WHERE</code> y baja todos los filtros propios de una tabla ($\sigma$) para que se apliquen justo antes de cruzarla con otras.</li>
+            <li><strong>Conversión a Join:</strong> Si hay un producto cartesiano ($\times$) seguido inmediatamente de un filtro de igualdad ($\sigma_{PK = FK}$), fusiónalos para formar un Join ($\bowtie$).</li>
+            <li><strong>Descenso de Proyecciones:</strong> Inserta proyecciones ($\pi$) intermedias justo por encima de las tablas base y después de cada join para eliminar columnas que no se usarán más arriba (ahorrando drásticamente memoria RAM).</li>
+          </ol>
 
-<section class="theme-section">
-  <h2 class="theme-title" id="t-09" style="border-bottom-color: #f97316; color: #f97316;">9. Concurrencia y Transacciones</h2>
+          <h4 style="margin-top: 25px;">B. Interpretación de EXPLAIN PLAN</h4>
+          <p style="font-size: 0.95rem;"><strong>Patrón de Examen:</strong> Se da una traza textual y piden la cronología física y la query original.</p>
+          <ul style="font-size: 0.9rem;">
+            <li><strong>Orden Cronológico:</strong> La regla de precedencia es de derecha a izquierda (indentación) y de arriba hacia abajo. Las líneas <strong>más tabuladas hacia la derecha</strong> son los accesos físicos a disco (ej. <code>TABLE ACCESS FULL</code>) y se ejecutan primero.</li>
+            <li><strong>El chivato FILTER:</strong> Si observas una operación <code>FILTER</code> posicionada justo tras un <code>HASH GROUP BY</code>, debes indicar sin dudarlo que la consulta original tenía una cláusula <code>HAVING</code>.</li>
+          </ul>
+        </div>
+      </section>
 
-  <h3 class="subtheme-title" id="st-9-1">1. Problemas de Concurrencia</h3>
-  <div class="grid-2">
-    <div class="box" style="border-top: 3px solid #ea580c;">
-      <h4>Actualización Perdida</h4>
-      <p>Ocurre cuando dos transacciones leen el mismo dato y luego lo actualizan, perdiéndose la actualización de la primera en confirmarse.</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #ea580c;">
-      <h4>Lectura Sucia</h4>
-      <p>Una transacción lee un dato que ha sido modificado por otra transacción que aún <strong>no ha hecho commit</strong> (dependencia no confirmada).</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #ea580c;">
-      <h4>Análisis Incoherente / Lectura no repetible</h4>
-      <p>Una misma transacción lee el mismo dato dos veces, pero obtiene <strong>valores diferentes</strong> porque otra transacción lo modificó e hizo commit en medio.</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #ea580c;">
-      <h4>Filas Fantasmas (Phantom Reads)</h4>
-      <p>Al hacer un <code>SELECT</code> dos veces en una transacción, aparecen (o desaparecen) <strong>nuevas filas</strong> introducidas por un <code>INSERT/DELETE</code> de otra transacción confirmada.</p>
-    </div>
-  </div>
+      <section class="theme-section">
+        <h2 class="theme-title" id="t-08" style="border-bottom-color: var(--c-8); color: var(--c-8);">🚑 8. Recuperación ante Fallos</h2>
+        
+        <h3 class="subtheme-title" id="st-8-1">1. Conceptos Clave y Garantías</h3>
+        <div class="grid-2">
+          <div class="box" style="border-top: 3px solid var(--c-8);">
+            <h4 style="color: #5eead4;">Garantía ACID</h4>
+            <p style="font-size: 0.9rem;">Atomicidad y Durabilidad: Los <code>COMMIT</code> sobreviven, los abortos (<code>ROLLBACK</code>) deshacen lo escrito en disco mediante operaciones <code>UNDO</code>.</p>
+          </div>
+          <div class="box" style="border-top: 3px solid var(--c-8);">
+            <h4 style="color: #5eead4;">Idempotencia</h4>
+            <p style="font-size: 0.9rem;">Aplicar <code>redo(redo(Ti))</code> da el mismo resultado que <code>redo(Ti)</code>. Vital por si ocurre una segunda caída eléctrica durante la propia recuperación.</p>
+          </div>
+        </div>
 
-  <h3 class="subtheme-title" id="st-9-2">2. Seriabilidad</h3>
-  <div class="alert" style="background-color: rgba(255,255,255,0.05); border-left: 4px solid #f97316; padding: 10px; margin-bottom: 15px;">
-    <strong>Objetivo:</strong> Un plan no serie es correcto si es <strong>serializable</strong> (equivalente a algún plan en serie).
-  </div>
-  <div class="grid-2">
-    <div class="box" style="border-top: 3px solid #f97316;">
-      <h4>Seriabilidad por Conflictos</h4>
-      <p>Dos acciones entran en conflicto si son de transacciones distintas, sobre el mismo dato, y al menos una es de escritura (<strong>W</strong>).</p>
-      <p>Se evalúa mediante el <strong>Grafo de Precedencia</strong>: si hay un ciclo, el plan <em>no</em> es serializable por conflictos.</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #f97316;">
-      <h4>Seriabilidad por Vistas</h4>
-      <p>Condiciones de equivalencia más relajadas que permiten <strong>escrituras a ciegas</strong> (blind writes). Todo plan serializable por conflictos lo es por vistas, pero no a la inversa.</p>
-    </div>
-  </div>
+        <div class="alert" style="border-left-color: var(--c-8); background: rgba(20, 184, 166, 0.1);">
+          <strong style="color: #5eead4;">Protocolo WAL (Write Ahead Logging):</strong>
+          <p style="font-size: 0.9rem; margin-top: 5px; margin-bottom: 0;">Obliga a escribir los búferes de log en el disco físico <strong>antes</strong> que los búferes de datos. Sin esto, la base de datos se corrompería irrevocablemente ante cortes de luz.</p>
+        </div>
 
-  <h3 class="subtheme-title" id="st-9-3">3. Protocolos de Bloqueo</h3>
-  <div class="grid-3">
-    <div class="box" style="border-top: 3px solid #fb923c;">
-      <h4>Bloqueos Básicos</h4>
-      <p><span class="tag" style="background: rgba(255,255,255,0.05); ">S (Shared)</span> Para lectura. Compatible con otros S.</p>
-      <p><span class="tag" style="background: rgba(255,255,255,0.05); ">X (Exclusive)</span> Para escritura. Incompatible con S y X.</p>
-      <p>Los bloqueos pueden <strong>promocionar</strong> (S &rarr; X) o <strong>degradar</strong> (X &rarr; S).</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #fb923c;">
-      <h4>2PL (Two-Phase Locking)</h4>
-      <p>1. <strong>Crecimiento:</strong> Se adquieren o promocionan bloqueos.</p>
-      <p>2. <strong>Decrecimiento:</strong> Se liberan o degradan. Ya no se pueden adquirir más.</p>
-      <p><em>Garantiza seriabilidad por conflictos</em>, pero no evita interbloqueos ni anulación en cascada.</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #fb923c;">
-      <h4>2PL Estricto / Riguroso</h4>
-      <p><span class="tag" style="background: rgba(255,255,255,0.05); ">Estricto</span> No libera bloqueos <strong>X</strong> hasta hacer commit/rollback.</p>
-      <p><span class="tag" style="background: rgba(255,255,255,0.05); ">Riguroso</span> No libera <strong>ningún</strong> bloqueo (ni S ni X) hasta el commit/rollback.</p>
-      <p><em>Evitan la anulación en cascada y garantizan planificación recuperable.</em></p>
-    </div>
-  </div>
+        <h3 class="subtheme-title" id="st-8-2">2. Dinámica UNDO/REDO y Algoritmo ARIES</h3>
+        <div class="box" style="border-left: 3px solid var(--c-8); background: rgba(255,255,255,0.02); margin-bottom: 20px;">
+          <h4 style="color: #5eead4;">Algoritmo ARIES 🚨</h4>
+          <p style="font-size: 0.9rem;">Es el estándar de recuperación de la industria (basado en WAL y la política Steal/No-Force). Consta de 3 fases obligatorias:</p>
+          <ul style="font-size: 0.85rem; margin-bottom: 0;">
+            <li><strong>1. Análisis:</strong> Lee desde el último Checkpoint para saber qué transacciones estaban activas y qué bloques estaban sucios al caer el sistema.</li>
+            <li><strong>2. REDO (Repetir la historia):</strong> Aplica todos los cambios del log hacia adelante para dejar la memoria RAM tal cual estaba un milisegundo antes de caer.</li>
+            <li><strong>3. UNDO (Deshacer):</strong> Recorre el log hacia atrás revirtiendo las transacciones que no lograron hacer <code>COMMIT</code>.</li>
+          </ul>
+        </div>
 
-  <h3 class="subtheme-title" id="st-9-4">4. Interbloqueos (Deadlocks)</h3>
-  <div class="grid-2">
-    <div class="box" style="border-top: 3px solid #f97316; grid-column: 1 / -1;">
-      <h4>Técnicas de Prevención de Interbloqueos (Basadas en Marcas de Tiempo)</h4>
-      <p>Estas técnicas asignan una marca de tiempo <code>M(T_i)</code> al inicio de la transacción. Una marca menor indica que la transacción es más antigua. Cuando <code>T_i</code> intenta bloquear un dato retenido por <code>T_k</code>, se aplican dos enfoques pesimistas para evitar ciclos:</p>
-      <ul>
-        <li><strong>Esperar-Morrer (Wait-Die):</strong> Da preferencia a que las transacciones antiguas esperen. Si <code>M(T_i) &lt; M(T_k)</code> (la que solicita es más antigua), <code>T_i</code> <em>espera</em>. Si <code>M(T_i) &gt; M(T_k)</code> (es más joven), <code>T_i</code> <em>muere</em> (aborta y se reinicia manteniendo su marca de tiempo original).</li>
-        <li><strong>Ferir-Esperar (Wound-Wait):</strong> Da preferencia a que las transacciones antiguas expropien recursos. Si <code>M(T_i) &lt; M(T_k)</code> (la que solicita es antigua), <code>T_i</code> <em>hiere</em> a <code>T_k</code> (obliga a la joven a abortar y reiniciar). Si <code>M(T_i) &gt; M(T_k)</code> (es más joven), <code>T_i</code> <em>espera</em>.</li>
-      </ul>
-    </div>
-    <div class="box" style="border-top: 3px solid #f97316; grid-column: 1 / -1;">
-      <h4>Detección (Optimista - Usada en SXBD)</h4>
-      <p>Usa el <strong>Grafo de Espera</strong>. Un nodo por transacción en ejecución. Arista T1 &rarr; T2 si T1 espera un bloqueo de T2.</p>
-      <p><strong>Ciclo = Interbloqueo.</strong> Resolución: rollback de la transacción "víctima".</p>
-    </div>
-  </div>
+        <h3 class="subtheme-title" id="st-8-3">3. Transacciones Distribuidas</h3>
+        <div class="box" style="border-top: 3px solid var(--c-8);">
+          <h4 style="color: #5eead4;">Protocolo 2PC 🚨</h4>
+          <p style="font-size: 0.85rem;">El <strong>Two-Phase Commit Protocol</strong> asegura ACID en nodos distribuidos guiado por un Coordinador:<br>
+          <strong>Fase 1 (Prepare):</strong> Pregunta a todos los nodos si están listos para confirmar y asegurar en log.<br>
+          <strong>Fase 2 (Commit):</strong> Si TODOS dicen sí, manda el COMMIT global. Si uno solo falla, manda ROLLBACK global.</p>
+        </div>
 
-  <h3 class="subtheme-title" id="st-9-5">5. Marcas de Tiempo y Multiversión</h3>
-  <div class="grid-2">
-    <div class="box" style="border-top: 3px solid #ea580c;">
-      <h4>Marcas de Tiempo Básicas</h4>
-      <p>Dato A tiene <strong>ML(A)</strong> (lectura más reciente) y <strong>ME(A)</strong> (escritura más reciente).</p>
-      <p>Se aborta transacción si lee/escribe un dato ya operado por una transacción de inicio posterior.</p>
-      <p><strong>Regla de Thomas:</strong> Ignora escrituras obsoletas sin abortar si <code>M(T) &lt; ME(A)</code>. Pero cuidado: si hay lectura previa y <code>M(T) &lt; ML(A)</code>, la transacción <strong>sí aborta</strong>.</p>
-    </div>
-    <div class="box" style="border-top: 3px solid #ea580c;">
-      <h4>Multiversión (MVCC)</h4>
-      <p>Mantiene múltiples versiones de un dato A (A_1, A_2...).</p>
-      <p><strong>Lectura siempre exitosa:</strong> lee la versión con mayor ME &le; M(T).</p>
-      <p>Al escribir, crea una <strong>nueva versión</strong> del dato para no sobrescribir la lectura de transacciones anteriores.</p>
-    </div>
-  </div>
+        <h3 class="subtheme-title exam-title" id="st-8-exam">🎓 Guía de Resolución: Archivos de Log</h3>
+        <div class="box exam-guide">
+          <h4>Resolviendo Caídas del Sistema</h4>
+          <p style="font-size: 0.95rem;"><strong>Patrón de Examen:</strong> Te muestran una secuencia de registros (ej. <code>&lt;T1, A, 10, 23&gt;</code>, <code>&lt;T1, COMMIT&gt;</code>, <code>&lt;CHECKPOINT&gt;</code>) y el sistema cae repentinamente. Te piden detallar los pasos de recuperación. </p>
+          <ul style="font-size: 0.9rem;">
+            <li><strong>Identificar la Arquitectura:</strong>
+              <ul style="margin-top: 5px;">
+                <li>Si el registro DML tiene 3 parámetros (<code>T, Elemento, ValorNuevo</code>), es de <strong>Actualización Diferida</strong> (Solo usa REDO).</li>
+                <li>Si tiene 4 parámetros (<code>T, Elemento, ValorViejo, ValorNuevo</code>), es de <strong>Actualización Inmediata</strong> (Usa UNDO y REDO).</li>
+              </ul>
+            </li>
+            <li><strong>El Muro del Checkpoint:</strong> Toda transacción que tenga su <code>COMMIT</code> escrito <strong>antes</strong> de la línea de <code>&lt;CHECKPOINT&gt;</code> se omite por completo en el ejercicio. Sus datos ya están seguros en el disco físico.</li>
+            <li><strong>Fase UNDO (¡Va Primero!):</strong> Solo para Actualizaciones Inmediatas. Afecta a las transacciones que empezaron (tienen <code>START</code>) pero no tienen ni <code>COMMIT</code> ni <code>ROLLBACK</code>. Se leen en orden <strong>inverso</strong> (de abajo hacia arriba en el papel) aplicando la Imagen-Anterior.</li>
+            <li><strong>Fase REDO (Rehacer):</strong> Afecta a toda transacción con un <code>COMMIT</code> validado después del Checkpoint (o si no hay Checkpoint, a todas las confirmadas). Se lee en <strong>orden normal cronológico</strong> (de arriba hacia abajo) aplicando la Imagen-Posterior.</li>
+          </ul>
+        </div>
+      </section>
 
-  <h3 class="subtheme-title" id="st-9-6">6. Concurrencia en SQL</h3>
-  <div class="box" style="border-top: 3px solid #f97316;">
-    <table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 0.9em;">
-      <thead>
-        <tr style="border-bottom: 2px solid #ddd; background: rgba(255,255,255,0.05);">
-          <th style="padding: 8px; text-align: left;">Nivel de Aislamiento</th>
-          <th>Lectura Sucia</th>
-          <th>Lectura no repetible</th>
-          <th>Fantasmas</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr style="border-bottom: 1px solid #eee;">
-          <td style="padding: 8px; text-align: left;"><strong>READ UNCOMMITTED</strong></td>
-          <td>&cross;</td>
-          <td>&cross;</td>
-          <td>&cross;</td>
-        </tr>
-        <tr style="border-bottom: 1px solid #eee;">
-          <td style="padding: 8px; text-align: left;"><strong>READ COMMITTED</strong> (Default Oracle)</td>
-          <td>&check;</td>
-          <td>&cross;</td>
-          <td>&cross;</td>
-        </tr>
-        <tr style="border-bottom: 1px solid #eee;">
-          <td style="padding: 8px; text-align: left;"><strong>REPEATABLE READ</strong></td>
-          <td>&check;</td>
-          <td>&check;</td>
-          <td>&cross;</td>
-        </tr>
-        <tr>
-          <td style="padding: 8px; text-align: left;"><strong>SERIALIZABLE</strong></td>
-          <td>&check;</td>
-          <td>&check;</td>
-          <td>&check;</td>
-        </tr>
-      </tbody>
-    </table>
-    <p style="margin-top: 10px; font-size: 0.85em; color: #666;"><em>Nota: Oracle utiliza MVCC + 2PL estricto/riguroso. Las lecturas no bloquean, la granularidad de bloqueo es de fila, y sólo soporta los niveles READ COMMITTED y SERIALIZABLE.</em></p>
-  </div>
-</section>
+      <section class="theme-section">
+        <h2 class="theme-title" id="t-09" style="border-bottom-color: var(--c-9); color: var(--c-9);">🚦 9. Concurrencia y Transacciones</h2>
+
+        <h3 class="subtheme-title" id="st-9-1">1. Problemas Clásicos</h3>
+        <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px;">
+          <div class="box" style="flex: 1; min-width: 200px; padding: 15px; border-top: 3px solid var(--c-9);">
+            <h4 style="color: #fdba74; font-size: 1rem;">Actualización Perdida</h4>
+            <span style="font-size: 0.85rem;">Dos escriben a la vez, gana el último.</span>
+          </div>
+          <div class="box" style="flex: 1; min-width: 200px; padding: 15px; border-top: 3px solid var(--c-9);">
+            <h4 style="color: #fdba74; font-size: 1rem;">Lectura Sucia</h4>
+            <span style="font-size: 0.85rem;">Leer un dato de otra Tx que aún no ha hecho commit.</span>
+          </div>
+          <div class="box" style="flex: 1; min-width: 200px; padding: 15px; border-top: 3px solid var(--c-9);">
+            <h4 style="color: #fdba74; font-size: 1rem;">Lectura No Repetible</h4>
+            <span style="font-size: 0.85rem;">El valor muta entre dos SELECTs de la misma Tx.</span>
+          </div>
+          <div class="box" style="flex: 1; min-width: 200px; padding: 15px; border-top: 3px solid var(--c-9);">
+            <h4 style="color: #fdba74; font-size: 1rem;">Fantasmas</h4>
+            <span style="font-size: 0.85rem;">Aparecen filas nuevas en un rango de un SELECT.</span>
+          </div>
+        </div>
+
+        <h3 class="subtheme-title" id="st-9-2">2. Bloqueos de Intención (Granularidad Múltiple) 🚨</h3>
+        <div class="box" style="background: rgba(249, 115, 22, 0.05); border-left: 3px solid var(--c-9); margin-bottom: 20px;">
+          <p style="font-size: 0.9rem;">Para bloquear a nivel de fila y a la vez permitir verificar colisiones a nivel de tabla sin escanearla entera, se usan los bloqueos de intención aplicados desde la raíz hacia abajo:</p>
+          <ul style="font-size: 0.85rem; margin-bottom: 0;">
+            <li><strong>IS (Intention Shared):</strong> Aviso de que la Tx planea leer (poner S) a nivel inferior (ej. fila).</li>
+            <li><strong>IX (Intention Exclusive):</strong> Aviso de que la Tx planea escribir (poner X) a nivel inferior. Evita que otra Tx bloquee la tabla completa.</li>
+            <li><strong>SIX (Shared + Intention Exclusive):</strong> Lee toda la tabla, pero solo modificará algunas filas inferiores.</li>
+          </ul>
+        </div>
+
+        <h3 class="subtheme-title" id="st-9-3">3. Protocolos 2PL y Deadlocks</h3>
+        <div class="grid-2">
+          <div class="box" style="border-top: 3px solid var(--c-9);">
+            <h4 style="color: #fdba74;">2PL Estricto / Riguroso</h4>
+            <ul style="font-size: 0.85rem; padding-left: 15px; margin-bottom: 0;">
+              <li><strong>2PL:</strong> Crecimiento (adquiere) y decrecimiento (libera). Garantiza seriabilidad.</li>
+              <li><strong>Estricto:</strong> Retiene bloqueos exclusivos (X) hasta el final (commit/rollback).</li>
+              <li><strong>Riguroso:</strong> Retiene TODOS (S y X) hasta el final. Evitan anulación en cascada.</li>
+            </ul>
+          </div>
+          <div class="box" style="border-top: 3px solid var(--c-9);">
+            <h4 style="color: #fdba74;">Prevención de Deadlocks</h4>
+            <ul style="font-size: 0.85rem; padding-left: 15px; margin-bottom: 0;">
+              <li><strong>Wait-Die:</strong> Prioriza la vejez. Si el que pide es viejo, espera. Si es joven, muere (aborta).</li>
+              <li><strong>Wound-Wait:</strong> Expropiación agresiva. Si el que pide es viejo, hiere (aborta al joven). Si es joven, espera.</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="subtheme-title exam-title" id="st-9-exam">🎓 Guía de Resolución: Marcas de Tiempo y MVCC</h3>
+        <div class="box exam-guide">
+          <h4>A. Regla de Escritura de Thomas</h4>
+          <p style="font-size: 0.95rem;"><strong>Patrón de Examen:</strong> Simular ejecuciones como <code>Read(A)</code>, <code>Write(B)</code> y evaluar marcas de lectura (ML) y escritura (ME). Asumimos que la Transacción T opera sobre el dato A.</p>
+          <ul style="font-size: 0.9rem;">
+            <li><strong>Operación de Lectura:</strong>
+              <ul style="margin-top: 5px;">
+                <li>¿$M(T) < ME(A)$? &rarr; <strong>ROLLBACK</strong> (Está intentando leer un dato que ya fue sobrescrito por una transacción más joven).</li>
+                <li>Si es legal &rarr; La nueva marca de lectura se actualiza: $ML(A) = \max(M(T), ML(A))$.</li>
+              </ul>
+            </li>
+            <li><strong>Operación de Escritura (La Trampa de Thomas):</strong>
+              <ul style="margin-top: 5px;">
+                <li>¿$M(T) < ML(A)$? &rarr; <strong>ROLLBACK</strong> (Alguien más joven ya leyó el dato viejo, escribir ahora rompería su aislamiento).</li>
+                <li>¿$M(T) < ME(A)$? &rarr; <strong>SE IGNORA LA ESCRITURA</strong> pero la transacción <strong>SIGUE VIVA</strong> sin hacer rollback. Su escritura quedó obsoleta por alguien del futuro, simplemente no graba (Regla de Thomas).</li>
+                <li>Si supera las dos &rarr; Se ejecuta físicamente y $ME(A) = M(T)$.</li>
+              </ul>
+            </li>
+          </ul>
+
+          <h4 style="margin-top: 25px;">B. Control Multiversión (MVCC)</h4>
+          <p style="font-size: 0.95rem;"><strong>Patrón de Examen:</strong> Tienes versiones históricas (ej. A1: ME=1, ML=4 y A2: ME=6, ML=7) e indican que T8 lee A o T9 escribe 13 en A. </p>
+          <ul style="font-size: 0.9rem;">
+            <li><strong>Paso 1 (Búsqueda):</strong> Lo primero siempre es localizar la versión correcta en el tiempo. Elige la versión que posea el ME más alto pero que sea menor o igual al identificador de la transacción que actúa ($ME \le M(T)$).</li>
+            <li><strong>Si es Lectura:</strong> Compara la transacción $M(T)$ con esa versión. Lee el valor, y si su $M(T)$ es mayor que el ML actual de esa versión, actualiza el ML. (Con MVCC puro estándar un lector nunca es bloqueado).</li>
+            <li><strong>Si es Escritura:</strong> Tras ubicar la versión en su pasado ($ME \le M(T)$), pregúntate: ¿alguien del futuro leyó ya esa versión ($M(T) < ML$)? Si es así &rarr; <strong>ROLLBACK</strong>. Si es legal y $M(T) > ME$, <strong>crea una nueva versión en disco</strong> (ej. A3) e inicializa sus valores con $ME = M(T)$ y $ML = M(T)$. Si existe una versión posterior consolidada, la nueva versión se intercala.</li>
+          </ul>
+        </div>
+      </section>
 
       <div style="height: 120px;"></div>
     </div>
@@ -841,7 +712,6 @@
           }
         });
         
-        // Hide global header to make it feel like a single topic document
         const headerText = document.querySelector('.page-title');
         if (headerText && headerText.parentElement) {
           headerText.parentElement.style.display = 'none';
@@ -869,7 +739,13 @@
           link.textContent = heading.textContent;
         } else {
           link.className = "nav-h3";
-          link.textContent = heading.textContent;
+          // Distinguish exam guides slightly in the sidebar
+          if (heading.classList.contains("exam-title")) {
+            link.className += " exam-link";
+            link.innerHTML = "🎓 " + heading.textContent.replace('🎓 ', '');
+          } else {
+            link.textContent = heading.textContent;
+          }
         }
         link.addEventListener("click", (e) => {
           e.preventDefault();
