@@ -1,5 +1,5 @@
 /**
- * Estadísticas App — Quiz BDA
+ * Estadísticas App — Estudio BDA
  */
 (function() {
   'use strict';
