@@ -19,11 +19,12 @@ El portal cuenta con un banco de **231 preguntas** (extraídas minuciosamente de
 
 ## 🚀 Características del Ecosistema
 
-- 📇 **Motor de Flashcards**: Un sistema súper ágil de tarjetas de memorización (anverso/reverso) integrado para repasar fórmulas y comandos. Accesible de forma global o bloque por bloque (manteniendo el orden del temario para un estudio progresivo).
-- 🧠 **Renderizado de Markdown**: Integración nativa del motor de Markdown (`marked.js`). Las preguntas complejas de examen que incluyen tablas ASCII, diagramas, bloques de código SQL (`<pre>`) e hilos de transacciones se renderizan a la perfección de forma idéntica a los apuntes originales.
-- 🎨 **Interfaz: Estética moderna (Dark Mode/Glassmorphism) optimizada.
-- 🧩 **Modal Inteligente de Estudio**: Al hacer clic en cualquier tema en el portal principal, un menú limpio te preguntará si prefieres enfrentarte al **Cuestionario** clásico con correcciones detalladas, o al **Mazo de Flashcards** rápido de ese mismo tema.
-- 🔎 **Banco de Preguntas y Estadísticas**: Un explorador global para buscar entre todas las preguntas del sistema, junto con un panel de rendimiento y sistema de logros para medir tu progreso.
+- 📇 **Motor de Flashcards 2.0**: Un sistema súper ágil de tarjetas de memorización integrado para repasar fórmulas y comandos. Cuenta con una "cinta transportadora" 3D para deslizar las cartas, barras de progreso dinámicas por colores y soporte transversal.
+- 📖 **Portal de Apuntes Interactivos**: Un lector de resúmenes integrado en el ecosistema, con renderizado Markdown al vuelo, formato de alto contraste y navegación sincronizada con las categorías de estudio.
+- 🧠 **Renderizado de Markdown Avanzado**: Integración nativa del motor de Markdown (`marked.js`). Las preguntas complejas y resúmenes que incluyen tablas ASCII, diagramas, bloques de código SQL (`<pre>`) e hilos de transacciones se renderizan idénticos a los apuntes originales.
+- 🎨 **Interfaz Premium**: Diseño oscuro profundo (`#0a0e17`) unificado en todo el ecosistema (Portal, Flashcards, Quiz y Apuntes), con efectos glassmorphism, sombras neon y un comportamiento de rebote nativo impecable.
+- 🧩 **Modal Inteligente de Estudio**: Al hacer clic en cualquier tema en el portal principal, un menú te dará a elegir tu estilo: el **Cuestionario** clásico, los **Apuntes** teóricos, o el **Mazo de Flashcards**.
+- 🔎 **Banco y Estadísticas Globales**: Un explorador global para buscar entre todas las preguntas del sistema, con panel de rendimiento y logros para medir tu progreso general.
 
 ## 💻 Tecnologías
 
