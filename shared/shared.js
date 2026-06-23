@@ -54,25 +54,7 @@ window.showCustomModal = function(options) {
   document.addEventListener('keydown', escapeHandler, true);
 };
 
-// --- THEME MANAGEMENT ---
-function initTheme() {
-  const savedTheme = localStorage.getItem('bda_theme');
-  if (savedTheme === 'light') {
-    document.body.classList.add('light-theme');
-  }
-  
-  const btn = document.createElement('button');
-  btn.className = 'theme-toggle';
-  btn.title = "Cambiar Tema";
-  btn.innerHTML = document.body.classList.contains('light-theme') ? '🌙' : '☀️';
-  btn.onclick = () => {
-    document.body.classList.toggle('light-theme');
-    const isLight = document.body.classList.contains('light-theme');
-    localStorage.setItem('bda_theme', isLight ? 'light' : 'dark');
-    btn.innerHTML = isLight ? '🌙' : '☀️';
-  };
-  document.body.appendChild(btn);
-}
+// --- THEME MANAGEMENT DELETED ---
 
 // --- STATS & ACHIEVEMENTS MANAGEMENT ---
 window.QuizStats = {
@@ -357,7 +339,6 @@ function checkPausedTestOnLoad() {
 
 document.addEventListener('DOMContentLoaded', () => {
   initResumeButton();
-  initTheme();
   window.QuizStats.load();
   checkPausedTestOnLoad();
 });

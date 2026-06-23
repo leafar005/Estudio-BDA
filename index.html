@@ -22,8 +22,7 @@
       --border-subtle: rgba(255, 255, 255, 0.08);
     }
     html {
-      background: #0c1220;
-      overscroll-behavior: none;
+      background: #0a0e17;
     }
     body {
       margin: 0;
@@ -54,33 +53,33 @@
     .container {
       max-width: 900px;
       margin: 0 auto;
-      padding: 60px 24px 80px;
+      padding: 20px 24px 60px;
       position: relative;
       z-index: 1;
     }
     .hero {
-      text-align: center;
-      margin-bottom: 50px;
+      text-align: left;
+      margin-bottom: 20px;
     }
     .hero-badge {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 90px;
-      height: 90px;
+      width: 60px;
+      height: 60px;
       border-radius: var(--radius-xl);
       background: linear-gradient(135deg, #3b82f6, #1d4ed8, #60a5fa);
       box-shadow: 0 0 40px var(--accent-glow);
-      margin-bottom: 24px;
+      margin-bottom: 4px;
       animation: pulse-glow 3s ease-in-out infinite;
     }
     @keyframes pulse-glow {
       0%, 100% { box-shadow: 0 0 20px var(--accent-glow); }
       50% { box-shadow: 0 0 50px var(--accent-glow); }
     }
-    .hero-icon { font-size: 42px; }
+    .hero-icon { font-size: 30px; }
     .hero-title {
-      font-size: clamp(2rem, 5vw, 3rem);
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
       font-weight: 800;
       background: linear-gradient(135deg, #f1f5f9, #93c5fd);
       -webkit-background-clip: text;
@@ -92,13 +91,40 @@
       font-size: 1.15rem;
       color: var(--text-secondary);
       font-weight: 400;
-      margin-bottom: 24px;
+      margin-bottom: 12px;
     }
     /* Stats Widget Container */
     .stats-container {
       display: flex;
-      justify-content: center;
-      margin-bottom: 50px;
+      justify-content: flex-start;
+      margin-bottom: 25px;
+    }
+    .stats-widget {
+      display: inline-flex;
+      gap: 30px;
+      padding: 16px 32px;
+      background: rgba(17, 24, 39, 0.6);
+      border-radius: 20px;
+      border: 1px solid var(--border-subtle);
+      backdrop-filter: blur(10px);
+    }
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      text-decoration: none;
+    }
+    .stat-value {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #93c5fd;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
     /* Bento Grid */
     .bento-grid {
@@ -171,26 +197,22 @@
       .container { padding: 40px 16px 60px; }
     }
     /* Light Theme */
-    body.light-theme {
-      background: #f0f4f8;
+    
+    
+    
+    
+    
+    
+    
+    
+    .section-title {
+      grid-column: 1 / -1;
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin: 30px 0 5px 0;
+      color: #f8fafc;
     }
-    body.light-theme .bento-card {
-      background: #ffffff;
-      border-color: rgba(0,0,0,0.08);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-    body.light-theme .bento-card:hover {
-      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
-    }
-    body.light-theme .bento-card::before {
-      background: linear-gradient(135deg, rgba(59,130,246,0.05), transparent);
-    }
-    body.light-theme .hero-title {
-      background: none;
-      -webkit-text-fill-color: #111827;
-    }
-    body.light-theme .bento-card-title { color: #111827; }
-    body.light-theme .bento-card-desc { color: #6b7280; }
+
   </style>
 </head>
 <body>
@@ -209,12 +231,25 @@
     </div>
 
     <div class="bento-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
-      <!-- GLOBAL Y HERRAMIENTAS FRONTALES -->
-      <a href="quiz-bda/index.html?mode=all" class="bento-card featured" style="grid-column: 1 / -1; margin-bottom: 10px;">
-        <span class="bento-card-icon">🌍</span>
-        <span class="bento-card-title">Quiz BDA Completo</span>
-        <span class="bento-card-desc">Simulacro definitivo: las 231 preguntas de todos los temas mezcladas al azar.</span>
+      
+      <h2 class="section-title" style="margin-top: 0;">Contenido</h2>
+      <a href="apuntes/index.html" class="bento-card" style="border-color: rgba(99, 102, 241, 0.4);">
+        <span class="bento-card-icon">📚</span>
+        <span class="bento-card-title">Apuntes Resumidos</span>
+        <span class="bento-card-desc">Guía definitiva de teoría, altamente visual y orientada al examen.</span>
       </a>
+      <a href="shared/flashcards.html" class="bento-card" style="border-color: rgba(245, 158, 11, 0.4);">
+        <span class="bento-card-icon">📇</span>
+        <span class="bento-card-title">Todas las Flashcards</span>
+        <span class="bento-card-desc">Repasa todos los temas de forma continua.</span>
+      </a>
+      <a href="banco-preguntas/index.html" class="bento-card" style="border-color: rgba(16, 185, 129, 0.4);">
+        <span class="bento-card-icon">📖</span>
+        <span class="bento-card-title">Banco de Preguntas</span>
+        <span class="bento-card-desc">Consulta el listado completo con las soluciones.</span>
+      </a>
+
+      <h2 class="section-title">Temario</h2>
       <a href="quiz-bda/index.html?mode=category&category=catalogo" class="bento-card">
         <span class="bento-card-icon">🗂️</span>
         <span class="bento-card-title">Catálogo</span>
@@ -260,29 +295,42 @@
         <span class="bento-card-title">Concurrencia</span>
         <span class="bento-card-desc">Transacciones, aislamiento, 2PL y MVCC.</span>
       </a>
-      <a href="quiz-bda/index.html?mode=category&category=examen" class="bento-card">
+
+      <h2 class="section-title">Exámenes</h2>
+      <a href="quiz-bda/index.html?mode=category&category=examen_2026_enero" class="bento-card">
         <span class="bento-card-icon">📝</span>
-        <span class="bento-card-title">Exámenes</span>
-        <span class="bento-card-desc">Problemas completos extraídos de exámenes reales.</span>
+        <span class="bento-card-title">Examen Enero 2026</span>
+        <span class="bento-card-desc">Resolución del examen parcial de Enero 2026.</span>
+      </a>
+      <a href="quiz-bda/index.html?mode=category&category=examen_2023" class="bento-card">
+        <span class="bento-card-icon">📝</span>
+        <span class="bento-card-title">Examen 2023</span>
+        <span class="bento-card-desc">Resolución del examen oficial del curso 2023.</span>
+      </a>
+      <a href="quiz-bda/index.html?mode=category&category=examen_2022_julio_11" class="bento-card">
+        <span class="bento-card-icon">📝</span>
+        <span class="bento-card-title">Examen 11-07-2022</span>
+        <span class="bento-card-desc">Convocatoria del 11 de Julio de 2022.</span>
+      </a>
+      <a href="quiz-bda/index.html?mode=category&category=examen_2022_julio_06" class="bento-card">
+        <span class="bento-card-icon">📝</span>
+        <span class="bento-card-title">Examen 06-07-2022</span>
+        <span class="bento-card-desc">Convocatoria del 6 de Julio de 2022.</span>
       </a>
 
-      <!-- HERRAMIENTAS -->
-      <a href="shared/flashcards.html" class="bento-card" style="border-color: rgba(245, 158, 11, 0.4);">
-        <span class="bento-card-icon">📇</span>
-        <span class="bento-card-title">Todas las Flashcards</span>
-        <span class="bento-card-desc">Repasa todos los temas de forma continua.</span>
+      <h2 class="section-title">Quiz</h2>
+      <a href="quiz-bda/index.html?mode=all" class="bento-card featured" style="grid-column: 1 / -1; margin-bottom: 10px;">
+        <span class="bento-card-icon">🌍</span>
+        <span class="bento-card-title">Quiz BDA Completo</span>
+        <span class="bento-card-desc">Simulacro definitivo: las 231 preguntas de todos los temas mezcladas al azar.</span>
       </a>
-      <a href="banco-preguntas/index.html" class="bento-card" style="border-color: rgba(16, 185, 129, 0.4);">
-        <span class="bento-card-icon">📖</span>
-        <span class="bento-card-title">Banco de Preguntas</span>
-        <span class="bento-card-desc">Consulta el listado completo con las soluciones.</span>
-      </a>
+
+      <h2 class="section-title">Otros</h2>
       <a href="estadisticas/index.html" class="bento-card" style="border-color: rgba(168, 85, 247, 0.4);">
         <span class="bento-card-icon">📊</span>
         <span class="bento-card-title">Estadísticas</span>
         <span class="bento-card-desc">Revisa tu progreso y puntos débiles.</span>
-      </a>
-    </div>
+      </a></div>
   </div>
 
   <!-- Modal Chooser -->
@@ -306,6 +354,13 @@
           <div class="btn-text">
             <strong>Flashcards</strong>
             <span>Tarjetas de memoria rápida por delante y por detrás</span>
+          </div>
+        </button>
+        <button class="modal-option-btn" id="btn-start-resumen">
+          <span class="btn-emoji">📚</span>
+          <div class="btn-text">
+            <strong>Resumen</strong>
+            <span>Ver los apuntes teóricos de este tema</span>
           </div>
         </button>
       </div>
@@ -365,6 +420,7 @@
       const iconEl = document.getElementById('modal-icon');
       const btnQuiz = document.getElementById('btn-start-quiz');
       const btnFlash = document.getElementById('btn-start-flashcards');
+      const btnResumen = document.getElementById('btn-start-resumen');
 
       let currentCategory = null;
 
@@ -375,6 +431,13 @@
             e.preventDefault();
             const urlParams = new URLSearchParams(href.split('?')[1]);
             currentCategory = urlParams.get('category');
+            if (currentCategory.startsWith('examen')) {
+              btnFlash.style.display = 'none';
+              btnResumen.style.display = 'none';
+            } else {
+              btnFlash.style.display = 'flex';
+              btnResumen.style.display = 'flex';
+            }
             titleEl.textContent = card.querySelector('.bento-card-title').textContent;
             iconEl.textContent = card.querySelector('.bento-card-icon').textContent;
             modal.classList.remove('hidden');
@@ -393,6 +456,9 @@
 
       btnFlash.addEventListener('click', () => {
         window.location.href = `shared/flashcards.html?topic=${currentCategory}`;
+      });
+      btnResumen.addEventListener('click', () => {
+        window.location.href = `apuntes/index.html?topic=${currentCategory}`;
       });
     });
   </script>
