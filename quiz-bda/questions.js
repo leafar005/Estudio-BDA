@@ -48,7 +48,29 @@ const CATEGORIES = [
     "id": "examen",
     "name": "Exámenes",
     "icon": "📝"
+  },
+
+  {
+    "id": "examen_2026_enero",
+    "name": "Enero 2026",
+    "icon": "📝"
+  },
+  {
+    "id": "examen_2023",
+    "name": "Examen 2023",
+    "icon": "📝"
+  },
+  {
+    "id": "examen_2022_julio_11",
+    "name": "11-07-2022",
+    "icon": "📝"
+  },
+  {
+    "id": "examen_2022_julio_06",
+    "name": "06-07-2022",
+    "icon": "📝"
   }
+
 ];
 
 const QUESTIONS = [
@@ -3192,5 +3214,551 @@ const QUESTIONS = [
     correct: 0,
     justification: 'En Oracle, las acciones referenciales declarativas (como ON DELETE CASCADE) provocan comandos DML subyacentes que **SÍ** disparan los triggers definidos sobre la tabla hija. Como es BEFORE DELETE FOR EACH ROW, el trigger se ejecutará para cada fila de la esclava justo antes de que el motor la elimine debido a la cascada.',
     trap: true
+  },
+  {
+    "category": "examen_2022_julio_06",
+    "type": "multi",
+    "question": "Queremos que los usuarios u1, u2 y u3 puedan acceder (para selecciones, inserciones y modificaciones) a varios campos de los empleados del departamento 10. ¿Cuál es la forma óptima usando SQL estándar para que sea sencillo añadir estos permisos a futuros usuarios?",
+    "options": [
+      "Crear una vista con los datos del departamento 10 usando WITH CHECK OPTION, crear un rol, asignarle los privilegios sobre la vista, y conceder el rol a los usuarios.",
+      "Asignar directamente los privilegios GRANT SELECT, INSERT, UPDATE a los usuarios sobre la tabla EMP indicando WHERE deptno=10.",
+      "Crear una vista con los datos del departamento 10 sin CHECK OPTION, y conceder permisos directamente a cada usuario.",
+      "Crear un rol, asignarle los permisos sobre la tabla EMP y aplicar un trigger de tipo INSTEAD OF para restringir al departamento 10."
+    ],
+    "correct": 0,
+    "justification": "Para que sea fácil añadir permisos a nuevos usuarios se debe crear un rol. Para asegurar que las modificaciones e inserciones solo afecten al departamento 10, es necesario crear una vista con WITH CHECK OPTION y conceder los permisos sobre ella al rol.",
+    "trap": false
+  },
+  {
+    "category": "examen_2022_julio_06",
+    "type": "multi",
+    "question": "¿Qué es el protocolo WAL (Write Ahead Logging), cómo funciona y por qué es necesario?",
+    "options": [
+      "Es un protocolo que primero vuelca el buffer de datos en el disco físico y posteriormente escribe las operaciones en el fichero de log para confirmar la transacción.",
+      "Es una técnica para bloquear transacciones en conflicto, que anota anticipadamente las operaciones en memoria para prevenir interbloqueos.",
+      "Es un protocolo que obliga a escribir las modificaciones en el fichero de log en disco antes de volcar el buffer de datos a disco, asegurando la recuperabilidad mediante rehacer (redo) o deshacer (undo).",
+      "Es un mecanismo que guarda únicamente el estado inicial de la base de datos (undo) en un archivo separado para restaurar el sistema en caso de un error de disco."
+    ],
+    "correct": 2,
+    "justification": "El protocolo WAL requiere que cualquier cambio sea registrado en el log antes de que el bloque de datos modificado se escriba en disco. Esto garantiza que ante una caída, la información necesaria para rehacer o deshacer las transacciones esté disponible.",
+    "trap": false
+  },
+  {
+    "category": "examen_2022_julio_06",
+    "type": "multi",
+    "question": "Considera la tabla EMP con clave primaria PK_EMP (EMPNO). Se definió un índice I_EMP_COMM sobre COMM, que admite nulos. ¿Qué ocurre al ejecutar la sentencia:<br><pre>SELECT /*+ INDEX (EMP I_EMP_COMM) */ COMM FROM EMP;</pre>",
+    "options": [
+      "Sí usa el índice I_EMP_COMM porque hay un hint /*+ INDEX */ explícito que fuerza a Oracle a usarlo independientemente de los valores nulos.",
+      "No usa el índice I_EMP_COMM y realiza un escaneo completo de la tabla, porque el campo COMM admite valores nulos y estos no se guardan en el índice B-Tree convencional.",
+      "Sí usa el índice I_EMP_COMM porque solo se está seleccionando la columna COMM, por lo que un escaneo rápido del índice (Fast Full Scan) es más eficiente.",
+      "No usa el índice I_EMP_COMM, sino que usa el índice asociado a la clave primaria (PK_EMP) para recorrer los registros ordenadamente y extraer COMM."
+    ],
+    "correct": 1,
+    "justification": "Como la columna COMM permite nulos, y los nulos no se indexan en un B-Tree convencional de Oracle, el índice no contiene todos los registros de la tabla. Por tanto, Oracle no puede resolver la consulta leyendo solo el índice y hará un Full Table Scan ignorando el hint.",
+    "trap": false
+  },
+  {
+    "category": "examen_2022_julio_06",
+    "type": "multi",
+    "question": "Considera la tabla EMP con clave primaria PK_EMP (EMPNO). Se definió un índice I_EMP_SAL sobre SAL, que admite nulos. ¿Qué ocurre al ejecutar la sentencia:<br><pre>SELECT MAX (SAL) FROM EMP;</pre>",
+    "options": [
+      "No usa índices y hace un Full Table Scan, ya que al admitir nulos el campo SAL, el optimizador no puede garantizar obtener el máximo sin revisar todos los registros.",
+      "Sí usa el índice I_EMP_SAL, buscando eficientemente el valor máximo no nulo directamente en el extremo derecho del índice B-Tree.",
+      "Sí usa el índice I_EMP_SAL pero realizando un Full Index Scan para evaluar todos los valores y aplicar la función de agregación MAX en memoria.",
+      "Sí usa el índice PK_EMP, ya que al ser la clave primaria ofrece el acceso más rápido, y desde ahí evalúa el salario de todos los empleados."
+    ],
+    "correct": 1,
+    "justification": "Para funciones como MAX o MIN, Oracle aprovecha el índice leyendo directamente el último o primer bloque (Index Full Scan Min/Max), resultando muy eficiente incluso si la columna admite nulos, puesto que no afectan a la búsqueda del máximo.",
+    "trap": false
+  },
+  {
+    "category": "examen_2022_julio_06",
+    "type": "multi",
+    "question": "Con las tablas MAESTRA `(10, ES)` y ESCLAVA (donde K1, K2 es clave foránea hacia MAESTRA):<br>Fila 1: `(1, NULL, GL)`<br>Fila 2: `(2, 10, NULL)`<br>Fila 3: `(3, 10, ES)`<br>¿Qué filas de ESCLAVA son válidas según los tipos de MATCH de la clave foránea?",
+    "options": [
+      "MATCH SIMPLE: 3. MATCH PARTIAL: 2, 3. MATCH FULL: 1, 2, 3.",
+      "MATCH SIMPLE: 1, 2, 3. MATCH PARTIAL: 1, 2. MATCH FULL: 3.",
+      "MATCH SIMPLE: 2, 3. MATCH PARTIAL: 3. MATCH FULL: 1, 3.",
+      "MATCH SIMPLE: 1, 2, 3. MATCH PARTIAL: 2, 3. MATCH FULL: 3."
+    ],
+    "correct": 3,
+    "justification": "MATCH SIMPLE: todo nulo lo hace válido (1,2,3). MATCH PARTIAL: los no nulos deben coincidir, falla la fila 1 por 'GL' (2,3). MATCH FULL: no permite mezclar nulos y no nulos (solo 3).",
+    "trap": false
+  },
+  {
+    "category": "examen_2022_julio_06",
+    "type": "multi",
+    "question": "Con ordenación por marcas de tiempo y regla de Thomas (M(T1)=1, M(T2)=2, M(T3)=3). Inicialmente ML(B)=0, ME(B)=0.<br>Instante 2: T3 hace Write(B)<br>Instante 3: T1 hace Write(B)<br>Instante 7: T2 hace Read(B)<br>¿Cuál es el resultado en los instantes 3 y 7?",
+    "options": [
+      "Instante 3: La escritura de T1 falla y hace rollback. Instante 7: T2 lee correctamente la versión escrita por T3.",
+      "Instante 3: La escritura de T1 se ignora (por Thomas). Instante 7: T2 falla y hace rollback al intentar leer un dato con ME=3.",
+      "Instante 3: La escritura de T1 sobrescribe el valor de T3 actualizando ME a 1. Instante 7: T2 lee exitosamente el valor porque M(T2) > ME(B).",
+      "Instante 3: La escritura de T1 se ignora. Instante 7: T2 lee exitosamente el valor descartando la lectura de ME."
+    ],
+    "correct": 1,
+    "justification": "Instante 2: T3 escribe (ME=3). Instante 3: T1 (M=1) intenta escribir; como 1 < ME(B)=3, por Thomas se ignora. Instante 7: T2 (M=2) intenta leer; como 2 < ME(B)=3, es una lectura tardía y hace rollback.",
+    "trap": false
+  },
+  {
+    "category": "examen_2022_julio_06",
+    "type": "multi",
+    "question": "Dado el siguiente log con entradas &lt;Ti, X, old, new&gt;:<br><pre>&lt;T1, START&gt;\n&lt;T2, START&gt;\n&lt;T1, A, 10, 23&gt;\n&lt;T1, COMMIT&gt;\n&lt;T2, B, 10, 25&gt;\n&lt;T3, START&gt;\n&lt;T2, COMMIT&gt;\n&lt;T3, B, 25, 33&gt;\n&lt;T3, B, 33, 27&gt;</pre><br>Tras producirse una caída al final, ¿a qué tipo de sistema corresponde y qué se hace para recuperar?",
+    "options": [
+      "Actualizaciones diferidas. Se debe hacer redo(T1), redo(T2) e ignorar T3.",
+      "Actualizaciones inmediatas. Se debe hacer undo(T1), undo(T2) y redo(T3).",
+      "Actualizaciones inmediatas. Se debe hacer redo(T1), redo(T2) y undo(T3).",
+      "Actualizaciones diferidas. Se debe hacer redo(T1), redo(T2) y undo(T3)."
+    ],
+    "correct": 2,
+    "justification": "Es un sistema de actualizaciones inmediatas (guarda valor antiguo y nuevo). Se deben rehacer (redo) las transacciones confirmadas con COMMIT (T1 y T2) y deshacer (undo) las que no llegaron a confirmar (T3).",
+    "trap": false
+  },
+  {
+    "category": "examen_2022_julio_06",
+    "type": "multi",
+    "question": "¿Qué es una restricción aplazable (DEFERRABLE) en SQL y cuándo es indispensable su uso?",
+    "options": [
+      "Es una restricción que se comprueba antes de ejecutar cada instrucción DML y es indispensable para mantener el rendimiento en consultas con muchas uniones.",
+      "Es una restricción que solo se aplica si la transacción contiene un ROLLBACK, siendo útil para deshacer cambios masivos en vistas materializadas.",
+      "Es una restricción cuya comprobación se pospone hasta el momento del COMMIT. Es indispensable cuando existen ciclos referenciales o claves foráneas cruzadas con NOT NULL.",
+      "Es una restricción de integridad de dominio que permite la inserción de valores temporales nulos y se evalúa periódicamente mediante un demonio en segundo plano."
+    ],
+    "correct": 2,
+    "justification": "Las restricciones DEFERRABLE permiten saltarse temporalmente la comprobación de integridad, validándose al hacer COMMIT. Son fundamentales para resolver bucles generados por dependencias circulares.",
+    "trap": false
+  },
+  {
+    "category": "examen_2022_julio_06",
+    "type": "multi",
+    "question": "En la optimización de árboles de álgebra relacional, ¿qué objetivo persiguen la REGLA 5 y 7 al procesar consultas?",
+    "options": [
+      "Se sustituyen los productos cartesianos por reuniones naturales (REGLA 5) y se agrupan las selecciones en una única operación compleja en la raíz (REGLA 7).",
+      "Se aplican índices en los campos de filtrado (REGLA 5) y se eliminan las operaciones de proyección dejando solo el SELECT final (REGLA 7).",
+      "Se descienden las selecciones sobre los atributos para filtrarlos de forma monádica sobre las relaciones base (REGLA 5) y se introducen proyecciones intermedias para descartar atributos redundantes antes del cruce (REGLA 7).",
+      "Se descienden las funciones de agregación hacia las relaciones base (REGLA 5) y se sustituyen todos los productos cartesianos por selecciones cruzadas (REGLA 7)."
+    ],
+    "correct": 2,
+    "justification": "La Regla 5 convierte las selecciones sobre productos cartesianos en reuniones, permitiendo bajar los filtros unarios. La Regla 7 inserta proyecciones (π) intermedias para descartar de memoria los atributos que ya no van a ser necesarios.",
+    "trap": false
+  },
+  {
+    "category": "examen_2022_julio_11",
+    "type": "multi",
+    "question": "Considera la vista `vista1`:<br><pre>CREATE VIEW vista1 AS\nSELECT DISTINCT empno, ename, sal+comm, hiredate\nFROM emp\nWHERE deptno = 30;</pre><br>¿Se crea la vista? ¿Es actualizable? ¿Permitiría la inserción de filas migratorias?",
+    "options": [
+      "Se crea sin problemas. No es actualizable. Permite la inserción de filas migratorias.",
+      "Da error al crearla porque contiene una expresión aritmética (sal+comm) sin un alias.",
+      "Se crea sin problemas. Es actualizable. No permite filas migratorias porque tiene la cláusula DISTINCT.",
+      "Se crea sin problemas. No es actualizable. No permite filas migratorias por defecto."
+    ],
+    "correct": 0,
+    "justification": "Se crea sin problemas. No es actualizable ya que tiene una cláusula de filtrado de repetidos (DISTINCT). Por otra parte, sí que permite la inserción de filas migratorias porque no tiene la opción de CHECK OPTION especificada.",
+    "trap": false
+  },
+  {
+    "category": "examen_2022_julio_11",
+    "type": "multi",
+    "question": "Considera la vista `vista2` (asumiendo que `emps_depto10` ya existe):<br><pre>CREATE VIEW vista2 AS\nSELECT empno, ename, sal, job\nFROM emps_depto10\nWHERE sal > 4000\nWITH LOCAL CHECK OPTION;</pre><br>¿Se crea la vista? ¿Es actualizable? ¿Permitiría la inserción de filas migratorias?",
+    "options": [
+      "Se crea sin problema. Es actualizable. Podría generar filas migratorias respecto a la vista base `emps_depto10`.",
+      "Da error al crearla porque `WITH LOCAL CHECK OPTION` no se puede aplicar si la vista base no la tiene.",
+      "Se crea sin problema. Es actualizable. No permite ningún tipo de filas migratorias gracias al `WITH LOCAL CHECK OPTION`.",
+      "Se crea sin problema. No es actualizable por depender de otra vista."
+    ],
+    "correct": 0,
+    "justification": "Se crearía sin problema y sería actualizable. No existirían filas migratorias de forma local, pero si insertásemos un empleado con sueldo > 4000 de otro departamento, la vista lo permitiría y originaría una fila migratoria respecto a la vista base `emps_depto10`.",
+    "trap": true
+  },
+  {
+    "category": "examen_2022_julio_11",
+    "type": "multi",
+    "question": "¿Qué pasaría si un usuario con el rol ABD ejecutase la sentencia `REVOKE CONNECT FROM PUBLIC;` en Oracle y qué ocurre con los usuarios que ya están conectados?",
+    "options": [
+      "Revoca el rol CONNECT a todos los usuarios. No es instantáneo para los conectados, se hará efectivo en nuevas sesiones o al ejecutar SET ROLE ALL.",
+      "Da un error de privilegios, ya que PUBLIC no es un rol revocable por un usuario genérico, solo por SYS.",
+      "Revoca el rol CONNECT a todos los usuarios y cierra inmediatamente las sesiones de los usuarios conectados.",
+      "Revoca el rol CONNECT solo a los usuarios sin privilegios administrativos. Los usuarios conectados no notan ningún cambio hasta reiniciar la base de datos."
+    ],
+    "correct": 0,
+    "justification": "Causa la revocación del rol a todos los usuarios, dado que PUBLIC engloba a todos los usuarios. No afecta a las sesiones presentes de inmediato; lo hará en cuanto intenten revalidar sus roles en nuevas sesiones o usando SET ROLE ALL.",
+    "trap": false
+  },
+  {
+    "category": "examen_2022_julio_11",
+    "type": "multi",
+    "question": "Considera la tabla EMP con un índice I_EMP_COMM sobre el campo COMM. ¿Utilizará Oracle el índice para ejecutar la siguiente sentencia?<br><pre>SELECT /*+ INDEX (EMP I_EMP_COMM) */ DISTINCT (COMM)\nFROM EMP;</pre>",
+    "options": [
+      "No se utilizará el índice porque en Oracle los valores nulos no se incluyen en los índices B-Tree normales y el DISTINCT requiere agruparlos.",
+      "Sí, se utilizará obligatoriamente debido a la presencia del hint `/*+ INDEX ... */` que fuerza su uso bajo cualquier circunstancia.",
+      "No, porque los índices no pueden utilizarse cuando se incluye la cláusula DISTINCT en la consulta SQL.",
+      "Sí, se utilizará el índice ya que el optimizador detecta que el escaneo del índice es más eficiente que el escaneo completo de la tabla."
+    ],
+    "correct": 0,
+    "justification": "El DISTINCT agrupa los valores, por lo que los nulos se agrupan en una única fila. En Oracle, los nulos no se incluyen en los índices B-Tree normales, así que no se usará el índice a pesar del hint.",
+    "trap": true
+  },
+  {
+    "category": "examen_2022_julio_11",
+    "type": "multi",
+    "question": "Considera la tabla EMP con un índice I_EMP_SAL sobre el campo SAL. ¿Utilizará Oracle el índice para ejecutar la siguiente sentencia?<br><pre>SELECT AVG(SAL)\nFROM EMP;</pre>",
+    "options": [
+      "Sí, utilizará el índice I_EMP_SAL para optimizar el cálculo de agregación sobre los valores no nulos.",
+      "No, porque para calcular la media aritmética (AVG) es necesario acceder a todas las columnas de la fila para verificar la concurrencia.",
+      "Sí, pero sólo si se añade un hint explícito en la consulta indicando el uso forzado de I_EMP_SAL.",
+      "No, porque los índices B-Tree solo sirven para cláusulas WHERE o ORDER BY, no para funciones de agregación como AVG."
+    ],
+    "correct": 0,
+    "justification": "El campo SAL puede contener nulos, pero como se realiza un AVG, Oracle usará el índice para optimizar la agregación de los valores no nulos.",
+    "trap": false
+  },
+  {
+    "category": "examen_2022_julio_11",
+    "type": "multi",
+    "question": "Dadas las tablas MAESTRA(K1,K2) con la fila (5,TR) y ESCLAVA(ID,K1,K2) con filas (1,NULL,GL), (2,5,NULL), (3,5,TR). Sabiendo que (K1,K2) en ESCLAVA referencia a MAESTRA, ¿qué filas de ESCLAVA serían válidas según la cláusula MATCH?",
+    "options": [
+      "FULL: (3) válida. PARTIAL: (2,3) válidas. SIMPLE: (1,2,3) válidas.",
+      "FULL: (3) válida. PARTIAL: (3) válida. SIMPLE: (1,2,3) válidas.",
+      "FULL: (1,2,3) válidas. PARTIAL: (2,3) válidas. SIMPLE: (3) válida.",
+      "FULL: (3) válida. PARTIAL: (1,2,3) válidas. SIMPLE: (1,2,3) válidas."
+    ],
+    "correct": 0,
+    "justification": "FULL: requiere que ambos componentes sean no nulos (y referencien la maestra) o que todos sean nulos, por tanto solo (3) es válida. PARTIAL: (2) tiene '5', que está en MAESTRA, y (3) es válida por completo. SIMPLE: basta con un nulo para que sea válida (1,2), más la coincidencia completa (3).",
+    "trap": false
+  },
+  {
+    "category": "examen_2022_julio_11",
+    "type": "multi",
+    "question": "En un control de concurrencia multiversión ($M(T_i) = i$), con las versiones de A: $A_1=20$ (ME=1, ML=4) y $A_2=30$ (ME=6, ML=7). Si la transacción $T_3$ lee A, ¿qué ocurre?",
+    "options": [
+      "T3 lee $A_1 = 20$. Las marcas no cambian: $A_1$ (ME=1, ML=4) y $A_2$ (ME=6, ML=7).",
+      "T3 lee $A_1 = 20$. Se actualiza la marca de lectura: $A_1$ (ME=1, ML=3) y $A_2$ (ME=6, ML=7).",
+      "T3 no puede leer A porque su marca es menor que el ML de $A_1$, produciendo un rollback.",
+      "T3 lee $A_2 = 30$ porque es la versión más reciente del dato y se asume dirty read."
+    ],
+    "correct": 0,
+    "justification": "M(T3)=3, así que busca la versión con ME <= 3, que es A1. Como 3 no supera el ML actual (4), lee A1 sin modificar marcas.",
+    "trap": false
+  },
+  {
+    "category": "examen_2022_julio_11",
+    "type": "multi",
+    "question": "Con el estado de versiones $A_1=20$ (ME=1, ML=4) y $A_2=30$ (ME=6, ML=7), la transacción $T_8$ lee A. ¿Qué ocurre?",
+    "options": [
+      "T8 lee $A_2 = 30$. Se actualiza la marca de lectura de $A_2$ a ML=8.",
+      "T8 lee $A_2 = 30$. Las marcas no cambian porque la lectura no afecta las marcas en multiversión.",
+      "T8 no puede leer A porque la marca de lectura de $A_2$ es 7, produciéndose un conflicto.",
+      "T8 lee $A_1 = 20$ porque $A_2$ aún no está consolidada al ser ML=7."
+    ],
+    "correct": 0,
+    "justification": "M(T8)=8, así que la versión con ME <= 8 es A2 (ME=6). Como 8 > ML(A2) (7), se actualiza el ML de A2 a 8.",
+    "trap": false
+  },
+  {
+    "category": "examen_2022_julio_11",
+    "type": "multi",
+    "question": "Con el estado de versiones de A actualizadas: $A_1=20$ (ME=1, ML=4) y $A_2=30$ (ME=6, ML=8), la transacción $T_9$ intenta escribir el valor 13 en A. ¿Qué ocurre?",
+    "options": [
+      "Se permite la escritura y crea una nueva versión $A_3=13$ con ME=9 y ML=9.",
+      "Se sobrescribe el valor de $A_2$, cambiando su valor a 13 y actualizando su ME a 9.",
+      "Se deniega la escritura y $T_9$ hace rollback porque existe una lectura de T8 con ML=8.",
+      "Se permite la escritura creando $A_3=13$, pero se descarta la versión $A_1$ ya que queda obsoleta."
+    ],
+    "correct": 0,
+    "justification": "Como M(T9)=9 y es mayor que el ML de la versión más reciente (8), se permite la escritura y crea la nueva versión A3=13.",
+    "trap": false
+  },
+  {
+    "category": "examen_2022_julio_11",
+    "type": "multi",
+    "question": "Con las versiones $A_1=20$ (ME=1, ML=4), $A_2=30$ (ME=6, ML=8) y $A_3=13$ (ME=9, ML=9), la transacción $T_3$ intenta escribir el valor 25 en A. ¿Qué ocurre?",
+    "options": [
+      "La operación se deniega porque M(T3)=3 es menor que el ML(A1)=4. T3 hace rollback.",
+      "Se crea una versión intermedia $A_{intermedia}=25$ con ME=3 y ML=3 reordenando el histórico.",
+      "Se permite la escritura actualizando en el sitio el valor de $A_1$ a 25.",
+      "La operación se encola esperando a que el dato A se libere de bloqueos de lectura de T4 y T8."
+    ],
+    "correct": 0,
+    "justification": "T3 intentaría escribir basándose en A1, pero como su marca M(T3)=3 es menor que lecturas posteriores ya realizadas sobre A1 (ML=4), la operación se deniega para evitar anomalías. T3 hace rollback.",
+    "trap": true
+  },
+  {
+    "category": "examen_2022_julio_11",
+    "type": "multi",
+    "question": "Dado un log de recuperación: <br><pre>&lt;T1, START&gt;\n&lt;T2, START&gt;\n&lt;T1, A, 10, 28&gt;\n&lt;T1, COMMIT&gt;\n&lt;T2, B, 10, 20&gt;\n&lt;T3, START&gt;\n&lt;CHECKPOINT (T2, T3)&gt;\n&lt;T2, COMMIT&gt;\n&lt;T3, B, 20, 30&gt;\n&lt;T3, B, 30, 33&gt;</pre><br>Tras una caída, ¿qué tipo de sistema es y qué se hace para recuperarlo (Robar, No forzar)?",
+    "options": [
+      "Actualizaciones inmediatas. Se ignora T1, se aplica redo(T2) y undo(T3).",
+      "Actualizaciones diferidas. Se ignora T1 y T3, se aplica redo(T2).",
+      "Actualizaciones inmediatas. Se aplica undo(T1), redo(T2) y undo(T3).",
+      "Actualizaciones diferidas. Se aplica redo(T1), redo(T2) y undo(T3)."
+    ],
+    "correct": 0,
+    "justification": "Son inmediatas porque guardan el valor antes y después. T1 se ignora porque consolidó antes del checkpoint. T2 hizo commit tras el checkpoint, requiere redo. T3 no hizo commit, requiere undo.",
+    "trap": false
+  },
+  {
+    "category": "examen_2022_julio_11",
+    "type": "multi",
+    "question": "¿Qué es una restrición aplazable (DEFERRABLE) y en qué situación clásica se hace estrictamente necesario su uso?",
+    "options": [
+      "Permite posponer su comprobación al momento del COMMIT (DEFERRED). Es necesaria para poder insertar los primeros registros cuando hay ciclos referenciales entre dos o más tablas.",
+      "Es una restrición que sólo se evalúa si el administrador lanza un comando de revalidación manual. Se usa para evitar cuellos de botella en la inserción masiva.",
+      "Permite deshabilitar la integridad referencial de forma temporal durante la carga de un backup sin generar bloqueos en el diccionario de datos.",
+      "Es un tipo especial de restricción a nivel de vista materializada que no se valida de manera síncrona en la base subyacente."
+    ],
+    "correct": 0,
+    "justification": "Las restricciones DEFERRABLE permiten esperar al momento de confirmar la transacción (COMMIT) para verificar la validez, mediante el estado DEFERRED. Su uso clásico es romper ciclos referenciales entre tablas.",
+    "trap": false
+  },
+  {
+    "category": "examen_2022_julio_11",
+    "type": "multi",
+    "question": "A partir de la siguiente información de un plan de ejecución de Oracle:<br><pre>2 | HASH GROUP BY\n3 | MERGE JOIN\n4 | TABLE ACCESS BY INDEX ROWID (EMP)\n5 | INDEX FULL SCAN (PK_DEPT)\n6 | SORT JOIN\n7 | TABLE ACCESS FULL (EMP)\nPredicate Information:\n1 - filter(COUNT(*)&gt;3)\n6 - access(\"EMP\".\"DEPTNO\"=\"DEPT\".\"DEPTNO\")</pre><br>¿Qué sentencia SQL generaría este plan?",
+    "options": [
+      "SELECT e.deptno, d.dname, COUNT(*) FROM emp e JOIN dept d ON e.deptno = d.deptno GROUP BY e.deptno, d.dname HAVING COUNT(*) > 3;",
+      "SELECT e.deptno, COUNT(*) FROM emp e WHERE e.deptno IN (SELECT deptno FROM dept) GROUP BY e.deptno HAVING COUNT(*) > 3;",
+      "SELECT d.dname, COUNT(*) FROM dept d WHERE COUNT(*) > 3 GROUP BY d.dname;",
+      "SELECT e.deptno, d.dname, COUNT(*) FROM emp e, dept d WHERE e.deptno = d.deptno AND COUNT(*) > 3 GROUP BY e.deptno, d.dname;"
+    ],
+    "correct": 0,
+    "justification": "El plan de ejecución muestra un JOIN (MERGE JOIN) entre EMP y DEPT (a través del INDEX FULL SCAN de PK_DEPT). Luego hace un HASH GROUP BY y por último filtra por `COUNT(*) > 3` (HAVING).",
+    "trap": true
+  },
+  {
+    "category": "examen_2023",
+    "type": "multi",
+    "question": "Considera las siguientes sentencias SQL:<br><pre>1. (u1) CREATE VIEW vista1 AS SELECT * FROM dept WHERE deptno = 30;\n2. (u1) GRANT SELECT, INSERT ON vista1 TO u2;\n3. (u1) ALTER TABLE dept ADD phone VARCHAR(20);\n4. (u2) SELECT * FROM u1.vista1;</pre><br>¿Qué ocurre exactamente en la sentencia 4?",
+    "options": [
+      "Se mostrarán todas las columnas originales de la tabla `dept`, exceptuando la nueva columna `phone`.",
+      "Se mostrarán todas las columnas incluyendo `phone`, con valor NULL para las filas anteriores.",
+      "La sentencia producirá un error de compilación porque la vista quedó invalidada al alterar la tabla base.",
+      "Se mostrarán todas las columnas incluyendo `phone`, pero el usuario u2 necesita permisos adicionales sobre la tabla modificada."
+    ],
+    "correct": 0,
+    "justification": "La vista es un objeto precompilado que solo conoce los atributos de la tabla en el momento exacto en el que fue creada. Por tanto, no reflejará las columnas añadidas posteriormente con ALTER TABLE.",
+    "trap": true
+  },
+  {
+    "category": "examen_2023",
+    "type": "multi",
+    "question": "Considera las siguientes sentencias SQL:<br><pre>1. (u1) CREATE VIEW vista1 AS SELECT * FROM dept WHERE deptno = 30;\n2. (u1) GRANT SELECT, INSERT ON vista1 TO u2;\n3. (u1) ALTER TABLE dept ADD phone VARCHAR(20);\n5. (u2) INSERT INTO u1.vista1 VALUES (50, 'I+D', 'BOSTON');</pre><br>¿Qué ocurre exactamente en la sentencia 5?",
+    "options": [
+      "La fila se insertará en la tabla base y `phone` tomará el valor por defecto, aunque no se pueda ver desde la vista.",
+      "Producirá un error de validación únicamente porque el valor 50 viola la condición implícita `deptno = 30` de la vista.",
+      "Se rechazará porque `u2` sólo tiene permisos sobre `vista1` en su versión original y no en la versión alterada.",
+      "Producirá un fallo de compilación de la consulta por la discrepancia en el número de atributos al usar un INSERT genérico (VALUES) sin especificar las columnas."
+    ],
+    "correct": 3,
+    "justification": "Al mapear un INSERT genérico (`VALUES`) sin especificar columnas sobre una tabla modificada estructuralmente, la discrepancia en el número de atributos provocará un fallo de compilación. Si se hubieran especificado las columnas, fallaría igualmente por validación o el registro 'desaparecería'.",
+    "trap": true
+  },
+  {
+    "category": "examen_2023",
+    "type": "multi",
+    "question": "Si el usuario `admin` tiene el rol global de `DBA`, ¿cuál es la validez y el efecto de la siguiente sentencia?<br><pre>(admin) REVOKE PUBLIC FROM Usuario;</pre>",
+    "options": [
+      "Revocará todos los privilegios públicos del usuario, dejándolo solo con sus permisos específicos.",
+      "No es posible ejecutarlo, ya que PUBLIC no es un rol otorgable ni revocable individualmente, sino un pseudo-rol que representa a todos.",
+      "La sentencia es válida pero no tiene efecto si el usuario tiene privilegios heredados por otros roles globales.",
+      "Es válida y se ejecutará correctamente, pero el usuario mantendrá el permiso CONNECT por defecto."
+    ],
+    "correct": 1,
+    "justification": "No es posible ejecutarlo. `PUBLIC` no es un rol otorgable ni revocable individualmente; es un pseudo-rol o identificador de autorización especial que representa automáticamente a absolutamente todos los usuarios.",
+    "trap": false
+  },
+  {
+    "category": "examen_2023",
+    "type": "multi",
+    "question": "Si el usuario `admin` tiene el rol global de `DBA`, ¿cuál es el efecto de las siguientes acciones secuenciales?<br><pre>1. (admin) GRANT CONNECT TO usuario WITH GRANT OPTION;\n2. (usuario) REVOKE CONNECT FROM admin;</pre>",
+    "options": [
+      "La sentencia 1 funciona, pero la sentencia 2 dará error porque un usuario común no puede revocar privilegios sobre un administrador si él no fue quien se los concedió.",
+      "Ambas sentencias funcionan correctamente; `admin` perderá el rol `CONNECT` pero mantendrá sus privilegios `DBA`.",
+      "La sentencia 1 dará error porque el rol `CONNECT` no se puede otorgar con `WITH GRANT OPTION` al ser un rol de sistema.",
+      "Ambas sentencias se ejecutan sin error, pero la revocación no tiene efecto sobre `admin` debido a su rol global `DBA`."
+    ],
+    "correct": 0,
+    "justification": "Un usuario común no puede revocar privilegios sobre un administrador si él no fue quien se los concedió originalmente, independientemente del `WITH GRANT OPTION`.",
+    "trap": true
+  },
+  {
+    "category": "examen_2023",
+    "type": "multi",
+    "question": "En un plan de ejecución con control de concurrencia por marcas de tiempo (Regla de Thomas), las marcas iniciales del ítem B son ML(B)=0, ME(B)=0. <br>Si en el instante 2, T3 ejecuta `Write(B)` y luego, en el instante 3, T1 ejecuta `Write(B)`, ¿qué ocurre en el instante 3? (Asume M(Ti)=i)",
+    "options": [
+      "La escritura se ejecuta normalmente sobreescribiendo el valor de T3 y actualizando ME(B) = 1.",
+      "Se produce un FALLO y T1 debe abortar y reiniciarse, ya que no puede escribir un ítem modificado por una transacción posterior.",
+      "Se ignora la escritura por la Regla de Thomas sin abortar T1, ya que intenta escribir un valor más antiguo que el consolidado por T3 (M(T1) < ME(B)).",
+      "La escritura de T1 queda en espera (bloqueada) hasta que T3 confirme su transacción mediante un COMMIT."
+    ],
+    "correct": 2,
+    "justification": "Como M(T1) = 1 < ME(B) = 3, se está intentando escribir un valor más antiguo que el ya consolidado por T3. La transacción T1 no aborta, simplemente omite la escritura por la Regla de Thomas.",
+    "trap": true
+  },
+  {
+    "category": "examen_2023",
+    "type": "multi",
+    "question": "En un plan con control de concurrencia por marcas de tiempo, tras varias operaciones, las marcas del ítem B son: ML(B)=0, ME(B)=3. ¿Qué ocurre en el instante 7 cuando T2 ejecuta `Read(B)`? (Asume M(Ti)=i)",
+    "options": [
+      "La lectura es válida, ya que M(T2) > ML(B), y se actualiza ML(B) a 2.",
+      "Se lee el valor anterior modificado por T1 usando el control multiversión y T2 continúa sin abortar.",
+      "La transacción T2 queda en espera hasta que T3 realice el COMMIT o ROLLBACK de la escritura sobre B.",
+      "Se produce un FALLO y T2 se aborta (Rollback), ya que intenta leer una versión de B modificada por una transacción más nueva (T3)."
+    ],
+    "correct": 3,
+    "justification": "Como M(T2) = 2 < ME(B) = 3, la transacción T2 intenta leer una versión de B que fue escrita 'en el futuro' por T3. Por tanto, T2 aborta y se reiniciará.",
+    "trap": true
+  },
+  {
+    "category": "examen_2023",
+    "type": "multi",
+    "question": "En un plan con control de concurrencia por marcas de tiempo, las marcas del ítem C son: ML(C)=3, ME(C)=0. ¿Qué ocurre en el instante 8 cuando T1 ejecuta `Write(C)`? (Asume M(Ti)=i)",
+    "options": [
+      "Se produce un FALLO y T1 se aborta (Rollback), porque intenta escribir un registro que ya ha sido leído por una transacción más reciente (T3).",
+      "Se aplica la Regla de Escritura de Thomas, por lo que la operación Write(C) se ignora pero T1 no aborta.",
+      "La escritura es válida y se ejecuta, actualizando ME(C) a 1, ya que ninguna transacción posterior ha escrito en C.",
+      "T1 aborta en cascada provocando también el aborto de T3, al invalidar la lectura previa de C que hizo T3."
+    ],
+    "correct": 0,
+    "justification": "Como M(T1) = 1 < ML(C) = 3, T1 intenta escribir un registro que ya ha sido leído por una transacción más reciente (T3). T1 se aborta.",
+    "trap": true
+  },
+  {
+    "category": "examen_2023",
+    "type": "multi",
+    "question": "¿Cuál es el funcionamiento y semántica de la acción referencial `NO ACTION` en SQL (ej: `ON DELETE NO ACTION`)?",
+    "options": [
+      "La operación se rechaza inmediatamente devolviendo un error, siendo estrictamente equivalente a `RESTRICT` pero sin soportar transacciones aplazables.",
+      "La operación se rechaza devolviendo un error de integridad referencial si se violan restricciones, pero permite que la verificación se aplace hasta el final de la transacción (DEFERRED).",
+      "Si hay violación de integridad referencial, el motor de base de datos no realiza ninguna acción en la tabla hija dejando los valores huérfanos.",
+      "La operación se bloquea indefinidamente hasta que los registros dependientes en la tabla hija sean actualizados o eliminados por otra transacción."
+    ],
+    "correct": 1,
+    "justification": "A diferencia de RESTRICT, NO ACTION permite que la verificación de la restricción se pueda aplazar hasta el final de la transacción (DEFERRED) si está configurada como aplazable.",
+    "trap": true
+  },
+  {
+    "category": "examen_2023",
+    "type": "multi",
+    "question": "En el contexto de la optimización heurística en álgebra relacional, ¿qué ocurre en la fase de 'Bajada de las Selecciones Monódicas'?",
+    "options": [
+      "Las selecciones (σ) con condiciones sobre una única tabla se desplazan hacia abajo en el árbol, situándose justo encima de sus respectivas tablas base para reducir filas tempranamente.",
+      "Se descomponen las condiciones complejas (AND) en una secuencia jerárquica de múltiples operaciones de selección sucesivas.",
+      "Se combinan las selecciones resultantes de productos cartesianos con los propios productos (✕) para transformarlos en operaciones de Equi-Join (⋈).",
+      "Se introducen proyecciones (π) tempranas destinadas a descartar todas las columnas innecesarias de las tablas arrastrando solo los atributos requeridos."
+    ],
+    "correct": 0,
+    "justification": "Las selecciones monódicas (con variables de una única relación) se aplican lo antes posible empujándolas hacia las hojas del árbol, reduciendo el tamaño de las relaciones antes de hacer los joins o productos cartesianos.",
+    "trap": false
+  },
+  {
+    "category": "examen_2023",
+    "type": "multi",
+    "question": "Al generar un árbol de expresión canónica (sin optimizar) para una consulta SQL con tres tablas unidas en el `FROM` mediante `WHERE`, ¿qué operaciones relacionales se utilizan inicialmente para combinarlas?",
+    "options": [
+      "Dos operaciones de reunión natural (⋈) evaluadas progresivamente.",
+      "Dos operaciones consecutivas de producto cartesiano (✕) seguidas de una única selección (σ) que evalúa todas las condiciones de reunión juntas.",
+      "Un producto cartesiano (✕) masivo de tres vías evaluado en un único paso junto con sus proyecciones.",
+      "Dos operaciones de Equi-Join (⋈) optimizadas donde las selecciones ya están bajadas al nivel de las tablas."
+    ],
+    "correct": 1,
+    "justification": "En el árbol canónico inicial, las tablas en el FROM se combinan usando Productos Cartesianos (✕), y las condiciones de la cláusula WHERE se evalúan con una operación general de Selección (σ) sobre el resultado del producto masivo.",
+    "trap": false
+  },
+  {
+    "category": "examen_2026_enero",
+    "type": "multi",
+    "question": "En un sistema de control de concurrencia multiversión, tenemos las siguientes versiones del dato A:<br><ul><li>A1 = 10 (ME = 2, ML = 5)</li><li>A2 = 20 (ME = 7, ML = 9)</li></ul>¿Qué ocurre cuando T4 (con marca de transacción M(T4) = 4) lee el dato A?",
+    "options": [
+      "La transacción lee la versión A1 devolviendo el valor 10, y las marcas de la versión se actualizan a ME = 2 y ML = 5.",
+      "La transacción lee la versión A2 devolviendo el valor 20, y las marcas de la versión se actualizan a ME = 7 y ML = 9.",
+      "La operación se deniega y la transacción T4 debe abortar para evitar inconsistencias.",
+      "La transacción lee la versión A1 devolviendo el valor 10, y la marca de lectura se actualiza a ML = 4."
+    ],
+    "correct": 0,
+    "justification": "M(T4)=4 busca la versión con mayor ME <= 4, que es A1 (ME=2). Al ser M(T4)=4 menor a ML(A1)=5, se lee el valor 10 y la nueva marca ML se calcula como max(4, 5) = 5.",
+    "trap": false
+  },
+  {
+    "category": "examen_2026_enero",
+    "type": "multi",
+    "question": "En un sistema de control de concurrencia multiversión, tenemos las siguientes versiones del dato A:<br><ul><li>A1 = 10 (ME = 2, ML = 5)</li><li>A2 = 20 (ME = 7, ML = 9)</li></ul>¿Qué ocurre cuando T9 (con marca de transacción M(T9) = 9) lee el dato A?",
+    "options": [
+      "La transacción lee la versión A1 y la marca de lectura se actualiza a ML = 9.",
+      "La operación de lectura se rechaza por conflicto de concurrencia, ya que ML = 9.",
+      "La transacción lee la versión A2 devolviendo el valor 20 y las marcas de la versión permanecen en ME = 7, ML = 9.",
+      "La transacción lee la versión A2 devolviendo el valor 20 y la marca de lectura se actualiza a ML = 10 para proteger lecturas futuras."
+    ],
+    "correct": 2,
+    "justification": "M(T9)=9 busca la versión más reciente con ME <= 9, que es A2 (ME=7). Como ML actual es 9, la nueva ML es max(9, 9) = 9. Se lee el valor 20 y las marcas permanecen inalteradas.",
+    "trap": false
+  },
+  {
+    "category": "examen_2026_enero",
+    "type": "multi",
+    "question": "En un sistema de control de concurrencia multiversión, tenemos las siguientes versiones del dato A:<br><ul><li>A1 = 10 (ME = 2, ML = 5)</li><li>A2 = 20 (ME = 7, ML = 9)</li></ul>¿Qué sucede si la transacción T13 (con marca M(T13) = 13) intenta escribir el valor 13 en A?",
+    "options": [
+      "Se deniega la escritura porque M(T13) es mayor que la marca de lectura actual de A2.",
+      "Se permite la escritura creando una nueva versión A3 = 13 y se le asignan las marcas ME = 13 y ML = 13.",
+      "Se sobrescribe la versión A2 cambiando su valor a 13 y actualizando su ME a 13, pero manteniendo ML en 9.",
+      "Se permite la escritura creando una nueva versión A3 = 13 con marcas ME = 13 y ML = 9."
+    ],
+    "correct": 1,
+    "justification": "Intenta escribir sobre A2 (ME=7). Se comprueba si M(T13) < ML(A2). Como 13 < 9 es falso, se permite la escritura creando A3=13 con ME=13 y ML=13.",
+    "trap": false
+  },
+  {
+    "category": "examen_2026_enero",
+    "type": "multi",
+    "question": "En un sistema de control de concurrencia multiversión, con las versiones actuales de A: A1 (ME = 2, ML = 5), A2 (ME = 7, ML = 9) y A3 (ME = 13, ML = 13), ¿qué sucede si T4 (M(T4) = 4) intenta escribir el valor 25 en A?",
+    "options": [
+      "Se permite la escritura creando una nueva versión intermedia con ME = 4 y ML = 5.",
+      "Se sobrescribe la versión A1 con el valor 25 y se actualiza su ME a 4.",
+      "La operación se suspende a la espera de que la transacción que leyó A1 (modificando ML a 5) confirme sus cambios.",
+      "La operación se deniega y la transacción T4 hace rollback porque 4 < 5, indicando que una transacción posterior ya leyó la versión."
+    ],
+    "correct": 3,
+    "justification": "M(T4)=4 actuaría sobre A1 (ME=2). Pero la marca temporal de T4 es menor a ML(A1)=5. Como 4 < 5 es verdadero, la escritura se deniega para evitar anomalías y T4 hace rollback.",
+    "trap": false
+  },
+  {
+    "category": "examen_2026_enero",
+    "type": "multi",
+    "question": "En un sistema de control de concurrencia multiversión, con las versiones originales de A: A1 (ME = 2, ML = 5) y A2 (ME = 7, ML = 9), ¿qué sucede si T6 (M(T6) = 6) intenta escribir el valor 50 en A?",
+    "options": [
+      "La operación se deniega porque la marca de lectura de A2 es 9, la cual es estrictamente mayor que 6.",
+      "Se deniega la operación porque ya existe una versión A2 que fue escrita en el tiempo 7.",
+      "Se sobrescribe la versión A1 actualizando su valor a 50 y estableciendo ME a 6, destruyendo el valor original de 10.",
+      "Se permite la operación y se crea una nueva versión intermedia válida con valor 50 y marcas ME = 6 y ML = 6."
+    ],
+    "correct": 3,
+    "justification": "M(T6)=6 busca la versión aplicable ME <= 6, que es A1 (ME=2). Como M(T6) >= ML(A1) (es decir, 6 >= 5), la escritura se permite y se crea una versión intermedia con ME=6, ML=6.",
+    "trap": false
+  },
+  {
+    "category": "examen_2026_enero",
+    "type": "multi",
+    "question": "En SQL estándar, ¿cuál es el funcionamiento de la acción referencial <code>ON DELETE NO ACTION</code> (o <code>ON UPDATE NO ACTION</code>) y en qué se diferencia principalmente de <code>RESTRICT</code>?",
+    "options": [
+      "<code>NO ACTION</code> establece el valor de la clave foránea a NULL en los registros hijos, mientras que <code>RESTRICT</code> devuelve un error abortando la operación.",
+      "Ambas acciones funcionan de forma idéntica evaluando siempre de manera inmediata la restricción al intentar la modificación.",
+      "<code>NO ACTION</code> ignora la violación de la integridad referencial y permite la operación, a diferencia de <code>RESTRICT</code> que la prohíbe.",
+      "<code>NO ACTION</code> impide operaciones que violen la integridad referencial, pero permite aplazar la comprobación hasta el final de la transacción (con DEFERRED), a diferencia de <code>RESTRICT</code> que comprueba siempre de forma inmediata."
+    ],
+    "correct": 3,
+    "justification": "NO ACTION aborta la operación si existe violación, pero a diferencia de RESTRICT, permite diferir (aplazar) la verificación hasta el final de la transacción si está configurada como aplazable.",
+    "trap": false
+  },
+  {
+    "category": "examen_2026_enero",
+    "type": "multi",
+    "question": "¿El hecho de que una vista en SQL Estándar tenga la cláusula <code>WITH CHECK OPTION</code> garantiza siempre y de forma absoluta que no se pueda insertar una fila migratoria a través de ella?",
+    "options": [
+      "Sí, el estándar SQL estipula que <code>WITH CHECK OPTION</code> comprueba rigurosamente todas las condiciones sin importar cómo estén anidadas las vistas, previniendo siempre las filas migratorias.",
+      "No, no de manera absoluta en toda la jerarquía; si se especifica <code>WITH LOCAL CHECK OPTION</code> sobre una vista anidada, se podría permitir la inserción que cumpla su condición local pero no la de la vista base, generando una fila migratoria.",
+      "No, <code>WITH CHECK OPTION</code> únicamente previene modificaciones (UPDATE) que generen filas migratorias, pero no tiene efecto en instrucciones INSERT.",
+      "Sí, al estar definida en cualquier nivel, propaga siempre las restricciones obligatoriamente a cualquier nivel subyacente impidiendo la migración de filas en todos los escenarios."
+    ],
+    "correct": 1,
+    "justification": "Por defecto, WITH CHECK OPTION actúa en cascada y garantiza invulnerabilidad. Sin embargo, si se utiliza de manera explícita WITH LOCAL CHECK OPTION, solo se comprueba la restricción de la vista actual, lo que podría permitir una fila migratoria si incumple los filtros de las vistas base subyacentes.",
+    "trap": false
   }
 ];
