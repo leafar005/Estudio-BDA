@@ -22,20 +22,16 @@
   --shadow-glow: 0 0 30px var(--accent-primary-glow);
 }
 
-html {
-  background: var(--bg-primary);
-  overscroll-behavior: none;
-}
-
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
   background: var(--bg-primary);
   color: var(--text-primary);
-  overflow: hidden; /* prevent scrollbar when flipping */
+  overflow-x: hidden; /* prevent horizontal scrollbar during animations */
+  overflow-y: auto;
 }
 
-/* Background static */
+/* Background animation */
 .bg-grid {
   position: fixed;
   inset: 0;
@@ -53,6 +49,7 @@ body {
   opacity: 0.4;
   pointer-events: none;
   z-index: 0;
+  animation: float 15s ease-in-out infinite;
 }
 .bg-glow-1 {
   width: 500px; height: 500px;
@@ -62,12 +59,18 @@ body {
 .bg-glow-2 {
   width: 400px; height: 400px;
   background: radial-gradient(circle, rgba(139, 92, 246, 0.2), transparent 70%);
-  bottom: -5%; left: -5%;
+  bottom: -5%; left: -5%; animation-delay: -5s;
 }
 .bg-glow-3 {
   width: 300px; height: 300px;
   background: radial-gradient(circle, rgba(167, 139, 250, 0.15), transparent 70%);
-  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: -10s;
+}
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(30px, -20px) scale(1.05); }
+  50% { transform: translate(-20px, 30px) scale(0.95); }
+  75% { transform: translate(20px, 20px) scale(1.02); }
 }
 
 #app {
@@ -80,6 +83,7 @@ body {
   align-items: center;
   background: var(--bg-glass);
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border-subtle);
   height: 80px;
 }
@@ -95,19 +99,59 @@ body {
   color: var(--text-primary);
 }
 
-.flashcard-container {
+.flashcards-wrapper {
+  position: relative;
   width: 100%;
   max-width: 700px;
-  height: 450px;
-  perspective: 1500px;
+  height: 380px;
   margin-bottom: 30px;
-  cursor: pointer;
-  animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  perspective: 1500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+.flashcard-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transform: translateX(0) scale(0.8);
+  pointer-events: none;
+  z-index: 1;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.flashcard-container.card-active {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  pointer-events: auto;
+  z-index: 3;
+}
+
+.flashcard-container.card-prev {
+  opacity: 0.4;
+  transform: translateX(-95%) scale(0.8) rotateY(5deg);
+  pointer-events: auto;
+  z-index: 2;
+  filter: brightness(0.5);
+}
+
+.flashcard-container.card-next {
+  opacity: 0.4;
+  transform: translateX(95%) scale(0.8) rotateY(-5deg);
+  pointer-events: auto;
+  z-index: 2;
+  filter: brightness(0.5);
+}
+
+.flashcard-container.card-prev:hover,
+.flashcard-container.card-next:hover {
+  opacity: 0.7;
+  filter: brightness(0.8);
 }
 
 .flashcard-inner {
@@ -129,8 +173,6 @@ body {
   height: 100%;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -146,8 +188,6 @@ body {
 
 .flashcard-front {
   border-top: 3px solid var(--accent-primary);
-  z-index: 2;
-  transform: rotateY(0deg) translateZ(1px);
 }
 
 .flashcard-front:hover {
@@ -157,7 +197,7 @@ body {
 }
 
 .flashcard-back {
-  transform: rotateY(180deg) translateZ(1px);
+  transform: rotateY(180deg);
   background: var(--bg-card);
   border: 1px solid rgba(99, 102, 241, 0.3);
   box-shadow: 0 0 40px rgba(99, 102, 241, 0.15);
@@ -202,13 +242,15 @@ body {
 }
 
 .flashcard-controls {
-  position: absolute;
-  bottom: 30px;
+  position: relative;
+  margin-top: 20px;
   display: flex;
   gap: 20px;
   width: 100%;
   max-width: 700px;
   justify-content: space-between;
+  z-index: 10;
+  pointer-events: auto;
 }
 
 .flashcard-controls button {
@@ -220,6 +262,7 @@ body {
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   min-width: 150px;
+  touch-action: manipulation;
 }
 
 .btn-secondary {
@@ -263,28 +306,63 @@ button:disabled {
 }
 
 @media (max-width: 768px) {
-  .flashcard-container {
-    height: 400px;
-    padding: 0 20px;
+  .bg-glow {
+    display: none; /* DISABLED TO PREVENT MOBILE GPU CRASHES */
   }
+  .quiz-header {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: var(--bg-secondary);
+  }
+  .flashcards-wrapper {
+    height: 60vh;
+    min-height: 350px;
+    max-height: 500px;
+  }
+  .flashcard-container {
+    padding: 0 10px;
+  }
+
+  .flashcard-container.card-prev,
+  .flashcard-container.card-next {
+  opacity: 0.4;
+  transform: translateX(95%) scale(0.8) rotateY(-5deg);
+  pointer-events: auto;
+  z-index: 2;
+  filter: brightness(0.5);
+}
   .flashcard-front, .flashcard-back {
-    padding: 30px 20px;
+    padding: 15px 15px 30px 15px;
   }
   .flashcard-content {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
   .flashcard-back .flashcard-content {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
   .flashcard-controls {
-    padding: 0 20px;
-    bottom: 20px;
+    padding: 0 15px;
+    bottom: 15px;
+    gap: 10px;
   }
   .flashcard-controls button {
-    padding: 12px 20px;
+    padding: 12px 15px;
     font-size: 0.9rem;
     min-width: auto;
     flex: 1;
+  }
+  .card-badges {
+    top: 10px;
+    right: 10px;
+  }
+  .card-badges .badge {
+    font-size: 0.6rem;
+    padding: 3px 6px;
+  }
+  .flashcard-hint {
+    bottom: 15px;
+    font-size: 0.75rem;
+    padding: 6px 12px;
   }
 }
 
@@ -316,14 +394,76 @@ button:disabled {
   border-color: rgba(99, 102, 241, 0.3);
 }
 
-body.light-theme .card-badges .badge {
-  background: rgba(0,0,0,0.05);
-  border-color: rgba(0,0,0,0.1);
-  color: #6b7280;
+
+
+/* Custom Slider Styles */
+.custom-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  background: transparent;
+  outline: none;
+}
+.custom-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  background: var(--text-primary);
+  border: 2px solid var(--accent-primary);
+  cursor: pointer;
+  margin-top: -2px;
+  box-shadow: 0 0 10px var(--accent-primary-glow);
+  transition: transform 0.1s;
+}
+.custom-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+.custom-slider::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  background: transparent;
+  border-radius: 3px;
 }
 
-body.light-theme .card-badges .topic-badge {
-  background: rgba(99, 102, 241, 0.1);
-  color: #4f46e5;
-  border-color: rgba(99, 102, 241, 0.2);
+
+
+.flashcard-container.card-hidden-left {
+  opacity: 0;
+  transform: translateX(-150%) scale(0.8);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.flashcard-container.card-hidden-right {
+  opacity: 0;
+  transform: translateX(150%) scale(0.8);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Fix backface visibility issues due to transparency */
+/* Using a very fast crossfade right at the edge-on angle (0.25s - 0.35s) to prevent the blank frame flicker */
+.flashcard-back {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: opacity 0.1s 0.25s, visibility 0s 0.35s !important;
+}
+.flashcard-container.flipped .flashcard-back {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition: opacity 0.1s 0.25s, visibility 0s 0s !important;
+}
+
+.flashcard-front {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition: opacity 0.1s 0.25s, visibility 0s 0s !important;
+}
+.flashcard-container.flipped .flashcard-front {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: opacity 0.1s 0.25s, visibility 0s 0.35s !important;
 }

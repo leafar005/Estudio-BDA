@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flashcards | ACL 2026</title>
+  <title>Flashcards | BDA 2026</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -28,27 +28,19 @@
       </div>
     </header>
 
-    <main class="quiz-body" style="display:flex; justify-content:center; align-items:center; height: calc(100vh - 80px); flex-direction: column; position: relative;">
-      <div class="flashcard-container" id="flashcard">
-        <div class="flashcard-inner">
-          <div class="flashcard-front">
-            
-            <div class="card-badges">
-              <span class="badge topic-badge" id="front-topic"></span>
-              <span class="badge category-badge" id="front-category"></span>
-            </div>
-            <div class="flashcard-content" id="card-question">Cargando...</div>
-            <div class="flashcard-hint">Haz clic para voltear</div>
-          </div>
-          <div class="flashcard-back">
-            
-            <div class="card-badges">
-              <span class="badge topic-badge" id="back-topic"></span>
-              <span class="badge category-badge" id="back-category"></span>
-            </div>
-            <div class="flashcard-content" id="card-answer"></div>
-          </div>
+    <main class="quiz-body" style="display:flex; justify-content:flex-start; padding-top: 30px; align-items:center; height: calc(100vh - 80px); flex-direction: column; position: relative; box-sizing: border-box;">
+      
+      <div id="scrollbar-wrapper" style="width: 100%; max-width: 700px; margin-bottom: 20px; padding: 0 20px; box-sizing: border-box; display: none;">
+        <div id="scrollbar-labels" style="display: flex; width: 100%; font-size: 0.7rem; color: var(--text-secondary); margin-bottom: 5px; position: relative; height: 25px;"></div>
+        
+        <div style="position: relative; height: 8px; display: flex; align-items: center;">
+          <div id="scrollbar-markers" style="position: absolute; left: 0; right: 0; height: 8px; border-radius: 4px; overflow: hidden; background: var(--bg-option); display: flex;"></div>
+          <input type="range" id="card-slider" min="0" max="0" value="0" style="width: 100%; cursor: pointer; position: absolute; left: 0; right: 0; margin: 0; z-index: 2;" class="custom-slider">
         </div>
+      </div>
+
+      <div class="flashcards-wrapper" id="flashcards-wrapper">
+        <!-- Las flashcards se generarán dinámicamente aquí -->
       </div>
       
       <div class="flashcard-controls">
@@ -58,6 +50,7 @@
     </main>
   </div>
 
+  <script src="shared.js"></script>
   <script src="flashcards-data.js"></script>
   <script src="flashcards.js"></script>
 </body>
