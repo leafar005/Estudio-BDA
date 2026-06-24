@@ -3761,4 +3761,19 @@ const QUESTIONS = [
     "justification": "Por defecto, WITH CHECK OPTION actúa en cascada y garantiza invulnerabilidad. Sin embargo, si se utiliza de manera explícita WITH LOCAL CHECK OPTION, solo se comprueba la restricción de la vista actual, lo que podría permitir una fila migratoria si incumple los filtros de las vistas base subyacentes.",
     "trap": false
   }
+  ,
+  {
+    "category": "Concurrencia y Transacciones",
+    "type": "multi",
+    "question": "En un sistema con Multiversión (MVCC), si A1=10 (ML=5, ME=2) y A2=20 (ML=9, ME=7). ¿Qué ocurre si la transacción T13 quiere escribir 13 en A?",
+    "options": [
+      "Intenta sobre A1 pero falla porque M(T13) < ML(A2).",
+      "Sobrescribe directamente el valor de A2 actualizando su ME a 13.",
+      "Aborta la transacción inmediatamente porque 13 es mayor que 9.",
+      "Escribe sin problema creando una nueva versión A3=13 con ML=13 y ME=13."
+    ],
+    "correct": 3,
+    "justification": "Al ser M(T13) = 13, la versión válida base es A2 (ME=7 <= 13). Se comprueba si M(T13) < ML(A2) (13 < 9 es FALSO). Como no fue leída en el futuro, se permite la escritura y se crea una nueva versión A3.",
+    "trap": false
+  }
 ];

@@ -375,20 +375,20 @@ window.FlashcardsData = {
     {
       "q": "¿Qué acción de acción referencial (ON DELETE) no soporta de forma explícita Oracle en sus comandos DDL?",
       "a": "Las cláusulas RESTRICT y CASCADE en UPDATE. Oracle únicamente implementa explícitamente CASCADE, SET NULL y el omitido asumido internamente NO ACTION para borrados."
+    },
+    {
+      "q": "¿Cómo trata el estándar SQL una clave foránea híbrida (ej. [10, NULL]) bajo la cláusula MATCH FULL?",
+      "a": "La rechaza. MATCH FULL exige que todos los componentes sean nulos simultáneamente, o que ninguno lo sea y coincida con una fila padre."
+    },
+    {
+      "q": "¿Qué diferencia temporal existe entre las restricciones referenciales RESTRICT y NO ACTION?",
+      "a": "RESTRICT aborta el fallo inmediatamente y no es aplazable. NO ACTION permite aplazar la validación al final de la transacción (DEFERRABLE)."
     }
   ],
   "seguridade": [
     {
-      "q": "¿Cuáles son los tres pilares fundamentales de la seguridad de la información (Tríada CIA)?",
-      "a": "Confidencialidad, Integridad y Disponibilidad."
-    },
-    {
       "q": "¿En qué estándar internacional se basan las buenas prácticas para un Sistema de Gestión de Seguridad de la Información (SGSI)?",
       "a": "ISO/IEC 27001."
-    },
-    {
-      "q": "¿Cuáles son las 4 fases del Ciclo de Deming o PDCA?",
-      "a": "Planificar (Plan), Hacer (Do), Verificar (Check), Actuar/Ajustar (Act)."
     },
     {
       "q": "¿Qué es un AuthID en el contexto de bases de datos?",
@@ -647,10 +647,6 @@ window.FlashcardsData = {
     {
       "q": "¿Qué comando usarías en Oracle para auditar de forma global cada intento de creación de sesión (exitosa o no)?",
       "a": "AUDIT CREATE SESSION;"
-    },
-    {
-      "q": "¿Es ético/legal auditar información privada (como salarios o diagnósticos médicos) si la LOPD lo protege?",
-      "a": "Sí, de hecho es obligatorio implementar sistemas de trazabilidad y auditoría de accesos para asegurar el RGPD y justificar la custodia debida."
     },
     {
       "q": "¿En qué se diferencia DBA_SYS_PRIVS de ROLE_SYS_PRIVS respecto a los privilegios?",
@@ -1045,6 +1041,10 @@ window.FlashcardsData = {
     {
       "question": "¿Qué ocurre si el optimizador CBO detecta que un HINT (ej. /*+ INDEX(...) */) provocaría devolver resultados falsos o incompletos?",
       "answer": "El optimizador anula el HINT, tiene directiva para ignorarlo si compromete la integridad semántica de la consulta (ej. forzar índice sobre columna con nulos pidiendo todas las filas)."
+    },
+    {
+      "q": "En los planes de ejecución de Oracle, ¿qué hace la operación INDEX FULL SCAN?",
+      "a": "Lee de forma ordenada todos los bloques hoja de un índice, evitando el Full Table Scan cuando la consulta se resuelve usando solo las columnas indexadas."
     }
   ],
   "recuperacion": [
@@ -1289,6 +1289,12 @@ window.FlashcardsData = {
     {
       "question": "Diferencia pragmática y de penetración entre los modos de Bloqueo Exclusivo (X) y Compartido (S).",
       "answer": "El compartido (S) concede acceso concurrente pacífico para visualización masiva; el Exclusivo (X) despliega un monopolio hostil expulsando de forma obligatoria cualquier otra lectura paralela sobre dicha celda."
+    }
+  ],
+  "concurrencia": [
+    {
+      "q": "¿Cuándo entra en acción la Regla de Escritura de Thomas (Thomas Write Rule)?",
+      "a": "Cuando una transacción intenta escribir un dato que ya ha sido modificado por otra transacción más 'moderna' (con mayor marca de tiempo). La escritura simplemente se ignora (no se aborta)."
     }
   ]
 };

@@ -432,9 +432,9 @@ CREATE TABLE empleado (
     dept_id INT,
     CONSTRAINT fk_dept FOREIGN KEY (dept_id) 
     REFERENCES departamento(id) 
-    ON DELETE RESTRICT      -- Inmediato: impide borrar si hay empleados
-    ON UPDATE CASCADE       -- Propaga el cambio de ID
-    DEFERRABLE INITIALLY DEFERRED -- Aplaza la comprobación al COMMIT
+    ON DELETE RESTRICT      -- Inmediato: aborta si hay empleados (NO aplazable)
+    ON UPDATE NO ACTION     -- Idéntico a RESTRICT, pero SÍ es aplazable
+    DEFERRABLE INITIALLY DEFERRED -- Aplaza la comprobación de NO ACTION al COMMIT
 );</code></pre>
       </div>
     </div></section>
@@ -650,7 +650,8 @@ END;</code></pre>
               <li><strong>TABLE ACCESS FULL:</strong> Escaneo completo. Usado sin índices o con baja selectividad.</li>
               <li><strong>INDEX UNIQUE SCAN:</strong> Devuelve exactamente 1 fila (por PK/Unique).</li>
               <li><strong>INDEX RANGE SCAN:</strong> Búsqueda de rangos (&gt;, &lt;) o desigualdades.</li>
-              <li><strong>INDEX FAST FULL SCAN:</strong> Lee todo el índice ignorando orden (evita la tabla base).</li>
+              <li><strong>INDEX FULL SCAN:</strong> Lee todo el índice ordenadamente. Evita el TABLE ACCESS FULL si todos los datos requeridos están en el índice.</li>
+              <li><strong>INDEX FAST FULL SCAN:</strong> Lee todo el índice ignorando el orden, usando multi-block I/O.</li>
               <li><strong>INDEX SKIP SCAN:</strong> Filtra por columnas secundarias de un índice compuesto saltándose la primera.</li>
             </ul>
           </div>
@@ -750,6 +751,18 @@ END;</code></pre>
             <li><strong>IX (Intention Exclusive):</strong> Aviso de que la Tx planea escribir (poner X) a nivel inferior. Evita que otra Tx bloquee la tabla completa.</li>
             <li><strong>SIX (Shared + Intention Exclusive):</strong> Lee toda la tabla, pero solo modificará algunas filas inferiores.</li>
           </ul>
+        </div>
+
+        <h3 class="subtheme-title" id="st-9-X">3. Ordenación por Marcas de Tiempo y MVCC 🚨</h3>
+        <div class="grid-2">
+          <div class="box" style="border-top: 3px solid var(--c-9);">
+            <h4 style="color: #fdba74;">Regla de Escritura de Thomas</h4>
+            <p style="font-size: 0.85rem;">En el protocolo de Marcas de Tiempo (Timestamp Ordering), si una transacción $T_i$ intenta escribir un dato que ya fue escrito en el futuro por una $T_j$ ($M(T_i) < ME$), <strong>la escritura simplemente se ignora y $T_i$ sobrevive</strong>. No se hace abort ni Rollback.</p>
+          </div>
+          <div class="box" style="border-top: 3px solid var(--c-9);">
+            <h4 style="color: #fdba74;">Multiversión (MVCC)</h4>
+            <p style="font-size: 0.85rem;">Mantiene múltiples versiones de un dato. Para leer, se busca la versión con la mayor $ME \le M(T_i)$. Para escribir, si se intenta modificar una versión que ya ha sido leída por alguien en el "futuro" ($M(T_i) < ML_{versión}$), la transacción aborta.</p>
+          </div>
         </div>
 
         <h3 class="subtheme-title" id="st-9-3">3. Protocolos 2PL y Deadlocks</h3>
