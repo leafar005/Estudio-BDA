@@ -97,7 +97,20 @@ document.addEventListener('DOMContentLoaded', () => {
         segment.title = titles[t] || t;
         markersEl.appendChild(segment);
         
-        const labelText = (titles[t] || t).split(' ')[0];
+        
+        const shortTitles = {
+          'catalogo': 'Catálogo',
+          'vistas': 'Vistas',
+          'integridade': 'Integridad',
+          'seguridade': 'Seguridad',
+          'activas': 'Triggers',
+          'oorm': 'Diseño Físico',
+          'optimizacion': 'Optimización',
+          'recuperacion': 'Recuperación',
+          'concurrencia': 'Concurrencia'
+        };
+        const labelText = shortTitles[t] || t;
+
         const label = document.createElement('div');
         label.textContent = labelText;
         label.style.position = 'absolute';

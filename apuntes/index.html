@@ -253,6 +253,12 @@
           </ul>
         </div>
 
+        
+        <div class="alert" style="border-left-color: #f59e0b; background: rgba(245, 158, 11, 0.1); margin-top: 15px; margin-bottom: 20px;">
+          <strong style="color: #fbbf24;">⚠️ Inmutabilidad Estricta:</strong>
+          <p style="font-size: 0.85rem; margin-top: 5px;">El usuario <strong>jamás</strong> puede ejecutar sentencias DML manuales (<code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>) contra las tablas del catálogo para modificar sus permisos o estructuras. El catálogo se actualiza exclusivamente de forma implícita cuando el motor ejecuta comandos DDL (<code>CREATE</code>, <code>DROP</code>, <code>GRANT</code>).</p>
+        </div>
+
         <h3 class="subtheme-title" id="st-1-2">2. Estructura y Estándares</h3>
         <div class="grid-2">
           <div class="box">
@@ -318,6 +324,11 @@ WHERE table_schema = 'public'
             <p style="font-size: 0.95rem;">Solo se almacena su <strong>definición precompilada en el catálogo</strong>, no sus datos. La excepción son las <strong>Vistas Materializadas</strong> que sí guardan datos físicos en disco.</p>
           </div>
         </div>
+        <div class="alert" style="border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1); margin-top: 15px;">
+          <strong style="color: #fca5a5;">⚠️ La trampa del SELECT *:</strong>
+          <p style="font-size: 0.85rem; margin-top: 5px;">Al crear una vista con <code>SELECT *</code>, el catálogo precompila y <strong>congela</strong> las columnas subyacentes existentes en ese instante. Si posteriormente se hace un <code>ALTER TABLE</code> para añadir campos a la tabla base, estos <strong>NO</strong> se propagarán a la vista, causando desajustes estructurales.</p>
+        </div>
+
 
         <h3 class="subtheme-title" id="st-2-2">2. Actualización y Tuplas Migratorias</h3>
         <div class="grid-3">
@@ -354,6 +365,25 @@ WITH CHECK OPTION;
 INSERT INTO v_empleados_it VALUES (10, 'Ana', 2000, 'HR');</code></pre>
       </div>
     </div>
+
+        
+        <div class="grid-2" style="margin-top: 20px;">
+          <div class="box" style="border-top: 3px solid #8b5cf6;">
+            <h4 style="color: #c4b5fd;">LOCAL vs CASCADED CHECK OPTION</h4>
+            <p style="font-size: 0.85rem;">
+              <strong>LOCAL:</strong> Solo comprueba la condición de la vista donde haces el INSERT. Ignora las reglas de las vistas base subyacentes, permitiendo colar "tuplas migratorias hacia abajo".<br>
+              <strong>CASCADED (Defecto):</strong> Revisa toda la jerarquía de vistas en cascada hacia abajo. 100% libre de tuplas migratorias.
+            </p>
+          </div>
+          <div class="box" style="border-top: 3px solid #f97316;">
+            <h4 style="color: #fdba74;">Particularidades de Oracle</h4>
+            <p style="font-size: 0.85rem;">
+              <strong>1. NO soporta LOCAL:</strong> Oracle asume y fuerza que todo CHECK OPTION actúe en CASCADED.<br>
+              <strong>2. WITH READ ONLY:</strong> Cláusula exclusiva para capar la vista entera e impedir cualquier DML.<br>
+              <strong>3. ORDER BY:</strong> Oracle sí permite ordenar internamente la vista, desviándose del estándar.
+            </p>
+          </div>
+        </div>
 
         <h3 class="subtheme-title" id="st-2-3">3. Oracle y Vistas Materializadas</h3>
         <div class="grid-2">
@@ -419,6 +449,28 @@ INSERT INTO v_empleados_it VALUES (10, 'Ana', 2000, 'HR');</code></pre>
             <span style="font-size: 0.85rem;">Inicia inmediata pero permite modificarse en vuelo con <code>SET CONSTRAINTS</code>.</span>
           </div>
         </div>
+        <div class="grid-2" style="margin-top: 20px;">
+          <div class="box" style="border-top: 3px solid #f87171;">
+            <h4 style="color: #fca5a5;">Cláusula MATCH (FK Compuesta + Nulos)</h4>
+            <p style="font-size: 0.85rem;">Si tu Foreign Key tiene varios campos y admite nulos:</p>
+            <ul style="font-size: 0.85rem; padding-left: 20px;">
+              <li><strong>MATCH SIMPLE:</strong> (Defecto). Si hay al menos un NULL, lo deja pasar sin buscar al padre.</li>
+              <li><strong>MATCH PARTIAL:</strong> Deja pasar el NULL, pero los campos que SÍ tengan valor deben coincidir con algún padre real.</li>
+              <li><strong>MATCH FULL:</strong> Todo o nada. O son todos NULL, o no hay ninguno. Si mezclas un valor y un NULL, falla instantáneamente.</li>
+            </ul>
+          </div>
+          <div class="box" style="border-top: 3px solid #ef4444;">
+            <h4 style="color: #fca5a5;">Trampa: NO ACTION vs RESTRICT</h4>
+            <p style="font-size: 0.85rem;">
+              Ambos abortan borrados en la tabla padre si existen hijos. La diferencia de oro es que <strong>RESTRICT</strong> aborta en el momento y no se puede aplazar, mientras que <strong>NO ACTION</strong> admite añadir la cláusula <code>DEFERRABLE</code> para postergar la comprobación al final de la transacción (<code>COMMIT</code>), resolviendo problemas del huevo y la gallina.
+            </p>
+          </div>
+        </div>
+        <div class="alert" style="border-left-color: #3b82f6; background: rgba(59, 130, 246, 0.1); margin-top: 15px;">
+          <strong style="color: #93c5fd;">📘 Notas extra:</strong>
+          <p style="font-size: 0.85rem; margin-top: 5px;">Las restricciones <code>CHECK</code> no admiten subconsultas en los SGBD reales. El estándar SQL define <code>CREATE ASSERTION</code> para reglas complejas, pero <strong>ningún SGBD real lo soporta</strong>. Tienes que usar <strong>Triggers</strong>.</p>
+        </div>
+
         
         <div class="sql-example">
       <div class="sql-example-header">
@@ -570,6 +622,26 @@ BEGIN
 END;</code></pre>
       </div>
     </div>
+      
+        <div class="grid-2" style="margin-top: 20px;">
+          <div class="box" style="border-top: 3px solid #14b8a6;">
+            <h4 style="color: #5eead4;">INSTEAD OF (Solo Vistas)</h4>
+            <p style="font-size: 0.85rem;">
+              Es la única solución para hacer <strong>actualizable</strong> una vista que por definición relacional no lo es (ej. si tiene un <code>JOIN</code> o <code>GROUP BY</code>). No es una restricción, sino que <strong>anula por completo</strong> el DML original para que tú programes el reparto de datos en PL/SQL.
+            </p>
+          </div>
+          <div class="box" style="border-top: 3px solid #f87171;">
+            <h4 style="color: #fca5a5;">Reglas de los Estados (:new / :old)</h4>
+            <p style="font-size: 0.85rem;">
+              En un trigger DML:<br>
+              <strong>INSERT:</strong> Solo existe <code>:new</code>.<br>
+              <strong>DELETE:</strong> Solo existe <code>:old</code>.<br>
+              <strong>UPDATE:</strong> Coexisten ambos.<br>
+              Para poder validar o modificar los datos antes de que se guarden, el trigger <strong>debe ser BEFORE</strong>.
+            </p>
+          </div>
+        </div>
+
       </section>
 
       <section class="theme-section">
@@ -621,7 +693,30 @@ END;</code></pre>
             <li><strong style="color: #67e8f9;">Basados en Funciones:</strong> Indexan el resultado precalculado de una expresión, como <code>UPPER(nombre)</code>.</li>
             <li><strong style="color: #67e8f9;">Particionado de Índices:</strong> Al fragmentar una tabla masiva (>1GB) por rangos, listas o hash, el índice puede ser <strong>Local</strong> (se divide igual que la tabla) o <strong>Global</strong> (sigue su propia regla). Mayor ventaja: <strong>Partition Pruning</strong>.</li>
           </ul>
-        </div></section>
+        </div>
+        <div class="grid-2" style="margin-top: 20px;">
+          <div class="box" style="border-top: 3px solid #6366f1;">
+            <h4 style="color: #a5b4fc;">Tipos de Tablas (Heap vs IOT vs Cluster)</h4>
+            <p style="font-size: 0.85rem;">
+              <strong>Heap (Apilada):</strong> Por defecto. Inserción rápida al final. Lecturas lentas si no hay índice.<br>
+              <strong>IOT (Organizada por Índice):</strong> Toda la tabla se guarda <em>dentro</em> de las hojas del árbol B+ de la PK. Súper rápido para buscar, pero inserciones muy costosas.<br>
+              <strong>Cluster (Agrupamiento):</strong> Entremezcla físicamente filas de <strong>múltiples tablas</strong> distintas en el mismo bloque si comparten la clave de Join.
+            </p>
+          </div>
+          <div class="box" style="border-top: 3px solid #fbbf24;">
+            <h4 style="color: #fcd34d;">Índices: B-Tree vs Bitmap</h4>
+            <p style="font-size: 0.85rem;">
+              <strong>B-Tree:</strong> Alta cardinalidad (IDs). Bueno para Transaccional (OLTP).<br>
+              <strong>Bitmap:</strong> Baja cardinalidad (género, estado). Súper rápido para lógica booleana pero <strong>devastador para DML</strong> porque bloquea fragmentos enteros. Uso exclusivo analítico (Datawarehouse).
+            </p>
+          </div>
+        </div>
+        <div class="alert" style="border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1); margin-top: 15px;">
+          <strong style="color: #fca5a5;">⚠️ LA GRAN TRAMPA DE EXAMEN (Nulos en Oracle):</strong>
+          <p style="font-size: 0.85rem; margin-top: 5px;">Oracle <strong>NUNCA indexa los valores nulos</strong> en árboles B-Tree convencionales. Si te piden un <code>SELECT * FROM emp</code> o un <code>SELECT COMM FROM emp</code>, el motor se negará a usar el índice (porque le faltarían las filas nulas) y hará un escaneo completo, <strong>ignorando cualquier Hint</strong>. Solo usará el índice si la consulta usa funciones matemáticas que ignoran nulos lógicamente, como <code>MAX()</code> o <code>AVG()</code>.</p>
+        </div>
+
+      </section>
 
       <section class="theme-section">
         <h2 class="theme-title" id="t-07" style="border-bottom-color: var(--c-7); color: var(--c-7);">⚙️ 7. Optimización de Consultas</h2>

@@ -184,29 +184,26 @@
       <div class="box">
         <p style="color: #d1d5db; line-height: 1.6; margin-bottom: 20px;">Tras diseccionar los exámenes, los problemas se dividen en <strong>6 grandes familias</strong>.</p>
         <div class="grid-2" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 10px;">
-        
-        <div class="box" style="border-top: 3px solid #3b82f6;">
-          <h4 style="color: #93c5fd; margin-top: 0;">Tipo A: Control de Concurrencia (Marcas de Tiempo y MVCC)</h4>
-          <p style="font-size: 0.9rem; margin-top: 10px;"><strong>Qué se pide:</strong> Trazar el estado de las variables (Marcas de Lectura <code>ML</code> y Marcas de Escritura <code>ME</code>) tras una secuencia de operaciones <code>Read(X)</code> / <code>Write(X)</code>.</p>
-          <p style="font-size: 0.9rem;"><strong>Conceptos evaluados:</strong> Regla de Escritura de Thomas y Control Multiversión (MVCC).</p>
+        <div class="box" style="border-top: 3px solid #14b8a6;">
+          <h4 style="color: #5eead4; margin-top: 0;">Tipo A: Vistas y Seguridad</h4>
+          <p style="font-size: 0.9rem; margin-top: 10px;"><strong>Qué se pide:</strong> Indicar qué pasa si se consulta una vista tras modificar la tabla base, o si se intentan insertar filas migratorias. Privilegios y roles.</p>
           <div class="alert" style="margin: 10px 0 0 0; padding: 15px; border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);">
             <strong style="color: #fca5a5; font-size: 0.9rem;">⚠️ Trampa principal:</strong><br>
-            <span style="font-size: 0.85rem;"><strong>Los abortos falsos en la Regla de Thomas.</strong> Si una transacción intenta escribir un dato que ya fue escrito por una transacción más moderna (del "futuro"), ¡NO se aborta! Se ignora silenciosamente. En MVCC, la trampa es no elegir correctamente la versión base sobre la que se opera (se debe buscar la que tenga el mayor <code>ME</code> &le; <code>M(T)</code>).</span>
+            <span style="font-size: 0.85rem;">El <code>SELECT *</code> al crear una vista se "congela" en el catálogo. Un <code>ALTER TABLE</code> posterior añadiendo una columna no aparecerá en la vista. Además, <code>PUBLIC</code> es un pseudo-rol que no puede ser revocado a un único usuario para aislarlo.</span>
           </div>
         </div>
 
-        <div class="box" style="border-top: 3px solid #10b981;">
-          <h4 style="color: #6ee7b7; margin-top: 0;">Tipo B: Recuperación ante Caídas (Logs y Checkpoints)</h4>
-          <p style="font-size: 0.9rem; margin-top: 10px;"><strong>Qué se pide:</strong> Dado un archivo de log y una caída del sistema, deducir la arquitectura y listar qué transacciones sufren <code>UNDO</code> y cuáles <code>REDO</code>.</p>
-          <p style="font-size: 0.9rem;"><strong>Conceptos evaluados:</strong> Protocolo WAL, Actualización Diferida vs. Inmediata, y Puntos de Verificación (Checkpoints).</p>
+        <div class="box" style="border-top: 3px solid #ef4444;">
+          <h4 style="color: #fca5a5; margin-top: 0;">Tipo B: Integridad (Cláusula MATCH y Acciones Referenciales)</h4>
+          <p style="font-size: 0.9rem; margin-top: 10px;"><strong>Qué se pide:</strong> Validar tuplas candidatas frente a una Foreign Key compuesta con nulos. Diferenciar <code>NO ACTION</code> de <code>RESTRICT</code>.</p>
           <div class="alert" style="margin: 10px 0 0 0; padding: 15px; border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);">
             <strong style="color: #fca5a5; font-size: 0.9rem;">⚠️ Trampa principal:</strong><br>
-            <span style="font-size: 0.85rem;">La barrera del <code>CHECKPOINT</code>. Si una transacción hizo <code>COMMIT</code> antes de un checkpoint, <strong>se ignora por completo</strong> en la recuperación, ya que sus datos ya están seguros en disco. Otra trampa es confundir la arquitectura: si el log tiene 4 parámetros (Tx, Dato, ValorViejo, ValorNuevo) es Inmediata; si tiene 3, es Diferida. En Diferida, el <code>UNDO</code> no existe.</span>
+            <span style="font-size: 0.85rem;"><code>MATCH FULL</code> rechaza cualquier registro "a medias" (mezcla de nulos y no nulos). <code>NO ACTION</code> permite aplazamiento (<code>DEFERRABLE</code>), mientras que <code>RESTRICT</code> es siempre de verificación inmediata.</span>
           </div>
         </div>
 
         <div class="box" style="border-top: 3px solid #8b5cf6;">
-          <h4 style="color: #c4b5fd;">Tipo C: Optimización Heurística (Álgebra Relacional)</h4>
+          <h4 style="color: #c4b5fd; margin-top: 0;">Tipo C: Optimización Heurística (Álgebra Relacional)</h4>
           <p style="font-size: 0.9rem; margin-top: 10px;"><strong>Qué se pide:</strong> Dibujar el árbol canónico y el árbol optimizado justificando los pasos a partir de una consulta SQL.</p>
           <p style="font-size: 0.9rem;"><strong>Conceptos evaluados:</strong> Equivalencias del álgebra relacional, empujar selecciones (Push-Down), convertir productos cartesianos en Joins.</p>
           <div class="alert" style="margin: 10px 0 0 0; padding: 15px; border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);">
@@ -216,7 +213,7 @@
         </div>
 
         <div class="box" style="border-top: 3px solid #f59e0b;">
-          <h4 style="color: #fcd34d;">Tipo D: Diseño Físico (Índices y Planes de Ejecución)</h4>
+          <h4 style="color: #fcd34d; margin-top: 0;">Tipo D: Diseño Físico (Índices y Planes de Ejecución)</h4>
           <p style="font-size: 0.9rem; margin-top: 10px;"><strong>Qué se pide:</strong> Predecir si Oracle usará o no un índice dado, o analizar la salida de un <code>EXPLAIN PLAN</code>.</p>
           <p style="font-size: 0.9rem;"><strong>Conceptos evaluados:</strong> Índices B-Tree, comportamiento ante valores nulos, lectura de grafos de ejecución.</p>
           <div class="alert" style="margin: 10px 0 0 0; padding: 15px; border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);">
@@ -225,21 +222,23 @@
           </div>
         </div>
 
-        <div class="box" style="border-top: 3px solid #ef4444;">
-          <h4 style="color: #fca5a5;">Tipo E: Integridad (Cláusula MATCH y Acciones Referenciales)</h4>
-          <p style="font-size: 0.9rem; margin-top: 10px;"><strong>Qué se pide:</strong> Validar tuplas candidatas frente a una Foreign Key compuesta con nulos. Diferenciar <code>NO ACTION</code> de <code>RESTRICT</code>.</p>
+        <div class="box" style="border-top: 3px solid #10b981;">
+          <h4 style="color: #6ee7b7; margin-top: 0;">Tipo E: Recuperación ante Caídas (Logs y Checkpoints)</h4>
+          <p style="font-size: 0.9rem; margin-top: 10px;"><strong>Qué se pide:</strong> Dado un archivo de log y una caída del sistema, deducir la arquitectura y listar qué transacciones sufren <code>UNDO</code> y cuáles <code>REDO</code>.</p>
+          <p style="font-size: 0.9rem;"><strong>Conceptos evaluados:</strong> Protocolo WAL, Actualización Diferida vs. Inmediata, y Puntos de Verificación (Checkpoints).</p>
           <div class="alert" style="margin: 10px 0 0 0; padding: 15px; border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);">
             <strong style="color: #fca5a5; font-size: 0.9rem;">⚠️ Trampa principal:</strong><br>
-            <span style="font-size: 0.85rem;"><code>MATCH FULL</code> rechaza cualquier registro "a medias" (mezcla de nulos y no nulos). <code>NO ACTION</code> permite aplazamiento (<code>DEFERRABLE</code>), mientras que <code>RESTRICT</code> es siempre de verificación inmediata.</span>
+            <span style="font-size: 0.85rem;">La barrera del <code>CHECKPOINT</code>. Si una transacción hizo <code>COMMIT</code> antes de un checkpoint, <strong>se ignora por completo</strong> en la recuperación, ya que sus datos ya están seguros en disco. Otra trampa es confundir la arquitectura: si el log tiene 4 parámetros (Tx, Dato, ValorViejo, ValorNuevo) es Inmediata; si tiene 3, es Diferida. En Diferida, el <code>UNDO</code> no existe.</span>
           </div>
         </div>
 
-        <div class="box" style="border-top: 3px solid #14b8a6;">
-          <h4 style="color: #5eead4; margin-top: 0;">Tipo F: Vistas y Seguridad</h4>
-          <p style="font-size: 0.9rem; margin-top: 10px;"><strong>Qué se pide:</strong> Indicar qué pasa si se consulta una vista tras modificar la tabla base, o si se intentan insertar filas migratorias. Privilegios y roles.</p>
+        <div class="box" style="border-top: 3px solid #3b82f6;">
+          <h4 style="color: #93c5fd; margin-top: 0;">Tipo F: Control de Concurrencia (Marcas de Tiempo y MVCC)</h4>
+          <p style="font-size: 0.9rem; margin-top: 10px;"><strong>Qué se pide:</strong> Trazar el estado de las variables (Marcas de Lectura <code>ML</code> y Marcas de Escritura <code>ME</code>) tras una secuencia de operaciones <code>Read(X)</code> / <code>Write(X)</code>.</p>
+          <p style="font-size: 0.9rem;"><strong>Conceptos evaluados:</strong> Regla de Escritura de Thomas y Control Multiversión (MVCC).</p>
           <div class="alert" style="margin: 10px 0 0 0; padding: 15px; border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);">
             <strong style="color: #fca5a5; font-size: 0.9rem;">⚠️ Trampa principal:</strong><br>
-            <span style="font-size: 0.85rem;">El <code>SELECT *</code> al crear una vista se "congela" en el catálogo. Un <code>ALTER TABLE</code> posterior añadiendo una columna no aparecerá en la vista. Además, <code>PUBLIC</code> es un pseudo-rol que no puede ser revocado a un único usuario para aislarlo.</span>
+            <span style="font-size: 0.85rem;"><strong>Los abortos falsos en la Regla de Thomas.</strong> Si una transacción intenta escribir un dato que ya fue escrito por una transacción más moderna (del "futuro"), ¡NO se aborta! Se ignora silenciosamente. En MVCC, la trampa es no elegir correctamente la versión base sobre la que se opera (se debe buscar la que tenga el mayor <code>ME</code> &le; <code>M(T)</code>).</span>
           </div>
         </div>
       </div>
@@ -249,31 +248,31 @@
     <section id="metodo">
       <h2 class="theme-title" style="border-bottom-color: var(--accent); color: var(--accent);">🛠️ 2. MÉTODO GENERAL DE RESOLUCIÓN (Tus Recetas)</h2>
 
-      <h3 class="subtheme-title">Receta 1: Concurrencia con MVCC (Multiversión)</h3>
+      <h3 class="subtheme-title">Receta 1: Optimización Heurística (Álgebra)</h3>
       <div class="box">
-        <p style="color: #93c5fd; margin-top:0;"><strong>Cómo reconocerlo:</strong> El enunciado te da versiones como <code>A1: Valor=20, ML=4, ME=1</code>.</p>
         <strong>Procedimiento Universal:</strong>
         <div class="recipe-step" style="margin-top:10px;">
           <div class="recipe-number">1</div>
           <div class="recipe-content">
-            <strong style="color: #fff;">Encontrar la versión:</strong> Ante una operación de la transacción $T_i$, busca la versión histórica que tenga el mayor <code>ME</code> $\le M(T_i)$. Esa es tu base.
+            <strong style="color: #fff;">Árbol Bruto:</strong> Junta todas las tablas con producto cartesiano ($\times$) en la base. Pon una super-selección ($\sigma$) encima con TODO el <code>WHERE</code>. Remata con la agrupación ($\gamma$) y la proyección ($\pi$).
           </div>
         </div>
         <div class="recipe-step">
           <div class="recipe-number">2</div>
           <div class="recipe-content">
-            <strong style="color: #fff;">Si es Lectura (Read):</strong> Se permite siempre. Actualiza el $ML$ de esa versión: $ML = \max(M(T_i), ML actual)$.
+            <strong style="color: #fff;">Push-Down (Bajar Filtros):</strong> Rompe la super-selección en condiciones atómicas y bájalas todo lo posible hasta pegarlas a sus tablas respectivas.
           </div>
         </div>
         <div class="recipe-step">
           <div class="recipe-number">3</div>
           <div class="recipe-content">
-            <strong style="color: #fff;">Si es Escritura (Write):</strong> Comprueba dos reglas sobre esa versión base:
-            <ul style="margin-top: 5px; padding-left: 20px;">
-              <li>¿$M(T_i) < ML_{base}$? Si SÍ &rarr; <strong>ROLLBACK</strong> (alguien del futuro ya lo leyó).</li>
-              <li>¿$M(T_i) < ME_{base}$? Si SÍ &rarr; <strong>ROLLBACK</strong> (alguien del futuro ya lo sobreescribió).</li>
-              <li>Si pasa ambas &rarr; <strong>Crea una nueva versión</strong> $A_{nueva}$ con $Valor = Nuevo$, $ME = M(T_i)$, $ML = M(T_i)$.</li>
-            </ul>
+            <strong style="color: #fff;">Joins:</strong> Convierte las parejas (Tabla $\times$ Tabla) + Selección de igualdad en operadores Join ($\bowtie$).
+          </div>
+        </div>
+        <div class="recipe-step">
+          <div class="recipe-number">4</div>
+          <div class="recipe-content">
+            <strong style="color: #fff;">Proyecciones Intermedias:</strong> Pon operadores $\pi$ antes de cada Join para eliminar columnas inútiles.
           </div>
         </div>
       </div>
@@ -312,34 +311,35 @@
         </div>
       </div>
 
-      <h3 class="subtheme-title">Receta 3: Optimización Heurística (Álgebra)</h3>
+      <h3 class="subtheme-title">Receta 3: Concurrencia con MVCC (Multiversión)</h3>
       <div class="box">
+        <p style="color: #93c5fd; margin-top:0;"><strong>Cómo reconocerlo:</strong> El enunciado te da versiones como <code>A1: Valor=20, ML=4, ME=1</code>.</p>
         <strong>Procedimiento Universal:</strong>
         <div class="recipe-step" style="margin-top:10px;">
           <div class="recipe-number">1</div>
           <div class="recipe-content">
-            <strong style="color: #fff;">Árbol Bruto:</strong> Junta todas las tablas con producto cartesiano ($\times$) en la base. Pon una super-selección ($\sigma$) encima con TODO el <code>WHERE</code>. Remata con la agrupación ($\gamma$) y la proyección ($\pi$).
+            <strong style="color: #fff;">Encontrar la versión:</strong> Ante una operación de la transacción $T_i$, busca la versión histórica que tenga el mayor <code>ME</code> $\le M(T_i)$. Esa es tu base.
           </div>
         </div>
         <div class="recipe-step">
           <div class="recipe-number">2</div>
           <div class="recipe-content">
-            <strong style="color: #fff;">Push-Down (Bajar Filtros):</strong> Rompe la super-selección en condiciones atómicas y bájalas todo lo posible hasta pegarlas a sus tablas respectivas.
+            <strong style="color: #fff;">Si es Lectura (Read):</strong> Se permite siempre. Actualiza el $ML$ de esa versión: $ML = \max(M(T_i), ML actual)$.
           </div>
         </div>
         <div class="recipe-step">
           <div class="recipe-number">3</div>
           <div class="recipe-content">
-            <strong style="color: #fff;">Joins:</strong> Convierte las parejas (Tabla $\times$ Tabla) + Selección de igualdad en operadores Join ($\bowtie$).
-          </div>
-        </div>
-        <div class="recipe-step">
-          <div class="recipe-number">4</div>
-          <div class="recipe-content">
-            <strong style="color: #fff;">Proyecciones Intermedias:</strong> Pon operadores $\pi$ antes de cada Join para eliminar columnas inútiles.
+            <strong style="color: #fff;">Si es Escritura (Write):</strong> Comprueba dos reglas sobre esa versión base:
+            <ul style="margin-top: 5px; padding-left: 20px;">
+              <li>¿$M(T_i) < ML_{base}$? Si SÍ &rarr; <strong>ROLLBACK</strong> (alguien del futuro ya lo leyó).</li>
+              <li>¿$M(T_i) < ME_{base}$? Si SÍ &rarr; <strong>ROLLBACK</strong> (alguien del futuro ya lo sobreescribió).</li>
+              <li>Si pasa ambas &rarr; <strong>Crea una nueva versión</strong> $A_{nueva}$ con $Valor = Nuevo$, $ME = M(T_i)$, $ML = M(T_i)$.</li>
+            </ul>
           </div>
         </div>
       </div>
+
     </section>
 
     <!-- EXAMS SECTION -->
