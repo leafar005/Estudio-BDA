@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Examen 2023 - BDA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/shared.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    };
+  </script>
+  <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    :root {
+      --bg-primary: #0a0e1a;
+      --bg-secondary: #111827;
+      --bg-card: #1a1f35;
+      --text-primary: #f3f4f6;
+      --text-secondary: #9ca3af;
+      --accent: #ec4899; 
+      --border-subtle: rgba(255, 255, 255, 0.08);
+    }
+    
+    body { margin: 0; padding: 0; display: flex; height: 100vh; overflow: hidden; font-family: 'Inter', sans-serif; background-color: var(--bg-primary); color: var(--text-primary); }
+    
+    #sidebar {
+      width: 280px;
+      min-width: 280px;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(15px);
+      border-right: 1px solid var(--border-subtle);
+      height: 100vh;
+      position: relative;
+      left: 0; top: 0;
+      overflow-y: auto;
+      transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+    }
+    #sidebar.hidden { margin-left: -280px; }
+    
+    .sidebar-header { padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .back-btn { display: flex; align-items: center; gap: 10px; color: var(--text-primary); text-decoration: none; font-weight: 600; font-size: 0.95rem; background: var(--bg-card); padding: 10px 16px; border-radius: 8px; border: 1px solid var(--border-subtle); transition: all 0.2s; }
+    .back-btn:hover { background: var(--accent); border-color: var(--accent); }
+    .container { display: flex; max-width: 1200px; margin: 0 auto; height: 100%; position: relative; }
+    
+    .nav-h2 { display: block; padding: 12px 24px 4px 24px; font-size: 0.85rem; font-weight: 800; color: #ec4899; text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em; }
+    .nav-h3 { display: block; padding: 8px 24px 8px 36px; font-size: 0.8rem; color: var(--text-secondary); text-decoration: none; transition: all 0.2s; border-left: 3px solid transparent; }
+    .nav-h3:hover { color: var(--text-primary); background: rgba(255,255,255,0.03); }
+    
+    #main-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 60px 60px 60px;
+      position: relative;
+      scroll-behavior: smooth;
+    }
+
+    .toggle-btn {
+      position: sticky; top: 0px; z-index: 99; margin-bottom: 20px; margin-left: -40px;
+      background: var(--bg-card); border: 1px solid var(--border-subtle); color: var(--text-primary);
+      padding: 10px 15px; border-radius: 8px; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 10px; transition: all 0.2s; font-weight: 600; font-size: 0.9rem;
+    }
+    .toggle-btn:hover { background: var(--accent); border-color: var(--accent); }
+
+    .content-container { max-width: 900px; margin: 0 auto; }
+    .page-title { font-size: 3.2rem; font-weight: 900; margin-bottom: 15px; background: linear-gradient(135deg, #fff 0%, var(--accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1; text-align: center; }
+    .page-subtitle { font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 60px; line-height: 1.6; text-align: center; max-width: 800px; margin-inline: auto; }
+    
+    .theme-title { font-size: 2.2rem; font-weight: 800; margin: 80px 0 30px 0; padding-bottom: 15px; border-bottom: 2px solid rgba(255,255,255,0.1); color: #fff; scroll-margin-top: 100px; }
+    .subtheme-title { font-size: 1.4rem; font-weight: 700; margin: 45px 0 15px 0; color: #fbcfe8; scroll-margin-top: 100px; }
+    
+    .box { background: rgba(255,255,255,0.03); padding: 24px; border-radius: 12px; border: 1px solid var(--border-subtle); position: relative; overflow: hidden; }
+    
+    .recipe-step { display: flex; gap: 15px; margin-bottom: 20px; }
+    .recipe-number { flex-shrink: 0; width: 32px; height: 32px; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; }
+    .recipe-content { flex: 1; }
+    .recipe-content p { margin-top: 0; line-height: 1.6; color: #d1d5db; }
+    
+    /* Code styling */
+    pre, code { font-family: 'Fira Code', 'JetBrains Mono', monospace !important; }
+    code:not([class*="language-"]) { background: rgba(0,0,0,0.4) !important; padding: 2px 6px; border-radius: 4px; color: #f3f4f6 !important; font-weight: 600; border: 1px solid rgba(255,255,255,0.05); }
+    
+    .sql-example {
+      background: #1e1e1e;
+      border-radius: 8px;
+      margin: 20px 0;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.05);
+      overflow: hidden;
+    }
+    .sql-example-header {
+      background: #2d2d2d;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .mac-buttons { display: flex; gap: 8px; }
+    .mac-btn { width: 12px; height: 12px; border-radius: 50%; }
+    .mac-btn.close { background: #ff5f56; }
+    .mac-btn.minimize { background: #ffbd2e; }
+    .mac-btn.maximize { background: #27c93f; }
+    .sql-example h5 {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      margin: 0;
+      color: #a0a0a0;
+      font-size: 0.85rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+    }
+    .sql-example-body { padding: 15px; overflow-x: auto; overflow-y: hidden; }
+    
+    /* Intro spacing */
+    .clasificacion-lista li { margin-bottom: 25px; }
+    .sql-example-body pre { margin: 0 !important; background: transparent !important; padding: 0 !important; font-family: 'JetBrains Mono', monospace !important; font-weight: bold !important; font-size: 0.95rem; line-height: 1.5; color: #f8f8f2; overflow-y: hidden !important; }
+    
+    .nav-h3.active { color: #fff; background: rgba(59, 130, 246, 0.15); border-left-color: var(--accent); font-weight: 600; }
+    .nav-h2.active { color: #fff; background: rgba(59, 130, 246, 0.15); font-weight: 600; }
+    
+    @media (max-width: 850px) {
+      body { flex-direction: column; height: auto; overflow-y: auto; }
+      #sidebar { width: 100%; min-width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border-subtle); position: relative; z-index: 100; flex-direction: column; }
+      .sidebar-content { display: flex; flex-direction: row; overflow-x: auto; overflow-y: hidden; white-space: nowrap; padding: 10px 15px; -webkit-overflow-scrolling: touch; align-items: center; }
+      .nav-h2 { display: inline-block; padding: 8px 15px; margin-right: 10px; font-size: 0.8rem; background: rgba(236,72,153,0.1); border-radius: 8px; border-bottom: none; }
+      .nav-h3 { display: inline-block; padding: 8px 12px; font-size: 0.85rem; border-left: none; }
+      #main-content { overflow-y: visible; padding: 25px 15px; margin-left: 0; }
+      .toggle-btn { margin-left: 0; }
+    }
+  </style>
+</head>
+<body class="line-numbers">
+  
+  <nav id="sidebar">
+    <div class="sidebar-header">
+      <a href="../index.html" class="back-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Volver al Portal
+      </a>
+    </div>
+    <div class="sidebar-content" id="nav-links">
+      <!-- Generated automatically -->
+    </div>
+  </nav>
+
+  <main id="main-content">
+    
+    <button id="toggle-sidebar" class="toggle-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+
+    <div class="content-container">
+      <div style="text-align: center; margin-bottom: 50px;">
+        <h1 class="page-title">Examen 2023</h1>
+        <p style="font-size: 1.1rem; line-height: 1.8; color: #9ca3af; margin: 15px auto 0; max-width: 800px;">
+          Resolución completa y secuencial del <strong>Examen 2023</strong>.
+        </p>
+      </div>
+
+<div style="margin-top: 20px;">
+            <div class="box" style="margin-bottom: 30px;">
+              <h3 class="subtheme-title" style="color: #60a5fa; margin-top: 15px; margin-bottom: 15px;">P1. Vistas y Modificaciones de Esquema (SQL)</h3>
+              <div style="background: rgba(0,0,0,0.2); padding: 15px; margin-bottom: 20px; border-radius: 8px;">
+                <strong style="color: #93c5fd; display: block; margin-bottom: 10px;">Enunciado:</strong>
+                <div style="color: #e5e7eb; line-height: 1.6;">
+                  Considera las siguientes sentencias ejecutadas en orden secuencial por los usuarios indicados entre paréntesis:<br><br><div style="margin-bottom: 15px; padding-left: 20px; text-indent: -20px; line-height: 1.7;"><strong style="color:#fff;">1.</strong> <div class="sql-example">
+      <div class="sql-example-header">
+        <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
+        <h5>SQL</h5>
+      </div>
+      <div class="sql-example-body">
+        <pre><code class="language-sql">(u1) CREATE VIEW vista1 AS SELECT * FROM dept WHERE deptno = 30;</code></pre>
+      </div>
+    </div></div>
+<div style="margin-bottom: 15px; padding-left: 20px; text-indent: -20px; line-height: 1.7;"><strong style="color:#fff;">2.</strong> <div class="sql-example">
+      <div class="sql-example-header">
+        <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
+        <h5>SQL</h5>
+      </div>
+      <div class="sql-example-body">
+        <pre><code class="language-sql">(u1) GRANT SELECT, INSERT ON vista1 TO u2;</code></pre>
+      </div>
+    </div></div>
+<div style="margin-bottom: 15px; padding-left: 20px; text-indent: -20px; line-height: 1.7;"><strong style="color:#fff;">3.</strong> <div class="sql-example">
+      <div class="sql-example-header">
+        <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
+        <h5>SQL</h5>
+      </div>
+      <div class="sql-example-body">
+        <pre><code class="language-sql">(u1) ALTER TABLE dept ADD phone VARCHAR(20);</code></pre>
+      </div>
+    </div></div>
+<div style="margin-bottom: 15px; padding-left: 20px; text-indent: -20px; line-height: 1.7;"><strong style="color:#fff;">4.</strong> <div class="sql-example">
+      <div class="sql-example-header">
+        <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
+        <h5>SQL</h5>
+      </div>
+      <div class="sql-example-body">
+        <pre><code class="language-sql">(u2) SELECT * FROM u1.vista1;</code></pre>
+      </div>
+    </div></div>
+<div style="margin-bottom: 15px; padding-left: 20px; text-indent: -20px; line-height: 1.7;"><strong style="color:#fff;">5.</strong> <div class="sql-example">
+      <div class="sql-example-header">
+        <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
+        <h5>SQL</h5>
+      </div>
+      <div class="sql-example-body">
+        <pre><code class="language-sql">(u2) INSERT INTO u1.vista1 VALUES (50, 'I+D', 'BOSTON');</code></pre>
+      </div>
+    </div></div><br><br>¿Qué ocurre exactamente en las sentencias 4 y 5?
+                </div>
+              </div>
+              <strong style="color: #10b981; display: block; margin-bottom: 10px;">🎯 Resolución:</strong>
+              <div style="padding: 15px; border-left: 3px solid #10b981; background: rgba(16, 185, 129, 0.1); border-radius: 4px; color: #d1d5db; line-height: 1.6;">
+                <div style="margin-bottom: 12px; padding-left: 20px; text-indent: -15px; line-height: 1.7;">• <strong style="color:#fff;">Sentencia 4:</strong> Cuando <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">u2</code> ejecuta la selección, se mostrarán todas las columnas originales de la tabla <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">dept</code> que cumplan la condición, <strong style="color:#fff;">exceptuando</strong> la nueva columna <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">phone</code>. Esto ocurre porque la vista es un objeto precompilado que solo conoce los atributos de la tabla en el momento exacto en el que fue creada.</div>
+    
+<div style="margin-bottom: 12px; padding-left: 20px; text-indent: -15px; line-height: 1.7;">• <strong style="color:#fff;">Sentencia 5:</strong> Aunque <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">u2</code> tiene privilegios de inserción, la sentencia <strong style="color:#fff;">producirá un error de integridad o de validación</strong> (dependiendo del SGBD). El valor <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">50</code> para <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">deptno</code> viola la condición implícita de la vista (<code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">deptno = 30</code>). Si la vista se hubiese creado <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">WITH CHECK OPTION</code>, el SGBD lo rechazaría explícitamente; si no, la fila podría insertarse en la tabla base pero "desaparecería" inmediatamente de la vista. Además, al mapear un <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">INSERT</code> genérico (<code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">VALUES</code>) sin especificar columnas sobre una tabla modificada estructuralmente, la discrepancia en el número de atributos provocará un fallo de compilación de la consulta.</div>
+              </div>
+            </div>
+            
+            <div class="box" style="margin-bottom: 30px;">
+              <h3 class="subtheme-title" style="color: #60a5fa; margin-top: 15px; margin-bottom: 15px;">P2. Gestión de Privilegios y Pseudo-roles</h3>
+              <div style="background: rgba(0,0,0,0.2); padding: 15px; margin-bottom: 20px; border-radius: 8px;">
+                <strong style="color: #93c5fd; display: block; margin-bottom: 10px;">Enunciado:</strong>
+                <div style="color: #e5e7eb; line-height: 1.6;">
+                  Si el usuario <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">admin</code> tiene el rol global de <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">DBA</code>, indica la validez y el efecto de las siguientes acciones independientes:<br><br> <div class="sql-example">
+      <div class="sql-example-header">
+        <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
+        <h5>SQL</h5>
+      </div>
+      <div class="sql-example-body">
+        <pre><code class="language-sql">a) (admin) REVOKE PUBLIC FROM Usuario;</code></pre>
+      </div>
+    </div>
+                </div>
+              </div>
+              <strong style="color: #10b981; display: block; margin-bottom: 10px;">🎯 Resolución:</strong>
+              <div style="padding: 15px; border-left: 3px solid #10b981; background: rgba(16, 185, 129, 0.1); border-radius: 4px; color: #d1d5db; line-height: 1.6;">
+                <strong style="color:#fff;">Respuesta a):</strong> <strong style="color:#fff;">No es posible ejecutarlo</strong>. <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">PUBLIC</code> no es un rol otorgable ni revocable individualmente; es un pseudo-rol o identificador de autorización especial que representa automáticamente a absolutamente todos los usuarios de la base de datos. 
+``` sql
+b) (admin) GRANT CONNECT TO usuario WITH GRANT OPTION;
+   (usuario) REVOKE CONNECT FROM admin;
+```
+[!success]- Solución 
+<strong style="color:#fff;">Respuesta b):</strong> La primera sentencia funciona sin problemas: <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">admin</code> otorga el privilegio/rol <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">CONNECT</code> a <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">usuario</code> confiriéndole además la facultad (<code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">WITH GRANT OPTION</code>) de poder extender ese mismo permiso a terceros. Sin embargo, la segunda sentencia <strong style="color:#fff;">dará un error y no será posible</strong>: un usuario común no puede revocar privilegios sobre un administrador si él no fue quien se los concedió originalmente.
+              </div>
+            </div>
+            
+            <div class="box" style="margin-bottom: 30px;">
+              <h3 class="subtheme-title" style="color: #60a5fa; margin-top: 15px; margin-bottom: 15px;">P3. Control de Concurrencia por Marcas de Tiempo (Thomas Write Rule)</h3>
+              <div style="background: rgba(0,0,0,0.2); padding: 15px; margin-bottom: 20px; border-radius: 8px;">
+                <strong style="color: #93c5fd; display: block; margin-bottom: 10px;">Enunciado:</strong>
+                <div style="color: #e5e7eb; line-height: 1.6;">
+                  Simula el comportamiento del siguiente plan de ejecución aplicando la <strong style="color:#fff;">Regla de Escritura de Thomas</strong>. Si en el proceso fuera necesario anular alguna transacción por violación de integridad, ignora todas sus operaciones futuras.<br><br><div style="margin-bottom: 12px; padding-left: 20px; text-indent: -15px; line-height: 1.7;">• <strong style="color:#fff;">Estado inicial:</strong> Las marcas de lectura (ML) y escritura (ME) para los ítems A, B y C son 0. Cada transacción $T_i$ opera con la marca de tiempo de su propio subíndice ($M(T_i) = i$).</div><br><br><div style="overflow-x: auto; margin-bottom: 20px; border-radius: 8px; border: 1px solid var(--border-subtle); background: rgba(0,0,0,0.2);"><table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;"><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><th style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.03); font-weight: 600; color: #e5e7eb; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.85rem;"><strong style="color:#fff;">Instante</strong></th><th style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.03); font-weight: 600; color: #e5e7eb; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.85rem;"><strong style="color:#fff;">T1​</strong></th><th style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.03); font-weight: 600; color: #e5e7eb; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.85rem;"><strong style="color:#fff;">T2​</strong></th><th style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.03); font-weight: 600; color: #e5e7eb; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.85rem;"><strong style="color:#fff;">T3​</strong></th></tr><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">1</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">Read(A)</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td></tr><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">2</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">Write(B)</td></tr><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">3</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">Write(B)</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td></tr><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">4</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">Read(A)</td></tr><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">5</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">Read(C)</td></tr><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">6</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">Read(A)</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td></tr><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">7</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">Read(B)</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td></tr><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">8</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">Write(C)</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td></tr></table></div>
+                </div>
+              </div>
+              <strong style="color: #10b981; display: block; margin-bottom: 10px;">🎯 Resolución:</strong>
+              <div style="padding: 15px; border-left: 3px solid #10b981; background: rgba(16, 185, 129, 0.1); border-radius: 4px; color: #d1d5db; line-height: 1.6;">
+                <div style="margin-bottom: 15px; padding-left: 20px; text-indent: -20px; line-height: 1.7;"><strong style="color:#fff;">1.</strong> <strong style="color:#fff;">$T_1$: <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">Read(A)</code></strong> $&rarr;$ <strong style="color:#fff;">Posible</strong>. Como $M(T_1) = 1 \ge ME(A) = 0$, la lectura es válida.<br><span style="color: #9ca3af; margin-left: 15px;">• <em>Estado:</em></span> <strong style="color:#fff;">ML(A) = 1</strong>, ME(A) = 0.</div>
+    
+<div style="margin-bottom: 15px; padding-left: 20px; text-indent: -20px; line-height: 1.7;"><strong style="color:#fff;">2.</strong> <strong style="color:#fff;">$T_3$: <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">Write(B)</code></strong> $&rarr;$ <strong style="color:#fff;">Posible</strong>. Como $M(T_3) = 3 \ge ML(B) = 0$ y $\ge ME(B) = 0$, se escribe el dato.<br><span style="color: #9ca3af; margin-left: 15px;">• <em>Estado:</em></span> ML(B) = 0, <strong style="color:#fff;">ME(B) = 3</strong>.</div>
+    
+<div style="margin-bottom: 15px; padding-left: 20px; text-indent: -20px; line-height: 1.7;"><strong style="color:#fff;">3.</strong> <strong style="color:#fff;">$T_1$: <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">Write(B)</code></strong> $&rarr;$ <strong style="color:#fff;">Se ignora por Regla de Thomas</strong>. Como $M(T_1) = 1 < ME(B) = 3$, se está intentando escribir un valor más antiguo que el ya consolidado por $T_3$. La transacción $T_1$ no aborta, simplemente omite la escritura.<br><span style="color: #9ca3af; margin-left: 15px;">• <em>Estado:</em></span> ML(B) = 0, ME(B) = 3.</div>
+    
+<div style="margin-bottom: 15px; padding-left: 20px; text-indent: -20px; line-height: 1.7;"><strong style="color:#fff;">4.</strong> <strong style="color:#fff;">$T_3$: <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">Read(A)</code></strong> $&rarr;$ <strong style="color:#fff;">Posible</strong>. Como $M(T_3) = 3 \ge ME(A) = 0$, la lectura es válida.<br><span style="color: #9ca3af; margin-left: 15px;">• <em>Estado:</em></span> <strong style="color:#fff;">ML(A) = 3</strong>, ME(A) = 0.</div>
+    
+<div style="margin-bottom: 15px; padding-left: 20px; text-indent: -20px; line-height: 1.7;"><strong style="color:#fff;">5.</strong> <strong style="color:#fff;">$T_3$: <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">Read(C)</code></strong> $&rarr;$ <strong style="color:#fff;">Posible</strong>. Como $M(T_3) = 3 \ge ME(C) = 0$.<br><span style="color: #9ca3af; margin-left: 15px;">• <em>Estado:</em></span> <strong style="color:#fff;">ML(C) = 3</strong>, ME(C) = 0.</div>
+    
+<div style="margin-bottom: 15px; padding-left: 20px; text-indent: -20px; line-height: 1.7;"><strong style="color:#fff;">6.</strong> <strong style="color:#fff;">$T_2$: <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">Read(A)</code></strong> $&rarr;$ <strong style="color:#fff;">Posible</strong>. Como $M(T_2) = 2 \ge ME(A) = 0$. La marca de lectura no se modifica porque $ML(A)=3$ ya es mayor.<br><span style="color: #9ca3af; margin-left: 15px;">• <em>Estado:</em></span> ML(A) = 3, ME(A) = 0.</div>
+    
+<div style="margin-bottom: 15px; padding-left: 20px; text-indent: -20px; line-height: 1.7;"><strong style="color:#fff;">7.</strong> <strong style="color:#fff;">$T_2$: <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">Read(B)</code></strong> $&rarr;$ <strong style="color:#fff;">FALLO (Rollback de $T_2$)</strong>. Como $M(T_2) = 2 < ME(B) = 3$, la transacción $T_2$ intenta leer una versión de B modificada por una transacción más nueva ($T_3$). $T_2$ se aborta y se reiniciará.</div>
+    
+<div style="margin-bottom: 15px; padding-left: 20px; text-indent: -20px; line-height: 1.7;"><strong style="color:#fff;">8.</strong> <strong style="color:#fff;">$T_1$: <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">Write(C)</code></strong> $&rarr;$ <strong style="color:#fff;">FALLO (Rollback de $T_1$)</strong>. Como $M(T_1) = 1 < ML(C) = 3$, $T_1$ intenta escribir un registro que ya ha sido leído por una transacción más reciente ($T_3$). $T_1$ se aborta y se reiniciará.</div>
+              </div>
+            </div>
+            
+            <div class="box" style="margin-bottom: 30px;">
+              <h3 class="subtheme-title" style="color: #60a5fa; margin-top: 15px; margin-bottom: 15px;">P4. Acciones Referenciales (`ON DELETE / ON UPDATE NO ACTION`)</h3>
+              <div style="background: rgba(0,0,0,0.2); padding: 15px; margin-bottom: 20px; border-radius: 8px;">
+                <strong style="color: #93c5fd; display: block; margin-bottom: 10px;">Enunciado:</strong>
+                <div style="color: #e5e7eb; line-height: 1.6;">
+                  Explica el funcionamiento y la semántica de la acción referencial <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">NO ACTION</code>. Puedes ayudarte de un ejemplo para completar tu explicación.
+                </div>
+              </div>
+              <strong style="color: #10b981; display: block; margin-bottom: 10px;">🎯 Resolución:</strong>
+              <div style="padding: 15px; border-left: 3px solid #10b981; background: rgba(16, 185, 129, 0.1); border-radius: 4px; color: #d1d5db; line-height: 1.6;">
+                <h3 style="margin-top: 30px; margin-bottom: 15px; color: #60a5fa; font-size: 1.25rem;"><strong style="color:#fff;">Respondido por el alumno:</strong></h3><br><br>La cláusula <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">NO ACTION</code> especifica que si los cambios que se pretenden realizar sobre una clave primaria o única violan o rompen la integridad referencial, la operación de borrado o actualización no se ejecutará y el motor de la base de datos devolverá un error. A diferencia de <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">RESTRICT</code>, <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">NO ACTION</code> permite que la verificación se pueda aplazar hasta el final de la transacción (<code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">DEFERRED</code>) si la restricción está configurada con un comportamiento aplazable.<br><br>* <strong style="color:#fff;">Ejemplo:</strong> Imaginemos las tablas relativas a empleados (<code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">emp</code>) y departamentos (<code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">dept</code>), donde la columna <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">deptno</code> en <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">emp</code> es una clave foránea que apunta a <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">dept</code>. Si en la tabla <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">dept</code> tenemos una tupla indicando que hay un departamento cuyo número es 10 y un empleado que está asignado a dicho departamento en <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">emp</code>, cualquier intento de eliminar el departamento 10 o de modificar su número abortará devolviendo un error de integridad referencial, ya que existen registros hijos que todavía dependen de él.
+              </div>
+            </div>
+            
+            <div class="box" style="margin-bottom: 30px;">
+              <h3 class="subtheme-title" style="color: #60a5fa; margin-top: 15px; margin-bottom: 15px;">P5. SQL y Álgebra Relacional (Forma Canónica y Optimizada)</h3>
+              <div style="background: rgba(0,0,0,0.2); padding: 15px; margin-bottom: 20px; border-radius: 8px;">
+                <strong style="color: #93c5fd; display: block; margin-bottom: 10px;">Enunciado:</strong>
+                <div style="color: #e5e7eb; line-height: 1.6;">
+                  Considerando el siguiente esquema relacional de música:<br><br><div class="mermaid" style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); text-align: center; margin: 20px 0;">
+erDiagram
+    ARTISTA ||--o{ COMPON : "compone"
+    CANCION ||--o{ COMPON : "se compone en"
+
+    ARTISTA {
+        string IDART PK
+        string NOME
+        int ANONAC
+    }
+    COMPON {
+        string IDART PK, FK
+        string IDCAN PK, FK
+    }
+    CANCION {
+        string IDCAN PK
+        string TITULO
+        string ESTILO
+        int DURACION
+    }
+</div>
+                </div>
+              </div>
+              <strong style="color: #10b981; display: block; margin-bottom: 10px;">🎯 Resolución:</strong>
+              <div style="padding: 15px; border-left: 3px solid #10b981; background: rgba(16, 185, 129, 0.1); border-radius: 4px; color: #d1d5db; line-height: 1.6;">
+                <div class="sql-example">
+      <div class="sql-example-header">
+        <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
+        <h5>SQL</h5>
+      </div>
+      <div class="sql-example-body">
+        <pre><code class="language-sql">SELECT a.nome, SUM(can.duración)
+FROM artista a, compone c, canción can
+WHERE a.idart = c.idart 
+	AND c.idcan = can.idcan 
+	AND a.anonac &gt; '2000' 
+	AND can.estilo = 'Folk'
+GROUP BY a.nome
+HAVING COUNT(*) &gt; 5;</code></pre>
+      </div>
+    </div><br><br><h3 style="margin-top: 30px; margin-bottom: 15px; color: #60a5fa; font-size: 1.25rem;"><strong style="color:#fff;">b) Árbol de Expresión Canónica (Sin Optimizar):</strong></h3><br><br><div class="mermaid" style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); text-align: center; margin: 20px 0;">
+graph TD
+   A["π [a.nome, sum(can.duración)]"] --> B["σ [count(*) > 5]"]
+   B --> C["γ [a.nome, count(*), sum(can.duración)]"]
+   C --> D["σ [a.idart=c.idart ∧ c.idcan=can.idcan ∧ a.anonac > '2000' ∧ can.estilo = 'Folk']"]
+   D --> E["✕"]
+   E --> F["✕"]
+   E --> G["CANCION"]
+   F --> H["ARTISTA"]
+   F --> I["COMPONE"]
+</div><br><br>
+<h3 style="margin-top: 30px; margin-bottom: 15px; color: #60a5fa; font-size: 1.25rem;"><strong style="color:#fff;">c) Evolución de la Optimización Heurística en 4 Pasos:</strong></h3><br><br><h4 style="margin-top: 25px; margin-bottom: 15px; color: #93c5fd; font-size: 1.1rem;"><strong style="color:#fff;">Árbol 1: Descomposición de la Selección Masiva</strong></h4><br><br>Se desglosa la condición compleja del paso anterior en una secuencia jerárquica de selecciones individuales filtradas de manera consecutiva:<br><br><div class="mermaid" style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); text-align: center; margin: 20px 0;">
+graph TD
+   A["γ [a.nome, sum(can.duración)]"] --> B["σ [θ1: a.idart = c.idart]"]
+   B --> C["σ [θ2: c.idcan = can.idcan]"]
+   C --> D["σ [a.anonac > '2000']"]
+   D --> E["σ [can.estilo = 'Folk']"]
+   E --> F["✕"]
+   F --> G["✕"]
+   F --> H["canción"]
+   G --> I["artista"]
+   G --> J["compone"]
+</div><br><br><h4 style="margin-top: 25px; margin-bottom: 15px; color: #93c5fd; font-size: 1.1rem;"><strong style="color:#fff;">Árbol 2: Bajada de las Selecciones Monódicas</strong></h4><br><br>Las selecciones monódicas (σ) se desplazan hacia abajo en el árbol, situándose justo encima de sus respectivas tablas base (artista y canción) para reducir filas drásticamente antes de los productos:<br><br><div class="mermaid" style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); text-align: center; margin: 20px 0;">
+graph TD
+   A["γ [a.nome, sum(can.duración)]"] --> B["σ [θ2]"]
+   B --> C["✕"]
+   C --> D["σ [θ1]"]
+   C --> E["σ [can.estilo = 'Folk']"]
+   D --> F["✕"]
+   E --> G["canción"]
+   F --> H["σ [a.anonac > '2000']"]
+   F --> I["compone"]
+   H --> J["artista"]
+</div><br><br><h4 style="margin-top: 25px; margin-bottom: 15px; color: #93c5fd; font-size: 1.1rem;"><strong style="color:#fff;">Árbol 3: Transformación de Productos en Juntas Internas (Joins)</strong></h4><br><br>Se combinan las operaciones de producto cartesiano (✕) con las selecciones de unión (σ) situadas inmediatamente encima, transformándolas en operaciones de equi-join (⋈):<br><br><div class="mermaid" style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); text-align: center; margin: 20px 0;">
+graph TD
+   A["γ [a.nome, sum(can.duración)]"] --> B["⋈ [θ2: c.idcan = can.idcan]"]
+   B --> C["⋈ [θ1: a.idart = c.idart]"]
+   B --> D["σ [can.estilo = 'Folk']"]
+   C --> E["σ [a.anonac > '2000']"]
+   C --> F["compone"]
+   D --> G["canción"]
+   E --> H["artista"]
+</div><br><br><h4 style="margin-top: 25px; margin-bottom: 15px; color: #93c5fd; font-size: 1.1rem;"><strong style="color:#fff;">Árbol 4: Árbol Final con Proyecciones Tempranas</strong></h4><br><br>Se introducen proyecciones intermedias (π) destinadas a descartar todas las columnas innecesarias de las tablas, arrastrando estrictamente los atributos requeridos para las juntas y la agregación final (nome, idart, idcan, duración):<br><br>	<div class="mermaid" style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); text-align: center; margin: 20px 0;">
+graph TD
+   A["γ [a.nome, sum(can.duración)]"] --> B["π [a.nome, can.duración]"]
+   B --> C["⋈ [θ1]"]
+   C --> D["π [a.nome, a.idart]"]
+   C --> E["⋈ [θ2]"]
+   D --> F["σ [a.anonac > '2000']"]
+   F --> G["artista"]
+   E --> H["π [c.idart, c.idcan] (compone)"]
+   E --> I["π [can.idcan, can.estilo]"]
+   I --> J["σ [can.estilo = 'Folk']"]
+   J --> K["canción"]
+</div>
+              </div>
+            </div>
+            </div>
+    </section>
+    </div>
+  </main>
+
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    const toggleBtn = document.getElementById('toggle-sidebar');
+
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('hidden');
+    });
+
+    // Generar índice automático
+    const sidebarContent = document.getElementById('nav-links');
+    sidebarContent.innerHTML = '';
+    
+    document.querySelectorAll('.theme-title, .subtheme-title').forEach((el, index) => {
+      if (!el.id) el.id = 'sec-' + index;
+      
+      const link = document.createElement('a');
+      link.href = '#' + el.id;
+      link.textContent = el.textContent;
+      
+      if (el.tagName === 'H2') {
+        link.className = 'nav-h2';
+      } else if (el.tagName === 'H3') {
+        link.className = 'nav-h3';
+      }
+      
+      sidebarContent.appendChild(link);
+    });
+
+    // ScrollSpy para marcar la sección activa
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          const activeLink = document.querySelector(`.nav-h3[href="#${id}"], .nav-h2[href="#${id}"]`);
+          if (activeLink) {
+            document.querySelectorAll('.nav-h3, .nav-h2').forEach(l => l.classList.remove('active'));
+            activeLink.classList.add('active');
+            
+            // Auto scroll sidebar
+            const linkRect = activeLink.getBoundingClientRect();
+            const sidebarRect = sidebarContent.getBoundingClientRect();
+            if (linkRect.bottom > sidebarRect.bottom || linkRect.top < sidebarRect.top) {
+              activeLink.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+            }
+          }
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.theme-title, .subtheme-title').forEach((el) => {
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>

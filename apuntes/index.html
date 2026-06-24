@@ -99,7 +99,7 @@
     }
   
     /* Code styling */
-    code:not([class*="language-"]) { font-family: 'Fira Code', monospace, sans-serif; background: rgba(0,0,0,0.4) !important; padding: 2px 6px; border-radius: 4px; color: #f3f4f6 !important; font-weight: 600; border: 1px solid rgba(255,255,255,0.05); }
+    code:not([class*="language-"]) { font-family: 'JetBrains Mono', monospace !important; background: rgba(0,0,0,0.4) !important; padding: 2px 6px; border-radius: 4px; color: #f3f4f6 !important; font-weight: 600; border: 1px solid rgba(255,255,255,0.05); }
     
     .sql-example {
       background: #1e1e1e; /* Darker background like the user wants */
@@ -133,7 +133,7 @@
       font-weight: 500;
     }
     .sql-example-body { padding: 15px; overflow-x: auto; }
-    .sql-example-body pre { margin: 0 !important; background: transparent !important; padding: 0 !important; font-family: 'Fira Code', 'JetBrains Mono', monospace !important; font-size: 0.95rem; line-height: 1.5; color: #f8f8f2; }
+    .sql-example-body pre { margin: 0 !important; background: transparent !important; padding: 0 !important; font-family: 'JetBrains Mono', monospace !important; font-weight: bold !important; font-size: 0.95rem; line-height: 1.5; color: #f8f8f2; overflow-y: hidden !important; }
 
 </style>
   <script>
@@ -162,7 +162,7 @@
 
 
     /* Code styling */
-    code:not([class*="language-"]) { font-family: 'Fira Code', monospace, sans-serif; background: rgba(0,0,0,0.4) !important; padding: 2px 6px; border-radius: 4px; color: #f3f4f6 !important; font-weight: 600; border: 1px solid rgba(255,255,255,0.05); }
+    code:not([class*="language-"]) { font-family: 'JetBrains Mono', monospace !important; background: rgba(0,0,0,0.4) !important; padding: 2px 6px; border-radius: 4px; color: #f3f4f6 !important; font-weight: 600; border: 1px solid rgba(255,255,255,0.05); }
     
     .sql-example {
       background: #1e1e1e; /* Darker background like the user wants */
@@ -196,7 +196,7 @@
       font-weight: 500;
     }
     .sql-example-body { padding: 15px; overflow-x: auto; }
-    .sql-example-body pre { margin: 0 !important; background: transparent !important; padding: 0 !important; font-family: 'Fira Code', 'JetBrains Mono', monospace !important; font-size: 0.95rem; line-height: 1.5; color: #f8f8f2; }
+    .sql-example-body pre { margin: 0 !important; background: transparent !important; padding: 0 !important; font-family: 'JetBrains Mono', monospace !important; font-weight: bold !important; font-size: 0.95rem; line-height: 1.5; color: #f8f8f2; overflow-y: hidden !important; }
 
 </style>
 
@@ -286,7 +286,7 @@
         <div class="sql-example">
       <div class="sql-example-header">
         <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
-        <h5>Código / Datos</h5>
+        <h5>Consulta al Catálogo</h5>
       </div>
       <div class="sql-example-body">
         <pre><code class="language-sql">-- Consultar todas las columnas de la tabla empleado
@@ -341,7 +341,7 @@ WHERE table_schema = 'public'
         <div class="sql-example">
       <div class="sql-example-header">
         <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
-        <h5>Código / Datos</h5>
+        <h5>Vista con CHECK OPTION</h5>
       </div>
       <div class="sql-example-body">
         <pre><code class="language-sql">-- Crear vista que bloquea inserciones de empleados fuera de IT
@@ -402,8 +402,8 @@ INSERT INTO v_empleados_it VALUES (10, 'Ana', 2000, 'HR');</code></pre>
             <p style="font-size: 0.85rem;"><strong>NOT NULL:</strong> Solo a nivel atributo.<br><br><strong>CHECK:</strong> Establece valores válidos. <em>Limitación:</em> no admite subconsultas reales en ningún SGBD.</p>
           </div>
           <div class="box">
-            <h4 style="color: #6ee7b7;">FOREIGN KEY</h4>
-            <p style="font-size: 0.85rem;">Garantiza integridad referencial. Apunta a una clave candidata (PK o UNIQUE) obligatoriamente.</p>
+            <h4 style="color: #6ee7b7;">FOREIGN KEY & MATCH</h4>
+            <p style="font-size: 0.85rem;">Garantiza integridad referencial apuntando a PK/UNIQUE. Si la FK es compuesta y tiene NULLs, actúa la cláusula MATCH:<br><br><strong>MATCH SIMPLE (Por defecto):</strong> Válido si algún componente es NULL.<br><strong>MATCH FULL:</strong> Válido solo si todos son NULL o ninguno lo es.<br><strong>MATCH PARTIAL:</strong> Válido si hay correspondencia parcial en la tabla referenciada.</p>
           </div>
         </div>
 
@@ -423,7 +423,7 @@ INSERT INTO v_empleados_it VALUES (10, 'Ana', 2000, 'HR');</code></pre>
         <div class="sql-example">
       <div class="sql-example-header">
         <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
-        <h5>Código / Datos</h5>
+        <h5>Acciones Referenciales</h5>
       </div>
       <div class="sql-example-body">
         <pre><code class="language-sql">-- Crear tabla con Foreign Key y acciones referenciales
@@ -480,7 +480,7 @@ CREATE TABLE empleado (
         <div class="sql-example">
       <div class="sql-example-header">
         <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
-        <h5>Código / Datos</h5>
+        <h5>Gestión de Roles y Privilegios</h5>
       </div>
       <div class="sql-example-body">
         <pre><code class="language-sql">-- 1. Crear un rol
@@ -554,7 +554,7 @@ GRANT DELETE ON ventas TO maria WITH GRANT OPTION;</code></pre>
         <div class="sql-example">
       <div class="sql-example-header">
         <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
-        <h5>Código / Datos</h5>
+        <h5>Estructura de un Trigger</h5>
       </div>
       <div class="sql-example-body">
         <pre><code class="language-sql">-- EVENTO: ANTES de actualizar el salario
@@ -605,6 +605,12 @@ END;</code></pre>
           <div class="box" style="background: rgba(6, 182, 212, 0.05); border-left: 3px solid var(--c-6);">
             <h4 style="color: #67e8f9;">Bitmap (Mapa de Bits)</h4>
             <p style="font-size: 0.85rem;">Para <strong>baja cardinalidad</strong> (ej. Sexo) en Data Warehouses. Muy rápidos para cruces AND/OR, pero sufren bloqueos masivos ante modificaciones concurrentes.</p>
+          </div>
+          <div class="box" style="background: rgba(6, 182, 212, 0.05); border-left: 3px solid var(--c-6); grid-column: 1 / -1;">
+            <h4 style="color: #67e8f9;">Gestión de Nulos en Árboles B+ (Trampa de Examen)</h4>
+            <p style="font-size: 0.85rem;"><strong>Regla de Oro en Oracle:</strong> Los B-Tree convencionales <strong>NUNCA</strong> almacenan filas donde todos los atributos indexados son <code>NULL</code>.<br>
+            • Funciones como <code>MAX()</code>, <code>MIN()</code> o consultas <code>IS NULL</code> <strong>NO</strong> usarán el índice si no se garantiza la exclusión de nulos (ej. falta de un constraint <code>NOT NULL</code>).<br>
+            • Si el índice es compuesto, la fila se indexa si <strong>al menos un componente</strong> es NO nulo.</p>
           </div>
         </div>
         
@@ -689,7 +695,23 @@ END;</code></pre>
           </ul>
         </div>
 
-        <h3 class="subtheme-title" id="st-8-3">3. Transacciones Distribuidas</h3>
+        <h3 class="subtheme-title" id="st-8-3">3. Archivos de Log: Actualización Diferida vs Inmediata</h3>
+        <div class="grid-2">
+          <div class="box" style="border-top: 3px solid var(--c-8);">
+            <h4 style="color: #5eead4;">Actualización Diferida (Deferred)</h4>
+            <p style="font-size: 0.85rem;">Los cambios NO van a disco hasta el COMMIT. Si falla, no hay nada que deshacer.<br>
+            • <strong>Formato Log:</strong> <code>[Ti, Registro, Valor_Nuevo]</code><br>
+            • <strong>Recuperación:</strong> Solo requiere aplicar <strong>REDO</strong> a las confirmadas. No existe fase UNDO.</p>
+          </div>
+          <div class="box" style="border-top: 3px solid var(--c-8);">
+            <h4 style="color: #5eead4;">Actualización Inmediata</h4>
+            <p style="font-size: 0.85rem;">Los cambios pueden ir a disco antes del COMMIT (política Steal). Exige poder deshacer.<br>
+            • <strong>Formato Log:</strong> <code>[Ti, Registro, Valor_Viejo, Valor_Nuevo]</code><br>
+            • <strong>Recuperación:</strong> Requiere tanto <strong>UNDO</strong> (para abortadas) como <strong>REDO</strong> (para confirmadas).</p>
+          </div>
+        </div>
+
+        <h3 class="subtheme-title" id="st-8-4">4. Transacciones Distribuidas</h3>
         <div class="box" style="border-top: 3px solid var(--c-8);">
           <h4 style="color: #5eead4;">Protocolo 2PC 🚨</h4>
           <p style="font-size: 0.85rem;">El <strong>Two-Phase Commit Protocol</strong> asegura ACID en nodos distribuidos guiado por un Coordinador:<br>

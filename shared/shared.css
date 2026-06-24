@@ -508,6 +508,13 @@ body.light-theme .btn-icon {
   color: var(--text-secondary) !important;
 }
 body.light-theme .btn-icon:hover {
+  background: var(--bg-hover);
+}
+
+.back-btn { display: flex; align-items: center; gap: 10px; color: var(--text-primary); text-decoration: none; font-weight: 600; font-size: 0.95rem; background: var(--bg-card); padding: 10px 16px; border-radius: 8px; border: 1px solid var(--border-subtle); transition: all 0.2s; }
+.back-btn:hover { background: var(--accent); border-color: var(--accent); }
+
+body.light-theme .btn-icon:hover {
   background: rgba(0, 0, 0, 0.1) !important;
   color: var(--text-primary) !important;
 }

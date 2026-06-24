@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Examen 11-07-2022 - BDA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/shared.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    };
+  </script>
+  <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    :root {
+      --bg-primary: #0a0e1a;
+      --bg-secondary: #111827;
+      --bg-card: #1a1f35;
+      --text-primary: #f3f4f6;
+      --text-secondary: #9ca3af;
+      --accent: #ec4899; 
+      --border-subtle: rgba(255, 255, 255, 0.08);
+    }
+    
+    body { margin: 0; padding: 0; display: flex; height: 100vh; overflow: hidden; font-family: 'Inter', sans-serif; background-color: var(--bg-primary); color: var(--text-primary); }
+    
+    #sidebar {
+      width: 280px;
+      min-width: 280px;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(15px);
+      border-right: 1px solid var(--border-subtle);
+      height: 100vh;
+      position: relative;
+      left: 0; top: 0;
+      overflow-y: auto;
+      transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+    }
+    #sidebar.hidden { margin-left: -280px; }
+    
+    .sidebar-header { padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .back-btn { display: flex; align-items: center; gap: 10px; color: var(--text-primary); text-decoration: none; font-weight: 600; font-size: 0.95rem; background: var(--bg-card); padding: 10px 16px; border-radius: 8px; border: 1px solid var(--border-subtle); transition: all 0.2s; }
+    .back-btn:hover { background: var(--accent); border-color: var(--accent); }
+    .container { display: flex; max-width: 1200px; margin: 0 auto; height: 100%; position: relative; }
+    
+    .nav-h2 { display: block; padding: 12px 24px 4px 24px; font-size: 0.85rem; font-weight: 800; color: #ec4899; text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em; }
+    .nav-h3 { display: block; padding: 8px 24px 8px 36px; font-size: 0.8rem; color: var(--text-secondary); text-decoration: none; transition: all 0.2s; border-left: 3px solid transparent; }
+    .nav-h3:hover { color: var(--text-primary); background: rgba(255,255,255,0.03); }
+    
+    #main-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 60px 60px 60px;
+      position: relative;
+      scroll-behavior: smooth;
+    }
+
+    .toggle-btn {
+      position: sticky; top: 0px; z-index: 99; margin-bottom: 20px; margin-left: -40px;
+      background: var(--bg-card); border: 1px solid var(--border-subtle); color: var(--text-primary);
+      padding: 10px 15px; border-radius: 8px; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 10px; transition: all 0.2s; font-weight: 600; font-size: 0.9rem;
+    }
+    .toggle-btn:hover { background: var(--accent); border-color: var(--accent); }
+
+    .content-container { max-width: 900px; margin: 0 auto; }
+    .page-title { font-size: 3.2rem; font-weight: 900; margin-bottom: 15px; background: linear-gradient(135deg, #fff 0%, var(--accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1; text-align: center; }
+    .page-subtitle { font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 60px; line-height: 1.6; text-align: center; max-width: 800px; margin-inline: auto; }
+    
+    .theme-title { font-size: 2.2rem; font-weight: 800; margin: 80px 0 30px 0; padding-bottom: 15px; border-bottom: 2px solid rgba(255,255,255,0.1); color: #fff; scroll-margin-top: 100px; }
+    .subtheme-title { font-size: 1.4rem; font-weight: 700; margin: 45px 0 15px 0; color: #fbcfe8; scroll-margin-top: 100px; }
+    
+    .box { background: rgba(255,255,255,0.03); padding: 24px; border-radius: 12px; border: 1px solid var(--border-subtle); position: relative; overflow: hidden; }
+    
+    .recipe-step { display: flex; gap: 15px; margin-bottom: 20px; }
+    .recipe-number { flex-shrink: 0; width: 32px; height: 32px; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; }
+    .recipe-content { flex: 1; }
+    .recipe-content p { margin-top: 0; line-height: 1.6; color: #d1d5db; }
+    
+    /* Code styling */
+    pre, code { font-family: 'Fira Code', 'JetBrains Mono', monospace !important; }
+    code:not([class*="language-"]) { background: rgba(0,0,0,0.4) !important; padding: 2px 6px; border-radius: 4px; color: #f3f4f6 !important; font-weight: 600; border: 1px solid rgba(255,255,255,0.05); }
+    
+    .sql-example {
+      background: #1e1e1e;
+      border-radius: 8px;
+      margin: 20px 0;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.05);
+      overflow: hidden;
+    }
+    .sql-example-header {
+      background: #2d2d2d;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .mac-buttons { display: flex; gap: 8px; }
+    .mac-btn { width: 12px; height: 12px; border-radius: 50%; }
+    .mac-btn.close { background: #ff5f56; }
+    .mac-btn.minimize { background: #ffbd2e; }
+    .mac-btn.maximize { background: #27c93f; }
+    .sql-example h5 {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      margin: 0;
+      color: #a0a0a0;
+      font-size: 0.85rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+    }
+    .sql-example-body { padding: 15px; overflow-x: auto; overflow-y: hidden; }
+    
+    /* Intro spacing */
+    .clasificacion-lista li { margin-bottom: 25px; }
+    .sql-example-body pre { margin: 0 !important; background: transparent !important; padding: 0 !important; font-family: 'JetBrains Mono', monospace !important; font-weight: bold !important; font-size: 0.95rem; line-height: 1.5; color: #f8f8f2; overflow-y: hidden !important; }
+    
+    .nav-h3.active { color: #fff; background: rgba(59, 130, 246, 0.15); border-left-color: var(--accent); font-weight: 600; }
+    .nav-h2.active { color: #fff; background: rgba(59, 130, 246, 0.15); font-weight: 600; }
+    
+    @media (max-width: 850px) {
+      body { flex-direction: column; height: auto; overflow-y: auto; }
+      #sidebar { width: 100%; min-width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border-subtle); position: relative; z-index: 100; flex-direction: column; }
+      .sidebar-content { display: flex; flex-direction: row; overflow-x: auto; overflow-y: hidden; white-space: nowrap; padding: 10px 15px; -webkit-overflow-scrolling: touch; align-items: center; }
+      .nav-h2 { display: inline-block; padding: 8px 15px; margin-right: 10px; font-size: 0.8rem; background: rgba(236,72,153,0.1); border-radius: 8px; border-bottom: none; }
+      .nav-h3 { display: inline-block; padding: 8px 12px; font-size: 0.85rem; border-left: none; }
+      #main-content { overflow-y: visible; padding: 25px 15px; margin-left: 0; }
+      .toggle-btn { margin-left: 0; }
+    }
+  </style>
+</head>
+<body class="line-numbers">
+  
+  <nav id="sidebar">
+    <div class="sidebar-header">
+      <a href="../index.html" class="back-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Volver al Portal
+      </a>
+    </div>
+    <div class="sidebar-content" id="nav-links">
+      <!-- Generated automatically -->
+    </div>
+  </nav>
+
+  <main id="main-content">
+    
+    <button id="toggle-sidebar" class="toggle-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+
+    <div class="content-container">
+      <div style="text-align: center; margin-bottom: 50px;">
+        <h1 class="page-title">Examen 11-07-2022</h1>
+        <p style="font-size: 1.1rem; line-height: 1.8; color: #9ca3af; margin: 15px auto 0; max-width: 800px;">
+          Resolución completa y secuencial del <strong>Examen 11-07-2022</strong>.
+        </p>
+      </div>
+
+<div style="margin-top: 20px;">
+            <div class="box" style="margin-bottom: 30px;">
+              <h3 class="subtheme-title" style="color: #60a5fa; margin-top: 15px; margin-bottom: 15px;">P1 (0,5p). Creación y Actualización de Vistas</h3>
+              <div style="background: rgba(0,0,0,0.2); padding: 15px; margin-bottom: 20px; border-radius: 8px;">
+                <strong style="color: #93c5fd; display: block; margin-bottom: 10px;">Enunciado:</strong>
+                <div style="color: #e5e7eb; line-height: 1.6;">
+                  Considera las vistas vista1 y vista2 a continuación (se asume que la vista emps_depto10 ya existe y es correcta). Para cada una de ellas, indica si la vista se crea o si la sentencia de creación da un error (en este caso, di por qué). En el caso de que se cree, indica si es actualizable y si permitiría la inserción de filas migratorias. Justifica las respuestas.<br><br><strong style="color:#fff;">Definición de vistas:</strong><br><br><div class="sql-example">
+      <div class="sql-example-header">
+        <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
+        <h5>SQL</h5>
+      </div>
+      <div class="sql-example-body">
+        <pre><code class="language-SQL">CREATE VIEW vista1 AS
+SELECT DISTINCT empno, ename, sal+comm, hiredate
+FROM emp
+WHERE deptno = 30;</code></pre>
+      </div>
+    </div><br><br><em>(Vista base correcta previa):</em>
+<div class="sql-example">
+      <div class="sql-example-header">
+        <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
+        <h5>SQL</h5>
+      </div>
+      <div class="sql-example-body">
+        <pre><code class="language-SQL">CREATE VIEW emps_depto10 AS 
+SELECT * FROM emp WHERE deptno = 10;</code></pre>
+      </div>
+    </div><br><br><div class="sql-example">
+      <div class="sql-example-header">
+        <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
+        <h5>SQL</h5>
+      </div>
+      <div class="sql-example-body">
+        <pre><code class="language-SQL">CREATE VIEW vista2 AS
+SELECT empno, ename, sal, job
+FROM emps_depto10
+WHERE sal &gt; 4000
+WITH LOCAL CHECK OPTION;</code></pre>
+      </div>
+    </div>
+                </div>
+              </div>
+              <strong style="color: #10b981; display: block; margin-bottom: 10px;">🎯 Resolución:</strong>
+              <div style="padding: 15px; border-left: 3px solid #10b981; background: rgba(16, 185, 129, 0.1); border-radius: 4px; color: #d1d5db; line-height: 1.6;">
+                <div style="margin-bottom: 15px; padding-left: 20px; text-indent: -20px; line-height: 1.7;"><strong style="color:#fff;">1.</strong> <strong style="color:#fff;">vista1:</strong> Se crea sin problemas. No es actualizable ya que tiene una cláusula de filtrado de repetidos (DISTINCT). Por otra parte, sí que permite la inserción de filas migratorias porque no tiene la opción de CHECK OPTION especificada en su definición.</div><br><br><div style="margin-bottom: 15px; padding-left: 20px; text-indent: -20px; line-height: 1.7;"><strong style="color:#fff;">2.</strong> <strong style="color:#fff;">vista2:</strong> Se crearía sin problema. Sería actualizable y no existirían filas migratorias de forma local. Sin embargo, si insertásemos, por ejemplo, un empleado con un sueldo superior a 4000 pero perteneciente al departamento 20, la vista lo permitiría (ya que la restricción local solo comprueba el salario), originando una fila migratoria respecto a la vista base emps_depto10</div><br><br><hr style="border: 0; height: 1px; background: rgba(255,255,255,0.1); margin: 30px 0;">
+              </div>
+            </div>
+            
+            <div class="box" style="margin-bottom: 30px;">
+              <h3 class="subtheme-title" style="color: #60a5fa; margin-top: 15px; margin-bottom: 15px;">P2 (0,5p). Seguridad y Revocación de Roles</h3>
+              <div style="background: rgba(0,0,0,0.2); padding: 15px; margin-bottom: 20px; border-radius: 8px;">
+                <strong style="color: #93c5fd; display: block; margin-bottom: 10px;">Enunciado:</strong>
+                <div style="color: #e5e7eb; line-height: 1.6;">
+                  Di qué pasaría si un usuario con el rol ABD ejecutase la siguiente sentencia SQL en Oracle. Específicamente, ¿qué ocurre con los usuarios que ya están conectados?<br><br>
+<div class="sql-example">
+      <div class="sql-example-header">
+        <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
+        <h5>SQL</h5>
+      </div>
+      <div class="sql-example-body">
+        <pre><code class="language-SQL">REVOKE CONNECT FROM PUBLIC;</code></pre>
+      </div>
+    </div>
+                </div>
+              </div>
+              <strong style="color: #10b981; display: block; margin-bottom: 10px;">🎯 Resolución:</strong>
+              <div style="padding: 15px; border-left: 3px solid #10b981; background: rgba(16, 185, 129, 0.1); border-radius: 4px; color: #d1d5db; line-height: 1.6;">
+                Causaría la revocación del rol CONNECT (el cual posee el privilegio <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">CREATE SESSION</code> necesario para abrir una sesión contra la base de datos) a absolutamente todos los usuarios, dado que PUBLIC es un pseudo-AuthID que engloba a todos los usuarios del sistema (presentes y futuros).<br><br>Este efecto no sería instantáneo para los usuarios ya conectados, dado que la revocación de un rol no se hace efectiva hasta que se inicia una nueva sesión (<code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">CONNECT usr/key</code>) o se ejecuta explícitamente un <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">SET ROLE ALL</code>. Afectará, por lo tanto, a las sesiones futuras y a las presentes en cuanto intenten revalidar sus roles.<br><br><hr style="border: 0; height: 1px; background: rgba(255,255,255,0.1); margin: 30px 0;">
+              </div>
+            </div>
+            
+            <div class="box" style="margin-bottom: 30px;">
+              <h3 class="subtheme-title" style="color: #60a5fa; margin-top: 15px; margin-bottom: 15px;">P3 (0,5p). Optimización y Uso de Índices</h3>
+              <div style="background: rgba(0,0,0,0.2); padding: 15px; margin-bottom: 20px; border-radius: 8px;">
+                <strong style="color: #93c5fd; display: block; margin-bottom: 10px;">Enunciado:</strong>
+                <div style="color: #e5e7eb; line-height: 1.6;">
+                  Considera la tabla EMP de docencia, que tiene la restricción PK_EMP (clave primaria sobre EMPNO). Además, se definió un índice I_EMP_COMM sobre el campo COMM, y un índice I_EMP_SAL sobre el campo SAL. Di si para ejecutar las siguientes sentencias Oracle utilizaría algún índice (en caso afirmativo, di el nombre del índice). Justifica la respuesta.<br><br><div class="sql-example">
+      <div class="sql-example-header">
+        <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
+        <h5>SQL</h5>
+      </div>
+      <div class="sql-example-body">
+        <pre><code class="language-sql">SELECT /*+ INDEX (EMP I_EMP_COMM) */ DISTINCT (COMM)
+FROM EMP;</code></pre>
+      </div>
+    </div>
+                </div>
+              </div>
+              <strong style="color: #10b981; display: block; margin-bottom: 10px;">🎯 Resolución:</strong>
+              <div style="padding: 15px; border-left: 3px solid #10b981; background: rgba(16, 185, 129, 0.1); border-radius: 4px; color: #d1d5db; line-height: 1.6;">
+                <div style="margin-bottom: 12px; padding-left: 20px; text-indent: -15px; line-height: 1.7;">• <strong style="color:#fff;">Para la primera sentencia:</strong> El DISTINCT lo que hace es agrupar, por lo que los valores nulos se agrupan en una única fila. En Oracle, los valores completamente nulos no se incluyen en los índices B-Tree normales, por lo que no se utilizará el índice (aunque esté la sugerencia/hint).</div>
+    
+<div class="sql-example">
+      <div class="sql-example-header">
+        <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
+        <h5>SQL</h5>
+      </div>
+      <div class="sql-example-body">
+        <pre><code class="language-SQL">SELECT AVG(SAL)
+FROM EMP;</code></pre>
+      </div>
+    </div><br><br>[!success]- Solución
+<div style="margin-bottom: 12px; padding-left: 20px; text-indent: -15px; line-height: 1.7;">• <strong style="color:#fff;">Para la segunda sentencia:</strong> El campo SAL puede contener valores nulos, pero como se está realizando una operación de agrupamiento (AVG), Oracle sí va a usar el índice I_EMP_SAL para optimizar el cálculo de agregación sobre los valores no nulos.</div><br><br><hr style="border: 0; height: 1px; background: rgba(255,255,255,0.1); margin: 30px 0;">
+              </div>
+            </div>
+            
+            <div class="box" style="margin-bottom: 30px;">
+              <h3 class="subtheme-title" style="color: #60a5fa; margin-top: 15px; margin-bottom: 15px;">P4 (0,5p). Integridad Referencial (Cláusula MATCH)</h3>
+              <div style="background: rgba(0,0,0,0.2); padding: 15px; margin-bottom: 20px; border-radius: 8px;">
+                <strong style="color: #93c5fd; display: block; margin-bottom: 10px;">Enunciado:</strong>
+                <div style="color: #e5e7eb; line-height: 1.6;">
+                  Considera las siguientes tablas, donde (K1, K2) en ESCLAVA es una clave foránea que referencia a MAESTRA.<br><br><strong style="color:#fff;">Tabla MAESTRA</strong><br><br><div style="overflow-x: auto; margin-bottom: 20px; border-radius: 8px; border: 1px solid var(--border-subtle); background: rgba(0,0,0,0.2);"><table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;"><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><th style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.03); font-weight: 600; color: #e5e7eb; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.85rem;"><strong style="color:#fff;">K1</strong></th><th style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.03); font-weight: 600; color: #e5e7eb; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.85rem;"><strong style="color:#fff;">K2</strong></th></tr><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">5</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">TR</td></tr></table></div>
+<strong style="color:#fff;">Tabla ESCLAVA</strong><br><br>
+<div style="overflow-x: auto; margin-bottom: 20px; border-radius: 8px; border: 1px solid var(--border-subtle); background: rgba(0,0,0,0.2);"><table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;"><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><th style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.03); font-weight: 600; color: #e5e7eb; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.85rem;"><strong style="color:#fff;">ID</strong></th><th style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.03); font-weight: 600; color: #e5e7eb; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.85rem;"><strong style="color:#fff;">K1</strong></th><th style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.03); font-weight: 600; color: #e5e7eb; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.85rem;"><strong style="color:#fff;">K2</strong></th></tr><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">1</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">NULL</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">GL</td></tr><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">2</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">5</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">NULL</td></tr><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">3</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">5</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">TR</td></tr></table></div>
+Indica, para cada posible especificación de la cláusula MATCH de la clave foránea, qué filas de ESCLAVA serían válidas.
+                </div>
+              </div>
+              <strong style="color: #10b981; display: block; margin-bottom: 10px;">🎯 Resolución:</strong>
+              <div style="padding: 15px; border-left: 3px solid #10b981; background: rgba(16, 185, 129, 0.1); border-radius: 4px; color: #d1d5db; line-height: 1.6;">
+                <div style="margin-bottom: 12px; padding-left: 20px; text-indent: -15px; line-height: 1.7;">• <strong style="color:#fff;">MATCH FULL:</strong> </div>
+	- Válidas: Fila (3)    
+   - Inválidas: Filas (1, 2) (requiere que todos sean nulos o ninguno lo sea)
+        
+<div style="margin-bottom: 12px; padding-left: 20px; text-indent: -15px; line-height: 1.7;">• <strong style="color:#fff;">MATCH PARTIAL:</strong> </div>
+	- Válidas: Filas (2, 3)
+   - Inválidas: Fila (1) (la fila 2 es válida porque la parte no nula '5' encuentra coincidencia en MAESTRA)
+        
+<div style="margin-bottom: 12px; padding-left: 20px; text-indent: -15px; line-height: 1.7;">• <strong style="color:#fff;">MATCH SIMPLE:</strong> </div>
+	- Válidas: Filas (1, 2, 3) (si cualquier componente es NULL, da la fila por válida automáticamente)<br><br><hr style="border: 0; height: 1px; background: rgba(255,255,255,0.1); margin: 30px 0;">
+              </div>
+            </div>
+            
+            <div class="box" style="margin-bottom: 30px;">
+              <h3 class="subtheme-title" style="color: #60a5fa; margin-top: 15px; margin-bottom: 15px;">P5 (0,75p). Control de Concurrencia Multiversión</h3>
+              <div style="background: rgba(0,0,0,0.2); padding: 15px; margin-bottom: 20px; border-radius: 8px;">
+                <strong style="color: #93c5fd; display: block; margin-bottom: 10px;">Enunciado:</strong>
+                <div style="color: #e5e7eb; line-height: 1.6;">
+                  Considera un sistema con control de concurrencia multiversión. La marca de transacción será su subíndice, esto es, para cada transacción $T_i$, $M(T_i) = i$.<br><br>Para el dato A tenemos inicialmente las siguientes versiones:<br><br><div style="overflow-x: auto; margin-bottom: 20px; border-radius: 8px; border: 1px solid var(--border-subtle); background: rgba(0,0,0,0.2);"><table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;"><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><th style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.03); font-weight: 600; color: #e5e7eb; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.85rem;">$A_1 = 20$</th><th style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.03); font-weight: 600; color: #e5e7eb; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.85rem;">$\text{ ML} = 4$ <br> $\text{ME} = 1$</th></tr></table></div>
+<div style="overflow-x: auto; margin-bottom: 20px; border-radius: 8px; border: 1px solid var(--border-subtle); background: rgba(0,0,0,0.2);"><table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;"><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><th style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.03); font-weight: 600; color: #e5e7eb; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.85rem;">$A_2 = 30$</th><th style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.03); font-weight: 600; color: #e5e7eb; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.85rem;">$\text{ ML} = 7$ <br> $\text{ME} = 6$</th></tr></table></div>
+Indica lo que pasa en cada una de las siguientes operaciones secuenciales y cómo quedan las versiones de A:<br><br><div style="margin-bottom: 12px; padding-left: 20px; text-indent: -15px; line-height: 1.7;">• <strong style="color:#fff;">$T_3$ lee A.</strong></div>
+                </div>
+              </div>
+              <strong style="color: #10b981; display: block; margin-bottom: 10px;">🎯 Resolución:</strong>
+              <div style="padding: 15px; border-left: 3px solid #10b981; background: rgba(16, 185, 129, 0.1); border-radius: 4px; color: #d1d5db; line-height: 1.6;">
+                <strong style="color:#fff;">Efecto:</strong> Como $M(T_3) = 3$, busca la versión más reciente cuyo $\text{ME} \le 3$, que es $A_1$ ($\text{ME}=1$). Dado que $M(T_3) = 3$ no supera el $\text{ML}$ actual ($\text{ML}=4$), $T_3$ lee el valor $A_1 = 20$ sin modificar las marcas.<br><br><strong style="color:#fff;">Estado de versiones:</strong><br><br><div style="margin-bottom: 12px; padding-left: 20px; text-indent: -15px; line-height: 1.7;">• $A_1 = 20 &rarr; \text{ME} = 1, \text{ML} = 4$</div>
+    
+<div style="margin-bottom: 12px; padding-left: 20px; text-indent: -15px; line-height: 1.7;">• $A_2 = 30 &rarr; \text{ME} = 6, \text{ML} = 7$</div>
+    <br><br><div style="margin-bottom: 12px; padding-left: 20px; text-indent: -15px; line-height: 1.7;">• <strong style="color:#fff;">$T_8$ lee A.</strong></div>
+    <br><br>[!success]- Resolución<br><br><strong style="color:#fff;">Efecto:</strong> Como $M(T_8) = 8$, la versión adecuada es $A_2$ ($\text{ME}=6 \le 8$). Como $M(T_8) = 8 > \text{ML}(A_2) = 7$, se actualiza la marca de lectura $\text{ML}(A_2) = 8$. $T_8$ lee el valor $A_2 = 30$.<br><br><strong style="color:#fff;">Estado de versiones:</strong><br><br><div style="margin-bottom: 12px; padding-left: 20px; text-indent: -15px; line-height: 1.7;">• $A_1 = 20 &rarr; \text{ME} = 1, \text{ML} = 4$</div>
+    
+<div style="margin-bottom: 12px; padding-left: 20px; text-indent: -15px; line-height: 1.7;">• $A_2 = 30 &rarr; \text{ME} = 6, \text{ML} = 8$</div>
+    <br><br><div style="margin-bottom: 12px; padding-left: 20px; text-indent: -15px; line-height: 1.7;">• <strong style="color:#fff;">$T_9$ escribe el valor 13 en A.</strong></div>
+    <br><br>[!success]- Resolución<br><br><strong style="color:#fff;">Efecto:</strong> Como $M(T_9) = 9$ y es mayor que el $\text{ML}$ de la versión más reciente ($\text{ML}(A_2) = 8$), se permite la escritura. $T_9$ crea una nueva versión $A_3 = 13$.<br><br><strong style="color:#fff;">Estado de versiones:</strong><br><br><div style="margin-bottom: 12px; padding-left: 20px; text-indent: -15px; line-height: 1.7;">• $A_1 = 20 &rarr; \text{ME} = 1, \text{ML} = 4$</div>
+    
+<div style="margin-bottom: 12px; padding-left: 20px; text-indent: -15px; line-height: 1.7;">• $A_2 = 30 &rarr; \text{ME} = 6, \text{ML} = 8$</div>
+    
+<div style="margin-bottom: 12px; padding-left: 20px; text-indent: -15px; line-height: 1.7;">• $A_3 = 13 &rarr; \text{ME} = 9, \text{ML} = 9$</div>
+    <br><br><div style="margin-bottom: 12px; padding-left: 20px; text-indent: -15px; line-height: 1.7;">• <strong style="color:#fff;">$T_3$ escribe el valor 25 en A.</strong></div>
+    <br><br>[!success]- Resolución<br><br><strong style="color:#fff;">Efecto:</strong> $T_3$ intenta acceder a $A_1$ ($\text{ME}=1$). Por el contrario, como su marca $M(T_3) = 3$ es menor que alguna lectura ya realizada por otras transacciones posteriores ($\text{ML}=4$ o $\text{ML}=8$), la operación se deniega para evitar anomalías. $T_3$ hace rollback y se reinicia con una nueva marca temporal.<br><br><div style="margin-bottom: 12px; padding-left: 20px; text-indent: -15px; line-height: 1.7;">• <strong style="color:#fff;">$T_5$ escribe el valor 65 en A.</strong></div>
+    <br><br>[!success]- Resolución<br><br><strong style="color:#fff;">Efecto:</strong> Al realizarse tras los cambios y las reorganizaciones de versiones del ejercicio, se deteriora la secuencia y se registra la creación de una versión intermedia válida o reajuste pendiente. (El alumno dibuja la inserción ordenando las versiones resultantes por marcas de escritura: $A_1$, nueva versión $A_{\text{intermedia}}$ con $\text{ME}=5, \text{ML}=5$, seguida de $A_2$ y $A_3$).
+              </div>
+            </div>
+            
+            <div class="box" style="margin-bottom: 30px;">
+              <h3 class="subtheme-title" style="color: #60a5fa; margin-top: 15px; margin-bottom: 15px;">P6a (0,5p). Recuperación ante Caídas (Log)</h3>
+              <div style="background: rgba(0,0,0,0.2); padding: 15px; margin-bottom: 20px; border-radius: 8px;">
+                <strong style="color: #93c5fd; display: block; margin-bottom: 10px;">Enunciado:</strong>
+                <div style="color: #e5e7eb; line-height: 1.6;">
+                  Disponemos del siguiente archivo de log:<br><br><div class="sql-example">
+      <div class="sql-example-header">
+        <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
+        <h5>SQL</h5>
+      </div>
+      <div class="sql-example-body">
+        <pre><code class="language-sql">&lt;T1, START&gt;
+&lt;T2, START&gt;
+&lt;T1, A, 10, 28&gt;
+&lt;T1, COMMIT&gt;
+&lt;T2, B, 10, 20&gt;
+&lt;T3, START&gt;
+&lt;CHECKPOINT (T2, T3)&gt;
+&lt;T2, COMMIT&gt;
+&lt;T3, B, 20, 30&gt;
+&lt;T3, B, 30, 33&gt;</code></pre>
+      </div>
+    </div><br><br>Tras la última entrada del log se produjo una caída sin pérdida de almacenamiento no volátil.<br><br>Di si el log corresponde a un sistema con actualizaciones inmediatas o diferidas (y por qué lo sabes).<br><br>Indica lo que habría que hacer para recuperar el sistema ante esa caída (suponiendo que se utilizan las estrategias Robar y No forzar).
+                </div>
+              </div>
+              <strong style="color: #10b981; display: block; margin-bottom: 10px;">🎯 Resolución:</strong>
+              <div style="padding: 15px; border-left: 3px solid #10b981; background: rgba(16, 185, 129, 0.1); border-radius: 4px; color: #d1d5db; line-height: 1.6;">
+                <strong style="color:#fff;">Tipo de sistema:</strong> Corresponde con un sistema de actualizaciones inmediatas. Lo sabemos porque en las entradas de modificación del log se guardan concurrentemente tanto el valor anterior (imagen antigua) como el valor posterior (imagen nueva), necesarios para poder hacer tanto undo como redo.<br><br><strong style="color:#fff;">Operaciones de recuperación:</strong><br><br><div style="margin-bottom: 12px; padding-left: 20px; text-indent: -15px; line-height: 1.7;">• <strong style="color:#fff;">Se ignora T1</strong>: Su <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">COMMIT</code> ocurrió antes del <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;"><CHECKPOINT (T2, T3)></code>, lo que asegura que sus cambios ya están volcados a disco de forma estable y no es necesario procesarla.</div>
+<div style="margin-bottom: 12px; padding-left: 20px; text-indent: -15px; line-height: 1.7;">• <strong style="color:#fff;">redo(T2)</strong>: Estaba activa en el momento del checkpoint y consolidó con su correspondiente <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">COMMIT</code> antes de la caída.</div>
+<div style="margin-bottom: 12px; padding-left: 20px; text-indent: -15px; line-height: 1.7;">• <strong style="color:#fff;">undo(T3)</strong>: Comenzó su ejecución pero no llegó a consolidar con su correspondiente <code style="font-family: \'JetBrains Mono\', monospace; font-weight: bold; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; color: #f3f4f6;">COMMIT</code> antes de la caída.</div><br><br><em>(Nota teórica: En la práctica, al recuperar el sistema, la operación</em> <em>undo(T3)</em> <em>se ejecuta primero recorriendo el log hacia atrás, y posteriormente se ejecuta</em> <em>redo(T2)</em> <em>hacia adelante_</em>)._
+              </div>
+            </div>
+            
+            <div class="box" style="margin-bottom: 30px;">
+              <h3 class="subtheme-title" style="color: #60a5fa; margin-top: 15px; margin-bottom: 15px;">P6b (0,25p). Restricciones Aplazables (Deferrable)</h3>
+              <div style="background: rgba(0,0,0,0.2); padding: 15px; margin-bottom: 20px; border-radius: 8px;">
+                <strong style="color: #93c5fd; display: block; margin-bottom: 10px;">Enunciado:</strong>
+                <div style="color: #e5e7eb; line-height: 1.6;">
+                  ¿Qué es una restrición aplazable? Pon un ejemplo donde sea necesario su uso.
+                </div>
+              </div>
+              <strong style="color: #10b981; display: block; margin-bottom: 10px;">🎯 Resolución:</strong>
+              <div style="padding: 15px; border-left: 3px solid #10b981; background: rgba(16, 185, 129, 0.1); border-radius: 4px; color: #d1d5db; line-height: 1.6;">
+                Las restricciones aplazadas son aquellas definidas con la opción DEFERRABLE. Al contrario que las normales (NOT DEFERRABLE), que se comprueban de manera inmediata tras lanzar cada query, con las aplazables podemos modificar el comportamiento con la sentencia:<br><br><div class="sql-example">
+      <div class="sql-example-header">
+        <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
+        <h5>SQL</h5>
+      </div>
+      <div class="sql-example-body">
+        <pre><code class="language-sql">SET CONSTRAINTS { ALL | restr1, ... } { IMMEDIATE | DEFERRED };</code></pre>
+      </div>
+    </div><br><br><div style="margin-bottom: 12px; padding-left: 20px; text-indent: -15px; line-height: 1.7;">• <strong style="color:#fff;">IMMEDIATE:</strong> Se comporta en el momento, de manera inmediata.</div>
+    
+<div style="margin-bottom: 12px; padding-left: 20px; text-indent: -15px; line-height: 1.7;">• <strong style="color:#fff;">DEFERRED:</strong> Esperará hasta el momento de confirmar la transacción (COMMIT) para comprobar la validez de la integridad.</div>
+    <br><br><strong style="color:#fff;">Ejemplo de uso:</strong> Es totalmente necesario para romper ciclos referenciales entre dos tablas (por ejemplo, cuando la tabla A tiene una foreign key no nula hacia la tabla B, y la tabla B tiene otra foreign key no nula hacia la tabla A). Sin aplazar la restricción, sería imposible insertar el primer registro en ninguna de ellas.
+              </div>
+            </div>
+            
+            <div class="box" style="margin-bottom: 30px;">
+              <h3 class="subtheme-title" style="color: #60a5fa; margin-top: 15px; margin-bottom: 15px;">P7 (0,5p). Plan de Ejecución en Oracle</h3>
+              <div style="background: rgba(0,0,0,0.2); padding: 15px; margin-bottom: 20px; border-radius: 8px;">
+                <strong style="color: #93c5fd; display: block; margin-bottom: 10px;">Enunciado:</strong>
+                <div style="color: #e5e7eb; line-height: 1.6;">
+                  A continuación se muestra un plan de ejecución de Oracle:<br><br>
+<div style="overflow-x: auto; margin-bottom: 20px; border-radius: 8px; border: 1px solid var(--border-subtle); background: rgba(0,0,0,0.2);"><table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;"><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><th style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.03); font-weight: 600; color: #e5e7eb; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.85rem;"><strong style="color:#fff;">Id</strong></th><th style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.03); font-weight: 600; color: #e5e7eb; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.85rem;"><strong style="color:#fff;">Operation</strong></th><th style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.03); font-weight: 600; color: #e5e7eb; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.85rem;"><strong style="color:#fff;">Name</strong></th><th style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.03); font-weight: 600; color: #e5e7eb; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.85rem;"><strong style="color:#fff;">Rows</strong></th><th style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.03); font-weight: 600; color: #e5e7eb; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.85rem;"><strong style="color:#fff;">Bytes</strong></th><th style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.03); font-weight: 600; color: #e5e7eb; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.85rem;"><strong style="color:#fff;">Cost (%CPU)</strong></th><th style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.03); font-weight: 600; color: #e5e7eb; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.85rem;"><strong style="color:#fff;">Time</strong></th></tr><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">0</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"><code>SELECT STATEMENT</code></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">1</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">20</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">7 (29)</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">00:00:01</td></tr><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">* 1</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"><code>FILTER</code></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td></tr><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">2</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"><code>HASH GROUP BY</code></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">1</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">20</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">7 (29)</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">00:00:01</td></tr><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">3</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"><code>MERGE JOIN</code></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">14</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">280</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">6 (17)</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">00:00:01</td></tr><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">4</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"><code>TABLE ACCESS BY INDEX ROWID</code></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"><code>EMP</code></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">41</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">524</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">2 (0)</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">00:00:01</td></tr><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">5</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"><code>INDEX FULL SCAN</code></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"><code>PK_DEPT</code></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">41</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">1 (0)</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">00:00:01</td></tr><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">6</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"><code>SORT JOIN</code></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">14</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">98</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">4 (25)</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">00:00:01</td></tr><tr style="transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'"><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">* 7</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"><code>TABLE ACCESS FULL</code></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;"><code>EMP</code></td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">14</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">98</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">3 (0)</td><td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d1d5db;">00:00:01</td></tr></table></div><br><br><div class="sql-example">
+      <div class="sql-example-header">
+        <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
+        <h5>SQL</h5>
+      </div>
+      <div class="sql-example-body">
+        <pre><code class="language-sql">Predicate Information (identified by operation id):
+---------------------------------------------------
+1 - filter(COUNT(*)&gt;3)
+6 - access("EMP"."DEPTNO"="DEPT"."DEPTNO")
+    filter("EMP"."DEPTNO"="DEPT"."DEPTNO")</code></pre>
+      </div>
+    </div><br><br><strong style="color:#fff;">a) Escribe una sentencia SQL que pueda generar ese plan de ejecución.</strong>
+                </div>
+              </div>
+              <strong style="color: #10b981; display: block; margin-bottom: 10px;">🎯 Resolución:</strong>
+              <div style="padding: 15px; border-left: 3px solid #10b981; background: rgba(16, 185, 129, 0.1); border-radius: 4px; color: #d1d5db; line-height: 1.6;">
+                <div class="sql-example">
+      <div class="sql-example-header">
+        <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
+        <h5>SQL</h5>
+      </div>
+      <div class="sql-example-body">
+        <pre><code class="language-sql">SELECT e.deptno, d.dname, COUNT(*)
+FROM emp e JOIN dept d ON e.deptno = d.deptno
+GROUP BY e.deptno, d.dname
+HAVING COUNT(*) &gt; 3;</code></pre>
+      </div>
+    </div><br><br><strong style="color:#fff;">b) Explica el funcionamiento del plan, indicando qué operaciones se realizan antes y cuáles después.</strong><br><br>[!success]- Respuesta b)<br><br>Como cada nivel de indentación indica dependencia jerárquica:<br><br>Primero se realizan las operaciones 5 y 7. La 5 hace una exploración completa del índice (INDEX FULL SCAN de PK_DEPT) en la tabla de departamentos, y la 7 realiza un escaneo completo (TABLE ACCESS FULL) de la tabla EMP para leer todas sus filas.<br><br>Después, se ejecuta la operación 6 que ordena (SORT JOIN) las filas obtenidas de EMP por la columna de unión (DEPTNO). Paralelamente, la 4 accede por ROWID a las filas necesarias asociadas al índice de departamentos. La operación 3 mezcla las dos fuentes mediante un MERGE JOIN.<br><br>Finalmente, la operación 2 agrupa los resultados combinados (HASH GROUP BY) por departamento. La operación 1 aplica el filtro del HAVING (COUNT(*) > 3) para descartar los grupos con 3 o menos filas, y la 0 devuelve el resultado final procesado por la SELECT STATEMENT.
+              </div>
+            </div>
+            </div>
+    </section>
+    </div>
+  </main>
+
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    const toggleBtn = document.getElementById('toggle-sidebar');
+
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('hidden');
+    });
+
+    // Generar índice automático
+    const sidebarContent = document.getElementById('nav-links');
+    sidebarContent.innerHTML = '';
+    
+    document.querySelectorAll('.theme-title, .subtheme-title').forEach((el, index) => {
+      if (!el.id) el.id = 'sec-' + index;
+      
+      const link = document.createElement('a');
+      link.href = '#' + el.id;
+      link.textContent = el.textContent;
+      
+      if (el.tagName === 'H2') {
+        link.className = 'nav-h2';
+      } else if (el.tagName === 'H3') {
+        link.className = 'nav-h3';
+      }
+      
+      sidebarContent.appendChild(link);
+    });
+
+    // ScrollSpy para marcar la sección activa
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          const activeLink = document.querySelector(`.nav-h3[href="#${id}"], .nav-h2[href="#${id}"]`);
+          if (activeLink) {
+            document.querySelectorAll('.nav-h3, .nav-h2').forEach(l => l.classList.remove('active'));
+            activeLink.classList.add('active');
+            
+            // Auto scroll sidebar
+            const linkRect = activeLink.getBoundingClientRect();
+            const sidebarRect = sidebarContent.getBoundingClientRect();
+            if (linkRect.bottom > sidebarRect.bottom || linkRect.top < sidebarRect.top) {
+              activeLink.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+            }
+          }
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.theme-title, .subtheme-title').forEach((el) => {
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>

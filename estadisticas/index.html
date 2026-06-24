@@ -35,12 +35,8 @@
       z-index: 100;
       border-bottom: 1px solid var(--border-subtle);
     }
-    .back-btn {
-      color: var(--text-secondary); text-decoration: none;
-      display: flex; align-items: center; gap: 10px;
-      font-weight: 500; transition: color 0.2s;
-    }
-    .back-btn:hover { color: var(--text-primary); }
+    .back-btn { display: flex; align-items: center; gap: 10px; color: var(--text-primary); text-decoration: none; font-weight: 600; font-size: 0.95rem; background: var(--bg-card); padding: 10px 16px; border-radius: 8px; border: 1px solid var(--border-subtle); transition: all 0.2s; }
+    .back-btn:hover { background: var(--accent); border-color: var(--accent); }
     .tabs {
       display: flex; gap: 20px;
       justify-content: center; margin-top: 30px;
@@ -132,7 +128,10 @@
 </head>
 <body>
   <div class="top-bar">
-    <a href="../index.html" class="back-btn">← Volver al portal</a>
+    <a href="../index.html" class="back-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Volver al Portal
+    </a>
     <h2 style="margin:0; font-size: 1.2rem;">Mi Rendimiento</h2>
     <div style="width: 100px;"></div>
   </div>

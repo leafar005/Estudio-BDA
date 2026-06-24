@@ -239,7 +239,7 @@
         <span class="bento-card-desc">Guía definitiva de teoría, altamente visual y orientada al examen.</span>
       </a>
       <a href="guia/index.html" class="bento-card" style="border-color: rgba(236, 72, 153, 0.4);">
-        <span class="bento-card-icon">👨‍🏫</span>
+        <span class="bento-card-icon">✍️</span>
         <span class="bento-card-title">Resolución de Ejercicios</span>
         <span class="bento-card-desc">Casos reales, patrones de examen y trampas paso a paso.</span>
       </a>
@@ -347,6 +347,13 @@
       <p class="modal-subtitle">¿Cómo quieres estudiar este tema?</p>
       
       <div class="modal-options">
+        <button class="modal-option-btn primary" id="btn-start-examen" style="display: none;">
+          <span class="btn-emoji">📄</span>
+          <div class="btn-text">
+            <strong>Examen Completo</strong>
+            <span>Ver la resolución completa del examen original.</span>
+          </div>
+        </button>
         <button class="modal-option-btn primary" id="btn-start-quiz">
           <span class="btn-emoji">📝</span>
           <div class="btn-text">
@@ -424,6 +431,7 @@
       const titleEl = document.getElementById('modal-title');
       const iconEl = document.getElementById('modal-icon');
       const btnQuiz = document.getElementById('btn-start-quiz');
+      const btnExamen = document.getElementById('btn-start-examen');
       const btnFlash = document.getElementById('btn-start-flashcards');
       const btnResumen = document.getElementById('btn-start-resumen');
 
@@ -439,9 +447,11 @@
             if (currentCategory.startsWith('examen')) {
               btnFlash.style.display = 'none';
               btnResumen.style.display = 'none';
+              btnExamen.style.display = 'flex';
             } else {
               btnFlash.style.display = 'flex';
               btnResumen.style.display = 'flex';
+              btnExamen.style.display = 'none';
             }
             titleEl.textContent = card.querySelector('.bento-card-title').textContent;
             iconEl.textContent = card.querySelector('.bento-card-icon').textContent;
@@ -457,6 +467,10 @@
 
       btnQuiz.addEventListener('click', () => {
         window.location.href = `estudio-bda/index.html?mode=category&category=${currentCategory}`;
+      });
+      
+      btnExamen.addEventListener('click', () => {
+        window.location.href = `guia/${currentCategory}.html`;
       });
 
       btnFlash.addEventListener('click', () => {
