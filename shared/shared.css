@@ -536,3 +536,26 @@ body.light-theme .back-to-portal:hover {
   background: rgba(0, 0, 0, 0.1) !important;
   color: var(--text-primary) !important;
 }
+
+/* Global code style override */
+pre, pre[class*="language-"], code[class*="language-"], pre[class*="language-"] *, code[class*="language-"] * {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-weight: bold !important;
+}
+
+/* Global inline code style */
+code:not([class*="language-"]) {
+  font-family: 'JetBrains Mono', monospace, sans-serif;
+  background: rgba(0, 0, 0, 0.4) !important;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #f3f4f6 !important;
+  font-weight: 600;
+  text-shadow: none !important;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+body.light-theme code:not([class*="language-"]) {
+  background: rgba(0, 0, 0, 0.05) !important;
+  color: #1f2937 !important;
+}

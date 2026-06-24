@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../shared/shared.css">
   <script src="../shared/shared.js"></script>
   <style>
@@ -83,7 +84,12 @@
       .nav-h3 { display: inline-block; padding: 8px 12px; font-size: 0.85rem; border-left: none; }
       .nav-h3.active { background: rgba(59,130,246,0.2); border-radius: 8px; color: #fff; font-weight: 600; }
       #main-content { overflow-y: visible; padding: 25px 15px; }
-      .toggle-btn { margin-left: 0; }
+      .toggle-btn {
+      position: sticky; top: 0px; z-index: 99; margin-bottom: 20px; margin-left: -40px;
+      background: var(--bg-card); border: 1px solid var(--border-subtle); color: var(--text-primary);
+      padding: 10px 15px; border-radius: 8px; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 10px; transition: all 0.2s; font-weight: 600; font-size: 0.9rem;
+    }
       .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 15px; }
       .page-title { font-size: 2rem; }
       .page-subtitle { font-size: 1rem; margin-bottom: 30px; }
@@ -91,10 +97,111 @@
       h3.subtheme-title { font-size: 1.3rem; margin-top: 30px; }
       .box { padding: 16px; }
     }
-  </style>
+  
+    /* Code styling */
+    code:not([class*="language-"]) { font-family: 'Fira Code', monospace, sans-serif; background: rgba(0,0,0,0.4) !important; padding: 2px 6px; border-radius: 4px; color: #f3f4f6 !important; font-weight: 600; border: 1px solid rgba(255,255,255,0.05); }
+    
+    .sql-example {
+      background: #1e1e1e; /* Darker background like the user wants */
+      border-radius: 8px;
+      margin: 20px 0;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.05);
+      overflow: hidden;
+    }
+    .sql-example-header {
+      background: #2d2d2d; /* Header for Mac buttons */
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .mac-buttons { display: flex; gap: 8px; }
+    .mac-btn { width: 12px; height: 12px; border-radius: 50%; }
+    .mac-btn.close { background: #ff5f56; }
+    .mac-btn.minimize { background: #ffbd2e; }
+    .mac-btn.maximize { background: #27c93f; }
+    .sql-example h5 {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      margin: 0;
+      color: #a0a0a0;
+      font-size: 0.85rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+    }
+    .sql-example-body { padding: 15px; overflow-x: auto; }
+    .sql-example-body pre { margin: 0 !important; background: transparent !important; padding: 0 !important; font-family: 'Fira Code', 'JetBrains Mono', monospace !important; font-size: 0.95rem; line-height: 1.5; color: #f8f8f2; }
+
+</style>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    };
+  </script>
   <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+
+
+<style>
+
+    
+    
+    
+    
+
+
+
+    /* Code styling */
+    code:not([class*="language-"]) { font-family: 'Fira Code', monospace, sans-serif; background: rgba(0,0,0,0.4) !important; padding: 2px 6px; border-radius: 4px; color: #f3f4f6 !important; font-weight: 600; border: 1px solid rgba(255,255,255,0.05); }
+    
+    .sql-example {
+      background: #1e1e1e; /* Darker background like the user wants */
+      border-radius: 8px;
+      margin: 20px 0;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.05);
+      overflow: hidden;
+    }
+    .sql-example-header {
+      background: #2d2d2d; /* Header for Mac buttons */
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .mac-buttons { display: flex; gap: 8px; }
+    .mac-btn { width: 12px; height: 12px; border-radius: 50%; }
+    .mac-btn.close { background: #ff5f56; }
+    .mac-btn.minimize { background: #ffbd2e; }
+    .mac-btn.maximize { background: #27c93f; }
+    .sql-example h5 {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      margin: 0;
+      color: #a0a0a0;
+      font-size: 0.85rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+    }
+    .sql-example-body { padding: 15px; overflow-x: auto; }
+    .sql-example-body pre { margin: 0 !important; background: transparent !important; padding: 0 !important; font-family: 'Fira Code', 'JetBrains Mono', monospace !important; font-size: 0.95rem; line-height: 1.5; color: #f8f8f2; }
+
+</style>
+
 </head>
-<body>
+<body class="line-numbers">
 
   <nav id="sidebar">
     <div class="sidebar-header">
@@ -110,7 +217,6 @@
     
     <button id="toggle-sidebar" class="toggle-btn">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-      Mostrar / Ocultar Índice
     </button>
     
     <div class="content-container">
@@ -176,6 +282,20 @@
           </div>
           <p style="font-size: 0.9rem;"><em>Regla de prefijos de Oracle:</em> <code>USER_</code> (lo propio del usuario), <code>ALL_</code> (a lo que el usuario tiene acceso), <code>DBA_</code> (todo el sistema, solo administradores).</p>
         </div>
+        
+        <div class="sql-example">
+      <div class="sql-example-header">
+        <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
+        <h5>Código / Datos</h5>
+      </div>
+      <div class="sql-example-body">
+        <pre><code class="language-sql">-- Consultar todas las columnas de la tabla empleado
+SELECT table_name, column_name, data_type 
+FROM information_schema.columns 
+WHERE table_schema = 'public' 
+  AND table_name = 'empleado';</code></pre>
+      </div>
+    </div>
 
         <h3 class="subtheme-title" id="st-1-3">3. Conceptos Avanzados de Catálogo</h3>
         <div class="box" style="margin-top: 20px; border-left: 3px solid #14b8a6; background: rgba(20, 184, 166, 0.05);">
@@ -217,6 +337,23 @@
             </ul>
           </div>
         </div>
+        
+        <div class="sql-example">
+      <div class="sql-example-header">
+        <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
+        <h5>Código / Datos</h5>
+      </div>
+      <div class="sql-example-body">
+        <pre><code class="language-sql">-- Crear vista que bloquea inserciones de empleados fuera de IT
+CREATE VIEW v_empleados_it AS 
+SELECT empno, nombre, salario, dpto 
+FROM empleado WHERE dpto = 'IT' 
+WITH CHECK OPTION;
+
+-- Este INSERT fallará porque incumple el WHERE (Tupla Migratoria)
+INSERT INTO v_empleados_it VALUES (10, 'Ana', 2000, 'HR');</code></pre>
+      </div>
+    </div>
 
         <h3 class="subtheme-title" id="st-2-3">3. Oracle y Vistas Materializadas</h3>
         <div class="grid-2">
@@ -233,18 +370,7 @@
         <div class="alert" style="border-left-color: var(--c-2); display: flex; align-items: center; gap: 15px; background: rgba(139, 92, 246, 0.1);">
           <span style="font-size: 1.5rem;">👑</span>
           <div><strong>Query Rewrite (Truco Optimización):</strong> El optimizador de Oracle puede usar vistas materializadas internamente mediante <strong>Query Rewrite</strong>, redirigiendo tu consulta hacia la instantánea precalculada aunque tú hayas hecho explícitamente el <code>SELECT</code> a las tablas base.</div>
-        </div>
-
-        <h3 class="subtheme-title exam-title" id="st-2-exam">🎓 Guía de Resolución: Vistas Congeladas</h3>
-        <div class="box exam-guide">
-          <h4>Vistas y el SELECT * (Trampa de Catálogo)</h4>
-          <p style="font-size: 0.95rem;"><strong>Patrón de Examen:</strong> Te preguntan qué ocurre si una vista se define con <code>SELECT * FROM tabla</code> y posteriormente se hace un <code>ALTER TABLE</code> añadiendo una nueva columna a dicha tabla.</p>
-          <ul style="font-size: 0.9rem;">
-            <li><strong>Resolución Estática:</strong> El usuario de la vista <strong>NO verá la nueva columna</strong>.</li>
-            <li><strong>¿Por qué?:</strong> El catálogo de la Base de Datos "precompila" la vista sustituyendo el asterisco (<code>*</code>) por los nombres literales y exactos de las columnas que existían en el milisegundo de su creación. </li>
-          </ul>
-        </div>
-      </section>
+        </div></section>
 
       <section class="theme-section">
         <h2 class="theme-title" id="t-03" style="border-bottom-color: var(--c-3); color: var(--c-3);">🛡️ 3. Integridad</h2>
@@ -293,25 +419,25 @@
             <span style="font-size: 0.85rem;">Inicia inmediata pero permite modificarse en vuelo con <code>SET CONSTRAINTS</code>.</span>
           </div>
         </div>
-
-        <h3 class="subtheme-title exam-title" id="st-3-exam">🎓 Guía de Resolución: Integridad y Claves Foráneas</h3>
-        <div class="box exam-guide">
-          <h4>A. Cláusula MATCH (Nulos en FK compuestas)</h4>
-          <p style="font-size: 0.95rem;"><strong>Patrón de Examen:</strong> Te dan una PK y una FK compuesta que incluye valores NULOS, y te preguntan qué filas insertadas son válidas bajo MATCH SIMPLE, PARTIAL y FULL. </p>
-          <ul style="font-size: 0.9rem;">
-            <li><strong>MATCH SIMPLE (Por defecto):</strong> Si la fila de la clave foránea contiene <strong>al menos un NULL</strong>, es VÁLIDA automáticamente sin buscar en el padre.</li>
-            <li><strong>MATCH PARTIAL:</strong> Permite nulos, pero si algún atributo tiene valor, ese valor <strong>debe existir en la tabla padre</strong> (junto con el resto de componentes no nulos en la misma fila del padre).</li>
-            <li><strong>MATCH FULL:</strong> Es de "todo o nada". Requiere que TODOS los atributos sean NULL o que NINGUNO sea NULL (y coincida con el padre). <strong>Si hay mezcla de nulos y no-nulos, es INVÁLIDA inmediatamente</strong>.</li>
-          </ul>
-
-          <h4 style="margin-top: 25px;">B. Acciones Referenciales (NO ACTION vs RESTRICT)</h4>
-          <p style="font-size: 0.95rem;"><strong>Patrón de Examen:</strong> La trampa típica es preguntar la diferencia entre ambas políticas de borrado/actualización.</p>
-          <ul style="font-size: 0.9rem;">
-            <li>La respuesta clave es que <strong>NO ACTION puede ser aplazada</strong> hasta el momento del <code>COMMIT</code> (usando <code>DEFERRABLE</code>).</li>
-            <li><strong>RESTRICT no puede ser aplazada jamás</strong> (comprobación inmediata estricta). Esto es vital para romper ciclos referenciales (ej. dos tablas que se apuntan mutuamente con restricción NOT NULL).</li>
-          </ul>
-        </div>
-      </section>
+        
+        <div class="sql-example">
+      <div class="sql-example-header">
+        <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
+        <h5>Código / Datos</h5>
+      </div>
+      <div class="sql-example-body">
+        <pre><code class="language-sql">-- Crear tabla con Foreign Key y acciones referenciales
+CREATE TABLE empleado (
+    id INT PRIMARY KEY,
+    dept_id INT,
+    CONSTRAINT fk_dept FOREIGN KEY (dept_id) 
+    REFERENCES departamento(id) 
+    ON DELETE RESTRICT      -- Inmediato: impide borrar si hay empleados
+    ON UPDATE CASCADE       -- Propaga el cambio de ID
+    DEFERRABLE INITIALLY DEFERRED -- Aplaza la comprobación al COMMIT
+);</code></pre>
+      </div>
+    </div></section>
 
       <section class="theme-section">
         <h2 class="theme-title" id="t-04" style="border-bottom-color: var(--c-4); color: var(--c-4);">🔐 4. Seguridad en SGBD</h2>
@@ -350,6 +476,26 @@
             <p style="font-size: 0.85rem;"><strong>Estándar en SGBD modernos.</strong> Los permisos se asignan a roles (perfiles) y estos a usuarios. Simplifica drásticamente la administración frente al caos de cadenas del DAC puro.</p>
           </div>
         </div>
+        
+        <div class="sql-example">
+      <div class="sql-example-header">
+        <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
+        <h5>Código / Datos</h5>
+      </div>
+      <div class="sql-example-body">
+        <pre><code class="language-sql">-- 1. Crear un rol
+CREATE ROLE admin_ventas;
+
+-- 2. Otorgar permisos sobre un objeto (Tabla) al rol
+GRANT SELECT, INSERT, UPDATE ON ventas TO admin_ventas;
+
+-- 3. Asignar el rol a un usuario
+GRANT admin_ventas TO juan;
+
+-- 4. Dar permiso con derecho a delegar (WITH GRANT OPTION)
+GRANT DELETE ON ventas TO maria WITH GRANT OPTION;</code></pre>
+      </div>
+    </div>
 
         <h3 class="subtheme-title" id="st-4-3">3. Técnicas Adicionales y Auditoría</h3>
         <div class="box" style="border-top: 3px solid var(--c-4);">
@@ -359,27 +505,7 @@
             <li><strong style="color: #fca5a5;">Bases de Datos Estadísticas:</strong> Protegen la privacidad publicando solo agregados (SUM, AVG) y limitando respuestas a grupos pequeños para evitar inferencia.</li>
             <li><strong style="color: #fca5a5;">Auditoría Nativa vs Triggers:</strong> La nativa registra eventos DDL o accesos genéricos. Los Triggers de Sistema capturan eventos globales ajenos a tablas, como <code>AFTER LOGON ON DATABASE</code>.</li>
           </ul>
-        </div>
-
-        <h3 class="subtheme-title exam-title" id="st-4-exam">🎓 Guía de Resolución: Escalabilidad y Permisos</h3>
-        <div class="box exam-guide">
-          <h4>A. Dar acceso granular a varios usuarios</h4>
-          <p style="font-size: 0.95rem;"><strong>Patrón de Examen:</strong> Se te pide dar acceso a un subconjunto de filas/columnas a varios usuarios (ej. u1, u2, u3) de manera que sea fácilmente escalable para futuros usuarios.</p>
-          <ul style="font-size: 0.9rem;">
-            <li><strong>Regla 1:</strong> NUNCA concedas privilegios directamente sobre la tabla base si hay condiciones de filas/columnas.</li>
-            <li><strong>Paso 1 (Crear Vista):</strong> Encapsula la consulta con un <code>CREATE VIEW</code> usando la condición exigida (ej. <code>WHERE deptno = 10</code>). Añade siempre la cláusula <code>WITH CASCADED CHECK OPTION</code> para evitar tuplas migratorias (que no inserten datos de otros departamentos).</li>
-            <li><strong>Paso 2 (Crear Rol):</strong> Para hacer el sistema escalable, crea un rol intermedio (<code>CREATE ROLE rol_dept10</code>).</li>
-            <li><strong>Paso 3 (Concesión):</strong> Otorga los privilegios (SELECT, INSERT, etc.) a la vista sobre el rol, y luego asigna el rol a los usuarios finales.</li>
-          </ul>
-
-          <h4 style="margin-top: 25px;">B. Otras Trampas de Seguridad</h4>
-          <ul style="font-size: 0.9rem;">
-            <li><strong>Inferencia en Oracle (ORA-00942):</strong> Si consultas una tabla sin permisos, Oracle miente y dice "la tabla o vista no existe", ocultando el fallo de permisos real.</li>
-            <li><strong>REVOKE PUBLIC:</strong> Si te preguntan qué pasa si el administrador hace <code>REVOKE CONNECT FROM PUBLIC</code>, debes indicar que afectará a todos los usuarios, pero <strong>el efecto no es inmediato</strong> para los que ya tienen su sesión abierta; se aplicará cuando intenten reconectarse.</li>
-            <li><strong>El usuario Administrador:</strong> Un usuario normal NO puede revocar permisos a un DBA a menos que haya sido el propio usuario común quien le otorgó ese permiso previamente con <code>WITH GRANT OPTION</code>.</li>
-          </ul>
-        </div>
-      </section>
+        </div></section>
 
       <section class="theme-section">
         <h2 class="theme-title" id="t-05" style="border-bottom-color: var(--c-5); color: var(--c-5);">⚡ 5. Reglas Activas y Triggers</h2>
@@ -424,6 +550,26 @@
           </div>
         </div>
         <p style="font-size: 0.9rem; margin-top: 15px;">* Nota: Los triggers <strong>INSTEAD OF</strong> son la única forma de hacer actualizables las vistas complejas (con JOINs o GROUP BY).</p>
+        
+        <div class="sql-example">
+      <div class="sql-example-header">
+        <div class="mac-buttons"><span class="mac-btn close"></span><span class="mac-btn minimize"></span><span class="mac-btn maximize"></span></div>
+        <h5>Código / Datos</h5>
+      </div>
+      <div class="sql-example-body">
+        <pre><code class="language-sql">-- EVENTO: ANTES de actualizar el salario
+CREATE OR REPLACE TRIGGER trg_auditoria_salario
+BEFORE UPDATE OF salario ON empleado
+FOR EACH ROW
+-- CONDICIÓN: Solo si la subida es mayor al 50%
+WHEN (NEW.salario > OLD.salario * 1.5)
+-- ACCIÓN:
+BEGIN
+    INSERT INTO log_alertas (emp, old_sal, new_sal, fecha)
+    VALUES (:OLD.empno, :OLD.salario, :NEW.salario, SYSDATE);
+END;</code></pre>
+      </div>
+    </div>
       </section>
 
       <section class="theme-section">
@@ -469,19 +615,7 @@
             <li><strong style="color: #67e8f9;">Basados en Funciones:</strong> Indexan el resultado precalculado de una expresión, como <code>UPPER(nombre)</code>.</li>
             <li><strong style="color: #67e8f9;">Particionado de Índices:</strong> Al fragmentar una tabla masiva (>1GB) por rangos, listas o hash, el índice puede ser <strong>Local</strong> (se divide igual que la tabla) o <strong>Global</strong> (sigue su propia regla). Mayor ventaja: <strong>Partition Pruning</strong>.</li>
           </ul>
-        </div>
-
-        <h3 class="subtheme-title exam-title" id="st-6-exam">🎓 Guía de Resolución: Índices y Nulos</h3>
-        <div class="box exam-guide">
-          <h4>La Trampa Principal del Examen</h4>
-          <p style="font-size: 0.95rem;"><strong>Patrón de Examen:</strong> Te dan un índice (ej. sobre la columna <code>COMM</code>) y un Hint en la consulta (ej. <code>/*+ INDEX(EMP I_EMP_COMM) */</code>). Te preguntan si Oracle usará el índice. </p>
-          <ul style="font-size: 0.9rem;">
-            <li><strong>Regla de Oro:</strong> Los árboles B+ convencionales en Oracle <strong>NO indexan valores totalmente nulos</strong>.</li>
-            <li><strong>Escenario 1 (SELECT Genérico / DISTINCT):</strong> Si haces un <code>SELECT COMM</code> o un <code>SELECT DISTINCT(COMM)</code>, Oracle <strong>NO USARÁ EL ÍNDICE</strong> e ignorará el hint. Al no indexar los nulos, si usa el índice estaría dando un resultado incompleto. Hará un <code>TABLE ACCESS FULL</code>.</li>
-            <li><strong>Escenario 2 (Funciones de Agregación):</strong> Si haces funciones matemáticas extremas como <code>SELECT MAX(COMM)</code>, <code>AVG(COMM)</code> o <code>SUM(COMM)</code>, Oracle <strong>SÍ USARÁ EL ÍNDICE</strong>. Estas funciones excluyen los nulos de forma natural, por lo que el índice B+ tiene toda la información útil necesaria para resolverlo (usualmente con <code>INDEX FULL SCAN</code> o <code>INDEX RANGE SCAN</code>).</li>
-          </ul>
-        </div>
-      </section>
+        </div></section>
 
       <section class="theme-section">
         <h2 class="theme-title" id="t-07" style="border-bottom-color: var(--c-7); color: var(--c-7);">⚙️ 7. Optimización de Consultas</h2>
@@ -522,27 +656,7 @@
               <li><strong>Hash Join:</strong> Aplica hash a la tabla pequeña en RAM, y escanea la grande. Ideal <strong>sin índices</strong> (solo equi-joins).</li>
             </ul>
           </div>
-        </div>
-
-        <h3 class="subtheme-title exam-title" id="st-7-exam">🎓 Guía de Resolución: Álgebra Relacional y Planes</h3>
-        <div class="box exam-guide">
-          <h4>A. Álgebra Relacional (Árbol Canónico a Optimizado)</h4>
-          <p style="font-size: 0.95rem;"><strong>Patrón de Examen:</strong> Traducir SQL a un árbol en bruto y luego optimizarlo en varios pasos. </p>
-          <ol style="font-size: 0.9rem;">
-            <li><strong>Árbol Básico:</strong> Pon los productos cartesianos ($\times$) en la base con las tablas. Encima, un macro-filtro ($\sigma$) con todas las condiciones del <code>WHERE</code>. Arriba, la proyección ($\pi$) de las columnas del <code>SELECT</code> (y si hay <code>GROUP BY</code>, el nodo de agregación $\gamma$).</li>
-            <li><strong>Descenso de Selecciones (Push-down):</strong> Fragmenta el <code>WHERE</code> y baja todos los filtros propios de una tabla ($\sigma$) para que se apliquen justo antes de cruzarla con otras.</li>
-            <li><strong>Conversión a Join:</strong> Si hay un producto cartesiano ($\times$) seguido inmediatamente de un filtro de igualdad ($\sigma_{PK = FK}$), fusiónalos para formar un Join ($\bowtie$).</li>
-            <li><strong>Descenso de Proyecciones:</strong> Inserta proyecciones ($\pi$) intermedias justo por encima de las tablas base y después de cada join para eliminar columnas que no se usarán más arriba (ahorrando drásticamente memoria RAM).</li>
-          </ol>
-
-          <h4 style="margin-top: 25px;">B. Interpretación de EXPLAIN PLAN</h4>
-          <p style="font-size: 0.95rem;"><strong>Patrón de Examen:</strong> Se da una traza textual y piden la cronología física y la query original.</p>
-          <ul style="font-size: 0.9rem;">
-            <li><strong>Orden Cronológico:</strong> La regla de precedencia es de derecha a izquierda (indentación) y de arriba hacia abajo. Las líneas <strong>más tabuladas hacia la derecha</strong> son los accesos físicos a disco (ej. <code>TABLE ACCESS FULL</code>) y se ejecutan primero.</li>
-            <li><strong>El chivato FILTER:</strong> Si observas una operación <code>FILTER</code> posicionada justo tras un <code>HASH GROUP BY</code>, debes indicar sin dudarlo que la consulta original tenía una cláusula <code>HAVING</code>.</li>
-          </ul>
-        </div>
-      </section>
+        </div></section>
 
       <section class="theme-section">
         <h2 class="theme-title" id="t-08" style="border-bottom-color: var(--c-8); color: var(--c-8);">🚑 8. Recuperación ante Fallos</h2>
@@ -581,25 +695,7 @@
           <p style="font-size: 0.85rem;">El <strong>Two-Phase Commit Protocol</strong> asegura ACID en nodos distribuidos guiado por un Coordinador:<br>
           <strong>Fase 1 (Prepare):</strong> Pregunta a todos los nodos si están listos para confirmar y asegurar en log.<br>
           <strong>Fase 2 (Commit):</strong> Si TODOS dicen sí, manda el COMMIT global. Si uno solo falla, manda ROLLBACK global.</p>
-        </div>
-
-        <h3 class="subtheme-title exam-title" id="st-8-exam">🎓 Guía de Resolución: Archivos de Log</h3>
-        <div class="box exam-guide">
-          <h4>Resolviendo Caídas del Sistema</h4>
-          <p style="font-size: 0.95rem;"><strong>Patrón de Examen:</strong> Te muestran una secuencia de registros (ej. <code>&lt;T1, A, 10, 23&gt;</code>, <code>&lt;T1, COMMIT&gt;</code>, <code>&lt;CHECKPOINT&gt;</code>) y el sistema cae repentinamente. Te piden detallar los pasos de recuperación. </p>
-          <ul style="font-size: 0.9rem;">
-            <li><strong>Identificar la Arquitectura:</strong>
-              <ul style="margin-top: 5px;">
-                <li>Si el registro DML tiene 3 parámetros (<code>T, Elemento, ValorNuevo</code>), es de <strong>Actualización Diferida</strong> (Solo usa REDO).</li>
-                <li>Si tiene 4 parámetros (<code>T, Elemento, ValorViejo, ValorNuevo</code>), es de <strong>Actualización Inmediata</strong> (Usa UNDO y REDO).</li>
-              </ul>
-            </li>
-            <li><strong>El Muro del Checkpoint:</strong> Toda transacción que tenga su <code>COMMIT</code> escrito <strong>antes</strong> de la línea de <code>&lt;CHECKPOINT&gt;</code> se omite por completo en el ejercicio. Sus datos ya están seguros en el disco físico.</li>
-            <li><strong>Fase UNDO (¡Va Primero!):</strong> Solo para Actualizaciones Inmediatas. Afecta a las transacciones que empezaron (tienen <code>START</code>) pero no tienen ni <code>COMMIT</code> ni <code>ROLLBACK</code>. Se leen en orden <strong>inverso</strong> (de abajo hacia arriba en el papel) aplicando la Imagen-Anterior.</li>
-            <li><strong>Fase REDO (Rehacer):</strong> Afecta a toda transacción con un <code>COMMIT</code> validado después del Checkpoint (o si no hay Checkpoint, a todas las confirmadas). Se lee en <strong>orden normal cronológico</strong> (de arriba hacia abajo) aplicando la Imagen-Posterior.</li>
-          </ul>
-        </div>
-      </section>
+        </div></section>
 
       <section class="theme-section">
         <h2 class="theme-title" id="t-09" style="border-bottom-color: var(--c-9); color: var(--c-9);">🚦 9. Concurrencia y Transacciones</h2>
@@ -651,37 +747,7 @@
               <li><strong>Wound-Wait:</strong> Expropiación agresiva. Si el que pide es viejo, hiere (aborta al joven). Si es joven, espera.</li>
             </ul>
           </div>
-        </div>
-
-        <h3 class="subtheme-title exam-title" id="st-9-exam">🎓 Guía de Resolución: Marcas de Tiempo y MVCC</h3>
-        <div class="box exam-guide">
-          <h4>A. Regla de Escritura de Thomas</h4>
-          <p style="font-size: 0.95rem;"><strong>Patrón de Examen:</strong> Simular ejecuciones como <code>Read(A)</code>, <code>Write(B)</code> y evaluar marcas de lectura (ML) y escritura (ME). Asumimos que la Transacción T opera sobre el dato A.</p>
-          <ul style="font-size: 0.9rem;">
-            <li><strong>Operación de Lectura:</strong>
-              <ul style="margin-top: 5px;">
-                <li>¿$M(T) < ME(A)$? &rarr; <strong>ROLLBACK</strong> (Está intentando leer un dato que ya fue sobrescrito por una transacción más joven).</li>
-                <li>Si es legal &rarr; La nueva marca de lectura se actualiza: $ML(A) = \max(M(T), ML(A))$.</li>
-              </ul>
-            </li>
-            <li><strong>Operación de Escritura (La Trampa de Thomas):</strong>
-              <ul style="margin-top: 5px;">
-                <li>¿$M(T) < ML(A)$? &rarr; <strong>ROLLBACK</strong> (Alguien más joven ya leyó el dato viejo, escribir ahora rompería su aislamiento).</li>
-                <li>¿$M(T) < ME(A)$? &rarr; <strong>SE IGNORA LA ESCRITURA</strong> pero la transacción <strong>SIGUE VIVA</strong> sin hacer rollback. Su escritura quedó obsoleta por alguien del futuro, simplemente no graba (Regla de Thomas).</li>
-                <li>Si supera las dos &rarr; Se ejecuta físicamente y $ME(A) = M(T)$.</li>
-              </ul>
-            </li>
-          </ul>
-
-          <h4 style="margin-top: 25px;">B. Control Multiversión (MVCC)</h4>
-          <p style="font-size: 0.95rem;"><strong>Patrón de Examen:</strong> Tienes versiones históricas (ej. A1: ME=1, ML=4 y A2: ME=6, ML=7) e indican que T8 lee A o T9 escribe 13 en A. </p>
-          <ul style="font-size: 0.9rem;">
-            <li><strong>Paso 1 (Búsqueda):</strong> Lo primero siempre es localizar la versión correcta en el tiempo. Elige la versión que posea el ME más alto pero que sea menor o igual al identificador de la transacción que actúa ($ME \le M(T)$).</li>
-            <li><strong>Si es Lectura:</strong> Compara la transacción $M(T)$ con esa versión. Lee el valor, y si su $M(T)$ es mayor que el ML actual de esa versión, actualiza el ML. (Con MVCC puro estándar un lector nunca es bloqueado).</li>
-            <li><strong>Si es Escritura:</strong> Tras ubicar la versión en su pasado ($ME \le M(T)$), pregúntate: ¿alguien del futuro leyó ya esa versión ($M(T) < ML$)? Si es así &rarr; <strong>ROLLBACK</strong>. Si es legal y $M(T) > ME$, <strong>crea una nueva versión en disco</strong> (ej. A3) e inicializa sus valores con $ME = M(T)$ y $ML = M(T)$. Si existe una versión posterior consolidada, la nueva versión se intercala.</li>
-          </ul>
-        </div>
-      </section>
+        </div></section>
 
       <div style="height: 120px;"></div>
     </div>
